@@ -3,7 +3,7 @@ import type { Context } from "hono";
 import { randomUUID } from "node:crypto";
 import { db, now } from "../db/index.js";
 import type { CategoryRow, LinkNoteRow, LinkRow } from "../db/schema.js";
-import { saveBuffer } from "../services/files.js";
+import { queueScrape } from "../services/scrape.js";
 
 export const links = new Hono();
 
@@ -113,7 +113,7 @@ links.post("/", async (c) => {
        VALUES (@id, @url, @title, @summary, @content, @note, @category_ids,
          @shot_url, @cover_url, @source, @status, @error, @created_at, @updated_at)`,
     ).run(row);
-    void scrapeLink(row.id);
+    queueScrape(row.id);
     return c.json(row, 201);
   }
 
@@ -207,7 +207,7 @@ links.post("/:id/reset", (c) => {
   db.prepare(
     `UPDATE links SET status = 'pending', error = NULL, updated_at = ? WHERE id = ?`,
   ).run(now(), row.id);
-  void scrapeLink(row.id);
+  queueScrape(row.id);
   return c.json(getById(row.id)!);
 });
 
@@ -237,115 +237,6 @@ links.post("/:id/notes", async (c) => {
   ).run(note);
   return c.json(note, 201);
 });
-
-/* ===== 小红书/网页 OG 信息解析（保存后异步执行，不阻塞响应） ===== */
-
-async function scrapeLink(id: string): Promise<void> {
-  const row = getById(id);
-  if (!row?.url) return;
-  try {
-    const controller = new AbortController();
-    const timer = setTimeout(() => controller.abort(), 8000);
-    const res = await fetch(row.url, {
-      headers: {
-        // 小红书对爬虫 UA 返回验证页，用移动端 Safari UA 可拿到 SSR 的 og 元信息
-        "User-Agent":
-          "Mozilla/5.0 (iPhone; CPU iPhone OS 17_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.0 Mobile/15E148 Safari/604.1",
-        Accept: "text/html,application/xhtml+xml",
-      },
-      redirect: "follow",
-      signal: controller.signal,
-    });
-    clearTimeout(timer);
-    const html = await res.text();
-    console.log(
-      `[scrape-fetch] final=${res.url} status=${res.status} ct=${res.headers.get("content-type")}`,
-    );
-    const meta = (prop: string): string | null => {
-      const patterns = [
-        new RegExp(
-          `<meta[^>]+(?:property|name)=["']${prop}["'][^>]*content=["']([^"']+)["']`,
-          "i",
-        ),
-        new RegExp(
-          `<meta[^>]+content=["']([^"']+)["'][^>]*(?:property|name)=["']${prop}["']`,
-          "i",
-        ),
-      ];
-      for (const pattern of patterns) {
-        const m = html.match(pattern);
-        if (m?.[1]) return m[1].trim();
-      }
-      return null;
-    };
-    const ogTitle = meta("og:title");
-    const ogImage = meta("og:image");
-    const ogDesc = meta("og:description");
-
-    // 小红书对无 cookie 请求返回空壳 og（标题「- 小红书」、占位图），
-    // 真实标题/封面在页面数据里 —— 逐级降级提取
-    const ogTitleUsable =
-      ogTitle && !/^(\s*-\s*)?小红书$/.test(ogTitle.trim()) ? clean(ogTitle, 500) : null;
-    const jsonTitle = html.match(/"title"\s*:\s*"((?:[^"\\]|\\.)*)"/i)?.[1];
-    let jsonTitleClean: string | null = null;
-    if (jsonTitle && jsonTitle.length >= 2) {
-      try {
-        jsonTitleClean = clean(JSON.parse(`"${jsonTitle}"`) as string, 500) || null;
-      } catch {
-        jsonTitleClean = null;
-      }
-    }
-    const ogImageUsable =
-      ogImage && !ogImage.includes("ci.xiaohongshu.com/?") ? clean(ogImage, 1000) : null;
-    const webpic =
-      html.match(/https?:\/\/sns-webpic-qc\.xhscdn\.com[^"'\\\s]+/i)?.[0] ?? null;
-    const remoteCover = ogImageUsable ?? webpic;
-
-    // 封面转存：下载到自有 /files/，避免外链防盗链导致无法显示
-    let coverStored: string | null = null;
-    if (remoteCover) {
-      try {
-        const imgRes = await fetch(remoteCover, {
-          headers: {
-            Referer: "https://www.xiaohongshu.com/",
-            "User-Agent":
-              "Mozilla/5.0 (iPhone; CPU iPhone OS 17_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.0 Mobile/15E148 Safari/604.1",
-          },
-        });
-        if (imgRes.ok) {
-          const buffer = Buffer.from(await imgRes.arrayBuffer());
-          if (buffer.byteLength > 1024) {
-            const type = imgRes.headers.get("content-type") ?? "image/jpeg";
-            const ext =
-              type.includes("png") ? ".png" : type.includes("webp") ? ".webp" : ".jpg";
-            const file = await saveBuffer(buffer, ext, type.split(";")[0]);
-            coverStored = `/files/${file.id}${file.ext}`;
-          }
-        }
-      } catch {
-        /* 转存失败则保留远程地址 */
-      }
-    }
-    const cover = coverStored ?? remoteCover;
-
-    db.prepare(
-      `UPDATE links SET
-         title = ?, summary = ?, cover_url = ?,
-         status = 'done', error = NULL, updated_at = ?
-       WHERE id = ?`,
-    ).run(
-      (row.title ?? ogTitleUsable ?? jsonTitleClean) || null,
-      clean(ogDesc, 500) || null,
-      cover,
-      now(),
-      id,
-    );
-  } catch (err) {
-    db.prepare(
-      `UPDATE links SET status = 'failed', error = ?, updated_at = ? WHERE id = ?`,
-    ).run(String(err).slice(0, 200), now(), id);
-  }
-}
 
 links.delete("/:id", (c) => {
   const info = db.prepare(`DELETE FROM links WHERE id = ?`).run(c.req.param("id"));

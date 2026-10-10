@@ -49,10 +49,12 @@ export async function saveBuffer(
   mime_type: string,
 ): Promise<FileRow> {
   const id = randomUUID();
+  // 扩展名白名单：来源可能是远程页面的 content-type，不保证干净
+  const safe = safeExt(`f${ext}`);
   const row: FileRow = {
     id,
     filename: id,
-    ext,
+    ext: safe,
     mime_type,
     size: buffer.byteLength,
     created_at: now(),

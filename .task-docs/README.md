@@ -9,7 +9,8 @@
 | 01 | 后端骨架（server/）+ 腾讯云部署 | ✅ 完成（2026-10-10） | [01-backend-server.md](./01-backend-server.md) |
 | 02 | 前端（bear-home）接入后端 API | ✅ 完成（2026-10-10） | [02-frontend-api.md](./02-frontend-api.md) |
 | 03 | 接入 Hermes Agent（MCP + 智谱 GLM） | 📋 待开始 | [03-hermes-agent.md](./03-hermes-agent.md) |
-| 04 | App「收藏链接」页面（小红书闭环） | 📋 规划中 | [04-links-page.md](./04-links-page.md) |
+| 04 | App「收藏链接」页面（小红书闭环） | 📋 规划中（依赖 03） | [04-links-page.md](./04-links-page.md) |
+| 05 | 前端功能剥离与骨架重置 | ✅ 完成（2026-10-10） | [05-skeleton-reset.md](./05-skeleton-reset.md) |
 
 状态标记：✅ 完成 · 🚧 进行中 · 📋 待开始 / 规划中 · ⛔ 受阻
 
@@ -33,4 +34,5 @@ bear-home (Taro 小程序/H5)  ──HTTP + Bearer Token──▶  server/ (Hono
 - **自建轻量后端**而非微信云开发/Serverless：要跑异步任务和 Agent，且前后端统一 TypeScript（详见 01）
 - **Agent 接开源 Hermes**而非裸调 LLM：用 MCP 标准接口对接，后端只暴露工具，不绑定任何 Agent 框架
 - **数据源唯一化**：服务器是记录的唯一数据源，前端本地存储仅作离线缓存兜底
+- **前端功能剥离（05）**：原前端功能多为 demo 写死数据，2026-10-10 全部移除只留跨端骨架；02 的前端接入层随之删除，待正式 PRD 后重建（后端与 02 的服务端部分仍然有效）
 - **无备案域名过渡方案**：先走 `http://IP:80` 纯 HTTP + Token；有备案域名后改一行配置自动升级 HTTPS

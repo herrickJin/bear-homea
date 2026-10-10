@@ -2,7 +2,6 @@ import { useEffect, useState } from "react";
 import Taro, { useRouter } from "@tarojs/taro";
 import { Button, Image, Text, Textarea, View } from "@tarojs/components";
 import Screen from "../../components/Screen";
-import Bear from "../../components/Bear";
 import { ArrowLeft, Plus, X } from "../../components/Icons";
 import * as inspiration from "../../services/inspiration";
 import type { Category, InspirationLink } from "../../services/inspiration";
@@ -62,7 +61,6 @@ export default function Page() {
       <Screen page="inspiration" hideHeading>
         <View className="ui-section panel">
           <View className="ui-div empty">
-            <Bear />
             <View className="ui-h3">没有找到这条方案</View>
             <View className="ui-p">它可能已经被删掉了，回方案库看看。</View>
             <Button
@@ -207,7 +205,6 @@ export default function Page() {
               className="ui-button tag-chip tag-removable"
               onClick={() => toggleTag(t.id)}
             >
-              <View className="ui-i chip-dot" />
               {t.name} <X size={11} tone="green" />
             </Button>
           ))}

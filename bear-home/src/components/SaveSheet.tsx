@@ -187,7 +187,6 @@ export default function SaveSheet({
               className={`ui-button ${`chip${categoryIds.includes(c.id) ? " selected" : ""}`}`}
               onClick={() => toggleCategory(c.id)}
             >
-              <View className="ui-i chip-dot" />
               {c.name}
             </Button>
           ))}

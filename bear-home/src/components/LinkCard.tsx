@@ -47,7 +47,6 @@ export default function LinkCard({
           <View className="ui-div link-tags">
             {tags.map((t) => (
               <View className="ui-div tag-chip" key={t.id}>
-                <View className="ui-i chip-dot" />
                 <Text className="ui-span">{t.name}</Text>
               </View>
             ))}

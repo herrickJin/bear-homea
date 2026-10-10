@@ -1,9 +1,9 @@
 /*
- * 熊熊之家 · 骨架样式 2.0「纸感暖光」（消费 src/styles/tokens.css）
+ * 熊熊之家 · 骨架样式 3.0「样板画廊」（消费 src/styles/tokens.css）
  * 范围：应用外壳（侧边栏 / 顶栏 / 底部导航）、按钮体系、通用面板与空态、
  * 响应式断点、小程序安全区。功能页样式见 styles/inspiration.css。
  *
- * 2.0 关键词：暖纸渐变底、亚麻侧栏、毛玻璃浮动层、药丸按钮、纸落桌上的双层阴影。
+ * 3.0 关键词：暖白墙面、hairline 分隔、零阴影零渐变、serif 展签、苔绿单强调。
  */
 
 @import "./styles/tokens.css";
@@ -18,19 +18,7 @@ page {
 }
 
 .app-shell {
-  /* 暖纸底：右上蜂蜜光晕 + 左侧苔绿晕染，白墙上的午后光 */
-  background:
-    radial-gradient(
-      1100px 480px at 88% -6%,
-      rgba(244, 220, 133, 0.13),
-      rgba(244, 220, 133, 0) 62%
-    ),
-    radial-gradient(
-      900px 620px at -12% 14%,
-      rgba(53, 109, 91, 0.05),
-      rgba(53, 109, 91, 0) 58%
-    ),
-    var(--c-bg);
+  background: var(--c-bg);
   min-height: 100dvh;
   color: var(--c-ink);
   font-family: var(--font-sans);
@@ -44,20 +32,20 @@ page {
   color: var(--c-primary-deep);
 }
 
-/* 桌面 H5：细滚动条，绿墨色 */
+/* 桌面 H5：细滚动条 */
 @media (hover: hover) {
   ::-webkit-scrollbar {
     width: 10px;
     height: 10px;
   }
   ::-webkit-scrollbar-thumb {
-    background: rgba(76, 98, 85, 0.22);
+    background: rgba(109, 115, 110, 0.24);
     border-radius: var(--r-pill);
     border: 3px solid transparent;
     background-clip: padding-box;
   }
   ::-webkit-scrollbar-thumb:hover {
-    background: rgba(76, 98, 85, 0.36);
+    background: rgba(109, 115, 110, 0.4);
     border: 3px solid transparent;
     background-clip: padding-box;
   }
@@ -93,10 +81,10 @@ page {
 }
 
 .ui-strong {
-  font-weight: var(--fw-semibold);
+  font-weight: var(--fw-medium);
 }
 
-/* ===== 按钮体系（2.0：统一按压反馈 + 药丸主按钮） ===== */
+/* ===== 按钮体系（3.0：平面苔绿，无渐变无投影） ===== */
 
 .ui-button {
   margin: 0;
@@ -118,7 +106,6 @@ page {
     transform var(--dur-fast) var(--ease-out),
     background-color var(--dur-fast) var(--ease-out),
     border-color var(--dur-fast) var(--ease-out),
-    box-shadow var(--dur-fast) var(--ease-out),
     color var(--dur-fast) var(--ease-out),
     opacity var(--dur-fast) var(--ease-out);
 }
@@ -127,88 +114,62 @@ page {
   border: none;
 }
 
-/* 按压即时反馈：pointer-down 即缩（所有按钮统一手感） */
+/* 按压即时反馈 */
 .ui-button:active {
-  transform: scale(0.97);
+  transform: scale(0.98);
 }
 
 .ui-button:focus-visible {
-  outline: 2.5px solid var(--c-clay);
-  outline-offset: 3px;
+  outline: 2px solid var(--c-primary);
+  outline-offset: 2px;
 }
 
-/* 小主按钮（顶栏「收藏」、空态动作）：苔绿药丸，微渐变 + 接触影 */
+/* 小主按钮（顶栏「收藏」、空态动作） */
 .ui-button.primary {
   display: inline-flex;
   align-items: center;
   justify-content: center;
   gap: var(--sp-1);
   min-height: 38px;
-  border-radius: var(--r-pill);
-  padding: 0 var(--sp-5);
+  border-radius: var(--r-md);
+  padding: 0 var(--sp-4);
   font-size: var(--fs-sm);
-  font-weight: var(--fw-semibold);
-  letter-spacing: 0.5px;
+  font-weight: var(--fw-medium);
   color: var(--c-on-primary);
-  background: linear-gradient(
-    180deg,
-    #40795f 0%,
-    var(--c-primary) 52%,
-    #2f604e 100%
-  );
-  box-shadow: var(--shadow-primary);
+  background: var(--c-primary);
 }
 
 .ui-button.primary:active {
-  background: linear-gradient(180deg, #2c5a49 0%, var(--c-primary-deep) 100%);
-  box-shadow: var(--shadow-primary-press);
-  transform: scale(0.96);
+  background: var(--c-primary-deep);
+  transform: scale(0.98);
 }
 
 @media (hover: hover) {
   .ui-button.primary:hover {
-    background: linear-gradient(
-      180deg,
-      #437f66 0%,
-      #397261 52%,
-      #31654f 100%
-    );
-    box-shadow:
-      0 1px 2px rgba(24, 48, 39, 0.2),
-      0 8px 20px -6px rgba(53, 109, 91, 0.5);
+    background: #316450;
   }
 }
 
-/* 大主按钮（弹层内 CTA）：46px 高，字距放开 */
+/* 大主按钮（弹层内 CTA） */
 .ui-button.btn-primary {
   display: flex;
   width: 100%;
   min-height: 46px;
   border-radius: var(--r-md);
-  padding: 0 var(--sp-5);
+  padding: 0 var(--sp-4);
   font-size: var(--fs-base);
-  font-weight: var(--fw-semibold);
-  letter-spacing: 4px;
-  text-indent: 4px; /* 抵消末字字距，视觉居中 */
+  font-weight: var(--fw-medium);
   color: var(--c-on-primary);
-  background: linear-gradient(
-    180deg,
-    #40795f 0%,
-    var(--c-primary) 52%,
-    #2f604e 100%
-  );
-  box-shadow: var(--shadow-primary);
+  background: var(--c-primary);
 }
 
 .ui-button.btn-primary:active {
-  background: linear-gradient(180deg, #2c5a49 0%, var(--c-primary-deep) 100%);
-  box-shadow: var(--shadow-primary-press);
+  background: var(--c-primary-deep);
   transform: scale(0.98);
 }
 
 .primary.disabled {
   opacity: 0.45;
-  box-shadow: none;
 }
 
 /* 重置 H5 自定义元素与小程序 button 的默认宽度。 */
@@ -220,7 +181,6 @@ page {
   display: inline-block;
   vertical-align: middle;
   flex-shrink: 0;
-  transition: transform var(--dur-fast) var(--ease-out);
 }
 
 .ui-break {
@@ -233,57 +193,46 @@ page {
 
 /* ===== 应用外壳 ===== */
 
-/* 侧栏：亚麻底（比内容区深半档），内容区于是成为「亮处」 */
+/* 侧栏：白墙 + hairline */
 .sidebar {
   position: fixed;
   inset: 0 auto 0 0;
   width: var(--layout-sidebar);
-  background: linear-gradient(180deg, #eff3eb 0%, #edf2e9 100%);
+  background: var(--c-surface);
   border-right: 1px solid var(--c-line);
   padding: var(--sp-8) var(--sp-5);
   display: flex;
   flex-direction: column;
 }
 
+/* 品牌字标：serif 展签 */
 .brand {
   display: flex;
-  align-items: center;
-  gap: var(--sp-3);
-  border-radius: var(--r-md);
+  flex-direction: column;
+  gap: var(--sp-1);
 }
 
 .brand .ui-strong {
+  font-family: var(--font-serif);
   font-size: var(--fs-lg);
+  font-weight: var(--fw-display);
   letter-spacing: var(--ls-title);
+  line-height: var(--lh-display);
+  color: var(--c-ink);
 }
 
 .brand .ui-span {
   display: block;
   font-size: var(--fs-3xs);
   color: var(--c-mute);
-  margin-top: 6px;
   white-space: nowrap;
 }
 
 .sidebar-label {
-  margin: 56px var(--sp-3) var(--sp-3);
+  margin: 56px var(--sp-1) var(--sp-2);
   color: var(--c-faint);
   font-size: var(--fs-xs);
   letter-spacing: var(--ls-label);
-  display: flex;
-  align-items: center;
-  gap: var(--sp-2);
-}
-
-.sidebar-label::after {
-  content: "";
-  flex: 1;
-  height: 1px;
-  background: linear-gradient(
-    90deg,
-    var(--c-line-strong),
-    rgba(213, 222, 212, 0)
-  );
 }
 
 .sidebar .ui-nav {
@@ -292,7 +241,7 @@ page {
   gap: var(--sp-1);
 }
 
-/* 导航项：静息融入亚麻底；选中 = 白纸药丸浮起 */
+/* 导航项：选中只换颜色，不改字重、不加底色 */
 .nav-item {
   display: flex;
   gap: var(--sp-3);
@@ -302,46 +251,29 @@ page {
   width: 100%;
   min-height: 44px;
   padding: 10px 14px;
-  border-radius: var(--r-md);
-  color: var(--c-ink-2);
-  font-weight: var(--fw-medium);
+  border-radius: var(--r-sm);
+  color: var(--c-mute);
   text-align: left;
 }
 
 .nav-item.active {
-  background: var(--c-surface);
   color: var(--c-primary);
-  font-weight: var(--fw-semibold);
-  box-shadow:
-    0 1px 2px rgba(38, 56, 47, 0.06),
-    0 6px 16px -8px rgba(38, 56, 47, 0.14);
 }
 
 @media (hover: hover) {
   .nav-item:hover {
-    background: rgba(255, 255, 255, 0.7);
     color: var(--c-ink);
   }
   .nav-item.active:hover {
-    background: var(--c-surface);
     color: var(--c-primary);
   }
-}
-
-.nav-item .ui-i {
-  width: 4px;
-  height: 4px;
-  border-radius: 50%;
-  background: var(--c-primary);
-  opacity: 0.85;
-  margin-left: auto;
 }
 
 .sidebar-footer {
   display: flex;
   gap: var(--sp-3);
   margin-top: auto;
-  padding: var(--sp-5) var(--sp-2) 0;
+  padding: var(--sp-5) 0 0;
   border-top: 1px solid var(--c-line);
   color: var(--c-mute);
   font-size: var(--fs-sm);
@@ -352,11 +284,15 @@ page {
   font-size: var(--fs-2xs);
 }
 
+.sidebar-footer .ui-icon {
+  margin-top: 6px;
+}
+
 .ui-main {
   margin-left: var(--layout-sidebar);
 }
 
-/* 顶栏：悬浮毛玻璃条，内容从下方滚过 */
+/* 顶栏：白实底 + hairline */
 .topbar {
   position: sticky;
   top: 0;
@@ -366,13 +302,10 @@ page {
   display: flex;
   align-items: center;
   gap: var(--sp-4);
-  border-bottom: 1px solid var(--material-line);
-  background: var(--material-bar);
-  backdrop-filter: var(--material-blur);
-  -webkit-backdrop-filter: var(--material-blur);
+  border-bottom: 1px solid var(--c-line);
+  background: var(--bar-bg);
 }
 
-/* 顶栏右侧元素（页首主按钮 / 头像）靠右 */
 .topbar .primary,
 .topbar .avatar {
   margin-left: auto;
@@ -387,15 +320,14 @@ page {
 }
 
 .avatar {
-  background: linear-gradient(180deg, #f4e9d2 0%, #ecdfc2 100%);
-  color: #8a6c40;
+  background: var(--c-bg-deep);
+  color: var(--c-ink-2);
   width: 35px;
   flex-shrink: 0;
   height: 35px;
   border-radius: 50%;
   font-size: 13px;
-  font-weight: var(--fw-medium);
-  box-shadow: inset 0 0 0 1px rgba(146, 117, 75, 0.22);
+  box-shadow: inset 0 0 0 1px var(--c-line-strong);
 }
 
 .avatar:active {
@@ -408,7 +340,9 @@ page {
 }
 
 .mobile-brand .ui-strong {
-  font-weight: var(--fw-semibold);
+  font-family: var(--font-serif);
+  font-weight: var(--fw-display);
+  font-size: 17px;
   letter-spacing: var(--ls-title);
 }
 
@@ -426,31 +360,19 @@ page {
   margin-bottom: var(--sp-6);
 }
 
-/* 签名元素 · 胶带标签：斜贴的蜂蜜色胶带，全站唯一放胆处（见 DESIGN.md） */
+/* eyebrow：安静的引导语（3.0 退役胶带） */
 .eyebrow {
   display: inline-block;
-  padding: 5px var(--sp-3);
-  background:
-    repeating-linear-gradient(
-      45deg,
-      rgba(255, 255, 255, 0.32) 0 5px,
-      rgba(255, 255, 255, 0) 5px 10px
-    ),
-    linear-gradient(180deg, #f8e398 0%, var(--c-honey) 100%);
-  color: #57491f;
+  color: var(--c-mute);
   font-size: var(--fs-xs);
-  font-weight: var(--fw-medium);
   letter-spacing: var(--ls-label);
-  border-radius: 3px;
-  box-shadow:
-    0 1px 2px rgba(87, 73, 31, 0.18),
-    0 4px 10px -4px rgba(87, 73, 31, 0.22);
-  transform: rotate(-1.5deg);
 }
 
+/* 页标题：serif 展签 + 苔绿句点 */
 .ui-h1 {
   display: flex;
   align-items: baseline;
+  font-family: var(--font-serif);
   font-size: var(--fs-2xl);
   letter-spacing: var(--ls-title);
   line-height: var(--lh-display);
@@ -459,19 +381,18 @@ page {
 }
 
 .heading-dot {
-  color: var(--c-clay);
+  color: var(--c-primary);
   margin-left: 3px;
 }
 
 /* ===== 通用面板与空态 ===== */
 
-/* 面板：白纸落桌，接触影 + 悬浮影 */
+/* 面板：白面 + hairline，无阴影 */
 .panel {
   padding: var(--sp-6);
   background: var(--c-surface);
   border: 1px solid var(--c-line);
   border-radius: var(--r-lg);
-  box-shadow: var(--shadow-card);
 }
 
 .section-heading {
@@ -486,8 +407,7 @@ page {
   flex-shrink: 0;
   white-space: nowrap;
   font-size: var(--fs-md);
-  font-weight: var(--fw-semibold);
-  letter-spacing: 0.5px;
+  font-weight: var(--fw-medium);
 }
 
 .subtle {
@@ -495,26 +415,17 @@ page {
   color: var(--c-mute);
 }
 
-/* 空态：小熊坐在一圈暖光里 */
+/* 空态：纯文字居中 */
 .empty {
   padding: 64px var(--sp-5);
   text-align: center;
   color: var(--c-mute);
 }
 
-.empty .bear {
-  margin: 0 auto var(--sp-5);
-  border-radius: 50%;
-  box-shadow:
-    0 0 0 26px rgba(205, 165, 114, 0.1),
-    0 0 0 52px rgba(205, 165, 114, 0.05);
-}
-
 .empty .ui-h3 {
-  margin-top: var(--sp-5);
-  color: var(--c-ink-2);
+  color: var(--c-ink);
   font-size: var(--fs-md);
-  font-weight: var(--fw-semibold);
+  font-weight: var(--fw-medium);
 }
 
 .empty .ui-p {
@@ -547,116 +458,18 @@ page {
   padding: 15px;
 }
 
-/* ===== 小熊 ===== */
-
-.bear {
-  position: relative;
-  flex-shrink: 0;
-  width: 38px;
-  height: 37px;
-}
-
-.bear .ui-i {
-  display: block;
-}
-
-.ear {
-  position: absolute;
-  top: 0;
-  width: 15px;
-  height: 15px;
-  background: var(--c-wood);
-  border-radius: 50%;
-}
-
-.ear.left {
-  left: 0;
-}
-
-.ear.right {
-  right: 0;
-}
-
-.bear-face {
-  position: absolute;
-  inset: 5px 1px 0;
-  background: #daba89;
-  border-radius: 46% 46% 43% 43%;
-  z-index: 2;
-}
-
-.eye {
-  position: absolute;
-  top: 12px;
-  width: 3px;
-  height: 4px;
-  border-radius: 50%;
-  background: #514632;
-}
-
-.eye.left {
-  left: 10px;
-}
-
-.eye.right {
-  right: 10px;
-}
-
-.muzzle {
-  position: absolute;
-  width: 16px;
-  height: 12px;
-  background: #f5e4c8;
-  border-radius: 50%;
-  left: 10px;
-  top: 17px;
-}
-
-.muzzle .ui-i {
-  position: absolute;
-  width: 6px;
-  height: 4px;
-  background: #63513c;
-  border-radius: 50%;
-  top: 3px;
-  left: 5px;
-}
-
-.cheek {
-  position: absolute;
-  top: 20px;
-  width: 6px;
-  height: 3px;
-  border-radius: 50%;
-  background: #d89578;
-}
-
-.cheek.left {
-  left: 5px;
-}
-
-.cheek.right {
-  right: 5px;
-}
-
-/* ===== 响应式（断点见 DESIGN.md：700 / 900 / 1100） ===== */
+/* ===== 响应式（断点：700 / 900 / 1100） ===== */
 
 @media (max-width: 1100px) {
   .sidebar {
     width: var(--layout-sidebar-md);
     padding: 30px var(--sp-4);
   }
-  .brand {
-    gap: var(--sp-2);
-  }
   .brand .ui-strong {
     font-size: 17px;
   }
   .brand .ui-span {
     font-size: 8px;
-  }
-  .brand .bear {
-    width: 32px;
   }
   .ui-main {
     margin-left: var(--layout-sidebar-md);
@@ -674,17 +487,11 @@ page {
     width: var(--layout-sidebar-sm);
     padding: var(--sp-7) var(--sp-3);
   }
-  .brand {
-    gap: 3px;
-  }
   .brand .ui-span {
     display: none;
   }
   .brand .ui-strong {
     font-size: 15px;
-  }
-  .brand .bear {
-    transform: scale(0.8);
   }
   .sidebar-label {
     font-size: 9px;
@@ -716,21 +523,15 @@ page {
     height: 56px;
     padding: env(safe-area-inset-top) 21px 0;
     border-bottom: 0;
-    background: rgba(245, 248, 242, 0.82);
-    backdrop-filter: var(--material-blur);
-    -webkit-backdrop-filter: var(--material-blur);
+    background: var(--bar-bg);
+    box-shadow: 0 1px 0 var(--c-line);
   }
   .mobile-brand {
     display: flex;
-    align-items: center;
+    align-items: baseline;
     gap: var(--sp-2);
     font-size: 17px;
     letter-spacing: var(--ls-title);
-  }
-  .mobile-brand .bear {
-    transform: scale(0.86);
-    transform-origin: left center;
-    margin-right: -5px;
   }
   .desktop-breadcrumb {
     display: none;
@@ -748,17 +549,12 @@ page {
     margin-bottom: var(--sp-5);
     align-items: flex-start;
   }
-  .eyebrow {
-    font-size: var(--fs-2xs);
-    letter-spacing: var(--ls-title);
-  }
   .ui-h1 {
     font-size: var(--fs-xl);
     margin-top: var(--sp-1);
   }
   .panel {
     padding: 19px;
-    border-radius: var(--r-lg);
   }
   .section-heading {
     margin-bottom: var(--sp-4);
@@ -780,17 +576,15 @@ page {
     font-size: var(--fs-3xs);
   }
 
-  /* 底部导航：毛玻璃浮动层 + 选中图标后的浅苔药丸 */
+  /* 底部导航：白条 + hairline，选中只换颜色 */
   .bottom-nav {
     display: flex;
     position: fixed;
     inset: auto 0 0;
     align-items: center;
     justify-content: space-around;
-    background: rgba(255, 255, 255, 0.84);
-    backdrop-filter: var(--material-blur);
-    -webkit-backdrop-filter: var(--material-blur);
-    border-top: 1px solid var(--material-line);
+    background: var(--c-surface);
+    border-top: 1px solid var(--c-line);
     padding: var(--sp-1) 10px calc(var(--sp-1) + env(safe-area-inset-bottom));
     z-index: var(--z-nav);
   }
@@ -805,33 +599,14 @@ page {
     background: none;
     color: var(--c-mute);
     font-size: var(--fs-2xs);
-    border-radius: var(--r-md);
+    border-radius: var(--r-sm);
   }
   .bottom-nav .ui-icon {
     width: 19px !important;
     height: 19px !important;
-    position: relative;
-    z-index: 1;
   }
   .bottom-nav .ui-button.active {
     color: var(--c-primary);
-    font-weight: var(--fw-medium);
-  }
-  /* 选中药丸垫在图标后面（图标已 z-index:1 浮于其上） */
-  .bottom-nav .ui-button.active::before {
-    content: "";
-    position: absolute;
-    top: 6px;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 40px;
-    height: 27px;
-    border-radius: var(--r-pill);
-    background: var(--c-primary-soft);
-  }
-  .bottom-nav .ui-span {
-    position: relative;
-    z-index: 1;
   }
 }
 
@@ -850,26 +625,11 @@ page {
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .ui-button,
-  .ui-icon {
+  .ui-button {
     transition: none !important;
   }
   .ui-button:active {
     transform: none;
-  }
-}
-
-/* 降透明度偏好：毛玻璃换实底 */
-@media (prefers-reduced-transparency: reduce) {
-  .topbar {
-    background: #f7faf4;
-    backdrop-filter: none;
-    -webkit-backdrop-filter: none;
-  }
-  .bottom-nav {
-    background: #ffffff;
-    backdrop-filter: none;
-    -webkit-backdrop-filter: none;
   }
 }
 

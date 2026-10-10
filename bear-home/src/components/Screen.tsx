@@ -11,6 +11,7 @@ import {
   LayoutGrid,
   Wallet,
 } from "./Icons";
+import Bear from "./Bear";
 
 /**
  * 骨架版 Screen：应用外壳（品牌侧边栏 / 顶栏 / 底部导航）与页面容器。
@@ -100,8 +101,11 @@ export default function Screen({
     >
       <View className="ui-aside sidebar">
         <View className="ui-a brand" onClick={() => navigate("home")}>
-          <Text className="ui-strong">熊熊之家</Text>
-          <Text className="ui-span">把家，一点点变成喜欢的样子</Text>
+          <Bear />
+          <View className="ui-div">
+            <Text className="ui-strong">熊熊之家</Text>
+            <Text className="ui-span">把家，一点点变成喜欢的样子</Text>
+          </View>
         </View>
         <View className="ui-div sidebar-label">我的装修手记</View>
         <View className="ui-nav">
@@ -129,6 +133,7 @@ export default function Screen({
       <View className="ui-main">
         <View className="ui-header topbar">
           <View className="ui-div mobile-brand">
+            <Bear />
             <Text className="ui-strong">熊熊之家</Text>
           </View>
           <View className="ui-span desktop-breadcrumb">
@@ -154,6 +159,7 @@ export default function Screen({
           {children ?? (
             <View className="ui-section panel">
               <View className="ui-div empty">
+                <Bear />
                 <View className="ui-h3">功能重设计中</View>
                 <View className="ui-p">
                   这里只保留了页面骨架，正式功能将在重新设计后填充。

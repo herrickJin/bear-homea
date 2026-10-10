@@ -120,8 +120,8 @@ page {
 }
 
 .ui-button:focus-visible {
-  outline: 2px solid var(--c-primary);
-  outline-offset: 2px;
+  outline: 2.5px solid var(--c-clay);
+  outline-offset: 3px;
 }
 
 /* 小主按钮（顶栏「收藏」、空态动作） */
@@ -205,11 +205,12 @@ page {
   flex-direction: column;
 }
 
-/* 品牌字标：serif 展签 */
+/* 品牌位：小熊 + serif 字标 */
 .brand {
   display: flex;
-  flex-direction: column;
-  gap: var(--sp-1);
+  align-items: center;
+  gap: var(--sp-3);
+  border-radius: var(--r-md);
 }
 
 .brand .ui-strong {
@@ -219,12 +220,14 @@ page {
   letter-spacing: var(--ls-title);
   line-height: var(--lh-display);
   color: var(--c-ink);
+  display: block;
 }
 
 .brand .ui-span {
   display: block;
   font-size: var(--fs-3xs);
   color: var(--c-mute);
+  margin-top: 6px;
   white-space: nowrap;
 }
 
@@ -360,12 +363,26 @@ page {
   margin-bottom: var(--sp-6);
 }
 
-/* eyebrow：安静的引导语（3.0 退役胶带） */
+/* 签名元素 · 胶带标签：斜贴的蜂蜜色胶带（画廊里的唯一放胆处，一屏一次） */
 .eyebrow {
   display: inline-block;
-  color: var(--c-mute);
+  padding: 5px var(--sp-3);
+  background:
+    repeating-linear-gradient(
+      45deg,
+      rgba(255, 255, 255, 0.32) 0 5px,
+      rgba(255, 255, 255, 0) 5px 10px
+    ),
+    linear-gradient(180deg, #f8e398 0%, var(--c-honey) 100%);
+  color: var(--c-honey-ink);
   font-size: var(--fs-xs);
+  font-weight: var(--fw-medium);
   letter-spacing: var(--ls-label);
+  border-radius: 3px;
+  box-shadow:
+    0 1px 2px rgba(87, 73, 31, 0.18),
+    0 4px 10px -4px rgba(87, 73, 31, 0.22);
+  transform: rotate(-1.5deg);
 }
 
 /* 页标题：serif 展签 + 苔绿句点 */
@@ -381,7 +398,7 @@ page {
 }
 
 .heading-dot {
-  color: var(--c-primary);
+  color: var(--c-clay);
   margin-left: 3px;
 }
 
@@ -415,11 +432,19 @@ page {
   color: var(--c-mute);
 }
 
-/* 空态：纯文字居中 */
+/* 空态：小熊坐在一圈暖光里 */
 .empty {
   padding: 64px var(--sp-5);
   text-align: center;
   color: var(--c-mute);
+}
+
+.empty .bear {
+  margin: 0 auto var(--sp-5);
+  border-radius: 50%;
+  box-shadow:
+    0 0 0 26px rgba(205, 165, 114, 0.1),
+    0 0 0 52px rgba(205, 165, 114, 0.05);
 }
 
 .empty .ui-h3 {
@@ -456,6 +481,109 @@ page {
   color: var(--c-faint);
   margin-top: var(--sp-10);
   padding: 15px;
+}
+
+/* ===== 小熊（品牌角色：品牌位与空态出现，不做装饰扩散） ===== */
+
+.bear {
+  position: relative;
+  flex-shrink: 0;
+  width: 38px;
+  height: 37px;
+}
+
+.bear .ui-i {
+  display: block;
+}
+
+.ear {
+  position: absolute;
+  top: 0;
+  width: 15px;
+  height: 15px;
+  background: var(--c-wood);
+  border-radius: 50%;
+}
+
+.ear.left {
+  left: 0;
+}
+
+.ear.right {
+  right: 0;
+}
+
+.bear-face {
+  position: absolute;
+  inset: 5px 1px 0;
+  background: #daba89;
+  border-radius: 46% 46% 43% 43%;
+  z-index: 2;
+}
+
+.eye {
+  position: absolute;
+  top: 12px;
+  width: 3px;
+  height: 4px;
+  border-radius: 50%;
+  background: #514632;
+}
+
+.eye.left {
+  left: 10px;
+}
+
+.eye.right {
+  right: 10px;
+}
+
+.muzzle {
+  position: absolute;
+  width: 16px;
+  height: 12px;
+  background: #f5e4c8;
+  border-radius: 50%;
+  left: 10px;
+  top: 17px;
+}
+
+.muzzle .ui-i {
+  position: absolute;
+  width: 6px;
+  height: 4px;
+  background: #63513c;
+  border-radius: 50%;
+  top: 3px;
+  left: 5px;
+}
+
+.cheek {
+  position: absolute;
+  top: 20px;
+  width: 6px;
+  height: 3px;
+  border-radius: 50%;
+  background: #d89578;
+}
+
+.cheek.left {
+  left: 5px;
+}
+
+.cheek.right {
+  right: 5px;
+}
+
+.brand .bear {
+  align-self: flex-start;
+}
+
+.mobile-brand .bear {
+  transform: scale(0.86);
+  transform-origin: left center;
+  margin-right: -5px;
+  align-self: center;
 }
 
 /* ===== 响应式（断点：700 / 900 / 1100） ===== */

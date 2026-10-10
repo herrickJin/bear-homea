@@ -26,6 +26,11 @@ page,
   --c-primary-mid: #6a9484; /* 主色中间调（聚焦描边） */
   --c-primary-soft: #edf3ee; /* 标签浅底 */
   --c-on-primary: #ffffff; /* 主色上的文字 */
+  --c-clay: #cf7f63; /* 陶橘 · 焦点环、标题句点等小面积强调 */
+  --c-honey: #f4dc85; /* 蜂蜜黄 · 胶带标签、想法便签、摘录条 */
+  --c-honey-mist: #fdf8e5; /* 蜜雾 · 想法卡便签底 */
+  --c-honey-ink: #57491f; /* 胶带文字（蜂蜜上 ≈6.5:1） */
+  --c-wood: #cda572; /* 木色 · 小熊与暖饰 */
 
   /* 语义状态 */
   --c-success: #4f8a5f;

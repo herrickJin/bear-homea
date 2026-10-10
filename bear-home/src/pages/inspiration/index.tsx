@@ -7,6 +7,7 @@ import CategoryTabs from "../../components/CategoryTabs";
 import SearchBar from "../../components/SearchBar";
 import SaveSheet from "../../components/SaveSheet";
 import CategoryManager from "../../components/CategoryManager";
+import Bear from "../../components/Bear";
 import { Plus } from "../../components/Icons";
 import * as inspiration from "../../services/inspiration";
 import { filterLinks } from "../../data/mockInspiration";
@@ -138,6 +139,7 @@ export default function Page() {
       return (
         <View className="ui-section panel">
           <View className="ui-div empty">
+            <Bear />
             <View className="ui-h3">连不上服务器</View>
             <View className="ui-p">检查网络后重试一下。</View>
             <Button
@@ -169,6 +171,7 @@ export default function Page() {
     return (
       <View className="ui-section panel">
         <View className="ui-div empty">
+          <Bear />
           <View className="ui-h3">
             {links.length === 0 ? "剪贴簿还空着" : "这个筛选下没有方案"}
           </View>

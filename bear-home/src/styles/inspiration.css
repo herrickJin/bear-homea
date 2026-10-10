@@ -191,7 +191,7 @@
   outline-offset: -1px;
 }
 
-/* 无图占位：井底色块 + 弱图标 */
+/* 无图占位：中性井底色块 */
 .shot-mock {
   display: flex;
   align-items: center;
@@ -277,7 +277,7 @@
   }
 }
 
-/* 纯想法（无链接无图）：白底 hairline 文字块 */
+/* 纯想法（无链接无图）：白底 hairline 文字块，与图块同一中性问题 */
 .link-card.card-idea {
   background: var(--c-surface);
   border: 1px solid var(--c-line);

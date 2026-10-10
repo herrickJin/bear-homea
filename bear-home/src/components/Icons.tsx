@@ -2,12 +2,18 @@ import { Image } from "@tarojs/components";
 import ArrowDownRightgreen from "../assets/icons/ArrowDownRight-green.png";
 import ArrowDownRightmuted from "../assets/icons/ArrowDownRight-muted.png";
 import ArrowDownRightwhite from "../assets/icons/ArrowDownRight-white.png";
+import ArrowLeftgreen from "../assets/icons/ArrowLeft-green.png";
+import ArrowLeftmuted from "../assets/icons/ArrowLeft-muted.png";
+import ArrowLeftwhite from "../assets/icons/ArrowLeft-white.png";
 import ArrowRightgreen from "../assets/icons/ArrowRight-green.png";
 import ArrowRightmuted from "../assets/icons/ArrowRight-muted.png";
 import ArrowRightwhite from "../assets/icons/ArrowRight-white.png";
 import BookOpengreen from "../assets/icons/BookOpen-green.png";
 import BookOpenmuted from "../assets/icons/BookOpen-muted.png";
 import BookOpenwhite from "../assets/icons/BookOpen-white.png";
+import Bookmarkgreen from "../assets/icons/Bookmark-green.png";
+import Bookmarkmuted from "../assets/icons/Bookmark-muted.png";
+import Bookmarkwhite from "../assets/icons/Bookmark-white.png";
 import Checkgreen from "../assets/icons/Check-green.png";
 import Checkmuted from "../assets/icons/Check-muted.png";
 import Checkwhite from "../assets/icons/Check-white.png";
@@ -26,6 +32,9 @@ import LayoutGridwhite from "../assets/icons/LayoutGrid-white.png";
 import Plusgreen from "../assets/icons/Plus-green.png";
 import Plusmuted from "../assets/icons/Plus-muted.png";
 import Pluswhite from "../assets/icons/Plus-white.png";
+import Searchgreen from "../assets/icons/Search-green.png";
+import Searchmuted from "../assets/icons/Search-muted.png";
+import Searchwhite from "../assets/icons/Search-white.png";
 import Settings2green from "../assets/icons/Settings2-green.png";
 import Settings2muted from "../assets/icons/Settings2-muted.png";
 import Settings2white from "../assets/icons/Settings2-white.png";
@@ -222,6 +231,54 @@ export function Wallet({ size = 20, tone = "green" }: IconProps) {
 }
 export function X({ size = 20, tone = "green" }: IconProps) {
   const sources = { green: Xgreen, muted: Xmuted, white: Xwhite };
+  return (
+    <Image
+      className="ui-icon"
+      src={sources[tone]}
+      style={{ width: `${size}px`, height: `${size}px` }}
+      mode="aspectFit"
+      ariaHidden
+    />
+  );
+}
+export function ArrowLeft({ size = 20, tone = "green" }: IconProps) {
+  const sources = {
+    green: ArrowLeftgreen,
+    muted: ArrowLeftmuted,
+    white: ArrowLeftwhite,
+  };
+  return (
+    <Image
+      className="ui-icon"
+      src={sources[tone]}
+      style={{ width: `${size}px`, height: `${size}px` }}
+      mode="aspectFit"
+      ariaHidden
+    />
+  );
+}
+export function Bookmark({ size = 20, tone = "green" }: IconProps) {
+  const sources = {
+    green: Bookmarkgreen,
+    muted: Bookmarkmuted,
+    white: Bookmarkwhite,
+  };
+  return (
+    <Image
+      className="ui-icon"
+      src={sources[tone]}
+      style={{ width: `${size}px`, height: `${size}px` }}
+      mode="aspectFit"
+      ariaHidden
+    />
+  );
+}
+export function Search({ size = 20, tone = "green" }: IconProps) {
+  const sources = {
+    green: Searchgreen,
+    muted: Searchmuted,
+    white: Searchwhite,
+  };
   return (
     <Image
       className="ui-icon"

@@ -6,14 +6,17 @@ const icons = require("lucide-react");
 const sharp = require("sharp");
 const names = [
   "ArrowDownRight",
+  "ArrowLeft",
   "ArrowRight",
   "BookOpen",
+  "Bookmark",
   "Check",
   "ChevronRight",
   "Heart",
   "Home",
   "LayoutGrid",
   "Plus",
+  "Search",
   "Settings2",
   "Sparkles",
   "Wallet",

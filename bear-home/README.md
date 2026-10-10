@@ -6,6 +6,7 @@ Taro 4 + React 18 + TypeScript，一套页面输出微信小程序和 H5（手�
 
 ```sh
 cd bear-home
+nvm use            # 需要 Node ≥ 20（.nvmrc 已固定 v23.8.0；Node 16 会因 postcss-import 的 findLastIndex 缺失而编译白屏）
 npm install
 npm run dev:h5
 ```

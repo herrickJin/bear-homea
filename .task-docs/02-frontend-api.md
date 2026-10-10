@@ -21,8 +21,11 @@ bear-home（Taro 小程序/H5）从"本机存储 Demo"改为"服务器为唯一�
 
 Playwright 打开 `localhost:5173` → 首页渲染出服务器记录「部署日：熊熊之家后端上线」→ UI 点"记一笔"新增记录 → 跳转记录页显示 → API 确认入库 → 控制台 0 错误 0 警告。测试数据已清理（服务器现存 1 条真实记录）。
 
+**同日联通性复测（Token 迁移 .env 后）**：health / 401 鉴权 / entries 读写（UI POST → 201 → 入库 → 已清理）/ MCP initialize / CORS 预检全部通过；确认 `TARO_APP_*` 环境变量注入正常，浏览器真实请求打到服务器。顺带发现：`useDidShow` 每次页面显示都全量拉 limit=200，自用可接受，后续可加节流。
+
 ## 注意事项
 
+- **Node 版本**：需要 Node ≥ 20（项目根 `.nvmrc` 已固定 v23.8.0，`nvm use` 即可）。用 Node 16 启动会白屏：postcss-import 依赖 `Array.findLastIndex`（Node 18+），编译报 `bundle.findLastIndex is not a function`（2026-10-10 联通性复测时踩中）
 - **微信开发者工具**联调需勾选「不校验合法域名」（当前 http IP）；正式发布必须 HTTPS + 备案域名
 - **Token** 已从源码硬编码改为 `bear-home/.env`（`TARO_APP_API_BASE` / `TARO_APP_API_TOKEN`，Taro 构建时注入，模板见 `.env.example`，不入 git）；服务器轮换 Token 后同步改 `.env` 重建即可
 - **老数据覆盖**：设备上旧的本地记录会在首次成功拉取后被服务器数据覆盖（服务器是唯一数据源）

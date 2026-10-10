@@ -18,6 +18,7 @@ Notes on honesty:
   - Door hinge/open-tip become position+width+swing; no fabricated dimensions.
 """
 import json, math, argparse, os, sys
+from pathlib import Path
 
 # room-type → Chinese label fallback + floor color + furniture hints
 ROOM_META = {
@@ -141,10 +142,18 @@ def main():
     ap.add_argument("--revision", default="converted-v1")
     ap.add_argument("-o", "--out", required=True)
     a = ap.parse_args()
-    load = lambda p: json.load(open(p, encoding="utf-8"))
+    def load(p):
+        resolved = Path(p).resolve()
+        if not resolved.is_relative_to(Path.cwd().resolve()):
+            raise SystemExit(f"路径必须位于当前目录内: {p}")
+        return json.loads(resolved.read_text(encoding="utf-8"))
+
     merged = convert(load(a.plan), load(a.project), load(a.topology), a.scale, a.revision)
-    os.makedirs(os.path.dirname(a.out) or ".", exist_ok=True)
-    json.dump(merged, open(a.out, "w", encoding="utf-8"), ensure_ascii=False, indent=2)
+    out = Path(a.out).resolve()
+    if not out.is_relative_to(Path.cwd().resolve()):
+        raise SystemExit("--out 必须位于当前目录内（安全限制）")
+    out.parent.mkdir(parents=True, exist_ok=True)
+    out.write_text(json.dumps(merged, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
     print(f"wrote {a.out}: {len(merged['walls'])} walls, {len(merged['rooms'])} rooms, "
           f"{len(merged['doors'])} doors, {len(merged['furniture'])} furniture; "
           f"canvas {merged['canvas_m']} m; rooms area: "

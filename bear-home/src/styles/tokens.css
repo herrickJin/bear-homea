@@ -1,70 +1,66 @@
 /**
- * 熊熊之家 · 设计 Token（唯一真源）· 2.0 纸感暖光
+ * 熊熊之家 · 设计 Token（唯一真源）· 3.0 样板画廊
  * 风格方向与使用规范见 bear-home/DESIGN.md。
  * 改色值 / 字号 / 间距只改这个文件，页面与组件只消费变量。
  *
  * 跨端说明：小程序没有 :root，变量同时挂在 page 与 .app-shell 上。
  * 断点值无法用变量，见 DESIGN.md「断点」（700 / 900 / 1100）。
  * 注意：图标 PNG 的三色（green/muted/white）由 scripts/generate-icons.cjs
- * 生成，改 --c-primary / --c-mute 时需同步脚本并重新 npm run icons。
+ * 生成，改 --c-primary 时需同步脚本并重新 npm run icons。
  */
 
 page,
 .app-shell {
-  /* ===== 色彩 · 出自装修材料世界 ===== */
-  --c-ink: #26382f; /* 深林墨 · 标题与正文（比 1.0 更深一档，压住画面） */
-  --c-ink-2: #4c6255; /* 次级标题 */
-  --c-mute: #5f7166; /* 岩灰 · 辅助文字（白底 ≥4.5:1） */
-  --c-faint: #9aa89f; /* 浅岩 · 弱标注 */
-  --c-line: #e7ece7; /* 素线 · 分割线与描边 */
-  --c-line-strong: #d5ded4; /* 素线-深 · 输入框描边、悬停描边 */
-  --c-bg: #f5f8f2; /* 暖墙白 · 页面底色（乳胶漆微暖白） */
-  --c-bg-deep: #eef3ea; /* 墙白-深 · 侧栏亚麻底、输入框静息底 */
-  --c-surface: #ffffff; /* 白墙 · 卡片面 */
-  --c-primary: #356d5b; /* 苔绿 · 主色（与图标 green 同源） */
-  --c-primary-deep: #275443; /* 苔绿按压态 */
-  --c-primary-mid: #6a9484; /* 苔绿-中 · 描边、静息强调 */
-  --c-primary-soft: #e8f2e9; /* 浅苔 · 选中底色 */
-  --c-primary-mist: rgba(53, 109, 91, 0.08); /* 苔雾 · 悬停底色 */
-  --c-clay: #cf7f63; /* 陶橘 · 焦点环、标题句点（提饱和，小面积更亮） */
-  --c-honey: #f4dc85; /* 蜂蜜黄 · 胶带与点缀 */
-  --c-honey-mist: #fdf8e5; /* 蜜雾 · 想法卡便签底 */
-  --c-wood: #cda572; /* 木色 · 小熊与暖饰 */
+  /* ===== 色彩 · 画廊白墙 + 苔绿单强调 ===== */
+  --c-ink: #1f2421; /* 近黑（带一丝绿意）· 标题与正文 */
+  --c-ink-2: #434a45; /* 次级标题 */
+  --c-mute: #6d736e; /* 辅助文字（白底 ≈4.9:1） */
+  --c-faint: #a3a8a2; /* 弱标注、页脚 */
+  --c-line: rgba(31, 36, 33, 0.08); /* hairline 分隔（透明墨） */
+  --c-line-strong: rgba(31, 36, 33, 0.16); /* 输入框描边、hover 描边 */
+  --c-bg: #faf9f7; /* 暖白墙面 · 页面底色 */
+  --c-bg-deep: #f1efeb; /* 井底：输入静息、备注块、占位块 */
+  --c-surface: #ffffff; /* 纯白表面 */
+  --c-primary: #356d5b; /* 苔绿 · 唯一强调色（与图标 green 同源） */
+  --c-primary-deep: #2a5648; /* 主色按压 / hover */
+  --c-primary-mid: #6a9484; /* 主色中间调（聚焦描边） */
+  --c-primary-soft: #edf3ee; /* 标签浅底 */
   --c-on-primary: #ffffff; /* 主色上的文字 */
 
-  /* 语义状态（初版值，随功能落地校准） */
+  /* 语义状态 */
   --c-success: #4f8a5f;
   --c-warning: #c9932f;
   --c-danger: #bf5342;
   --c-info: #4a7ba7;
 
   /* ===== 排印 ===== */
+  --font-serif: "Songti SC", "STSong", "Noto Serif SC", "Source Han Serif SC",
+    SimSun, serif; /* Display：页标题 / 品牌字标 / 详情标题 */
   --font-sans:
     "PingFang SC", "Microsoft YaHei", system-ui, -apple-system, sans-serif;
   --font-mono: ui-monospace, "SF Mono", Menlo, monospace; /* 数字与标注 */
 
   --fs-3xs: 9px; /* 微字：侧栏标语、底导标签 */
   --fs-2xs: 10px; /* 微标注：页脚、脚注 */
-  --fs-xs: 11px; /* 标签：胶带 eyebrow、侧栏区块名 */
+  --fs-xs: 11px; /* 标签 */
   --fs-sm: 12px; /* 辅助说明 */
   --fs-base: 14px; /* 正文默认 */
   --fs-md: 16px; /* 强调正文 / 输入框 */
   --fs-lg: 20px; /* 卡片标题 / 品牌名 */
   --fs-xl: 26px; /* 手机页标题 */
-  --fs-2xl: 34px; /* 桌面页标题（2.0 更大更稳） */
+  --fs-2xl: 34px; /* 桌面页标题 */
 
   --fw-regular: 400;
   --fw-medium: 500;
-  --fw-semibold: 600;
-  --fw-display: 650; /* 大标题 */
+  --fw-display: 700; /* serif Display（宋体粗一档即成型） */
 
-  --lh-display: 1.2; /* 页标题（大字收紧行高） */
+  --lh-display: 1.2;
   --lh-tight: 1.4;
   --lh-base: 1.7;
   --lh-loose: 1.9;
 
   --ls-label: 2px; /* eyebrow / 区块名 字距 */
-  --ls-title: 0.5px; /* 大标题字距（中文印刷感，微正） */
+  --ls-title: 0.5px; /* 大标题字距（中文印刷感微正） */
 
   /* ===== 间距（4px 基准） ===== */
   --sp-1: 4px;
@@ -80,41 +76,26 @@ page,
   --sp-12: 48px;
   --sp-16: 64px;
 
-  /* ===== 圆角（2.0 整体放软：卡更圆、控件跟齐） ===== */
-  --r-xs: 6px; /* 微控件（计数徽标） */
-  --r-sm: 10px; /* 小控件（输入框、图标按钮） */
-  --r-md: 14px; /* 按钮 */
-  --r-lg: 18px; /* 卡片 */
-  --r-xl: 24px; /* 大面板（手机弹层） */
-  --r-pill: 999px; /* 药丸 */
+  /* ===== 圆角（3.0 收紧：画廊挺括） ===== */
+  --r-xs: 4px; /* 微控件 */
+  --r-sm: 8px; /* 输入框、小控件 */
+  --r-md: 10px; /* 按钮、图块 */
+  --r-lg: 14px; /* 面板 */
+  --r-xl: 18px; /* 弹层 */
+  --r-pill: 999px;
 
-  /* ===== 阴影（墨绿调 · 2.0 双层：接触影 + 悬浮影） =====
-   * 接触影贴边、悬浮影弥散，叠出「纸落在桌上」的层次。 */
-  --shadow-sm: 0 1px 2px rgba(38, 56, 47, 0.05);
-  --shadow-md:
-    0 1px 2px rgba(38, 56, 47, 0.04), 0 6px 20px -6px rgba(38, 56, 47, 0.1);
-  --shadow-lg:
-    0 2px 6px rgba(27, 56, 37, 0.06), 0 24px 64px -16px rgba(27, 56, 37, 0.22);
-  --shadow-card: /* 静息卡片 */ 0 1px 2px rgba(38, 56, 47, 0.04),
-    0 8px 24px -10px rgba(38, 56, 47, 0.1);
-  --shadow-card-hover: /* 悬浮卡片 */ 0 2px 4px rgba(38, 56, 47, 0.05),
-    0 16px 40px -12px rgba(38, 56, 47, 0.16);
-  --shadow-primary: /* 主按钮 */ 0 1px 2px rgba(24, 48, 39, 0.2),
-    0 6px 16px -6px rgba(53, 109, 91, 0.45);
-  --shadow-primary-press: /* 主按钮按下 */ 0 1px 2px rgba(24, 48, 39, 0.25);
+  /* ===== 阴影（3.0 退役：唯一保留弹层浮卡） ===== */
+  --shadow-sheet: 0 24px 64px -16px rgba(31, 36, 33, 0.24);
 
   /* ===== 动效 ===== */
   --dur-fast: 140ms; /* 按压 / hover */
   --dur-base: 240ms; /* 面板 / 展开 */
-  --dur-slow: 420ms; /* 弹层 / 页面级 */
   --ease-out: cubic-bezier(0.22, 0.61, 0.36, 1);
-  --ease-spring: cubic-bezier(0.34, 1.36, 0.64, 1);
-  --ease-sheet: cubic-bezier(0.32, 0.72, 0, 1); /* Apple sheet：快起缓落 */
 
   /* ===== 层级 ===== */
-  --z-nav: 10; /* 底部导航 / 吸顶 */
-  --z-modal: 30; /* 弹层 */
-  --z-toast: 40; /* 轻提示 */
+  --z-nav: 10;
+  --z-modal: 30;
+  --z-toast: 40;
 
   /* ===== 外壳布局 ===== */
   --layout-sidebar: 244px;
@@ -122,9 +103,7 @@ page,
   --layout-sidebar-sm: 150px;
   --layout-content-max: 1220px;
 
-  /* ===== 材质（毛玻璃 · 2.0） =====
-   * 顶栏 / 底导 / 吸顶工具条统一引用，方便 reduced-transparency 降级。 */
-  --material-bar: rgba(255, 255, 255, 0.78);
-  --material-blur: blur(20px) saturate(170%);
-  --material-line: rgba(38, 56, 47, 0.07);
+  /* ===== 浮动层（3.0：白实底 + hairline，无毛玻璃） ===== */
+  --bar-bg: #faf9f7; /* 顶栏实底，与页面同色 */
+  --img-outline: 1px solid rgba(31, 36, 33, 0.06); /* 图片 1px 内描边 */
 }

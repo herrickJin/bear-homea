@@ -42,6 +42,29 @@ export async function saveUpload(file: File): Promise<FileRow> {
   return row;
 }
 
+/** 把已下载的字节流转存为自有文件（封面转存等场景），返回文件元数据 */
+export async function saveBuffer(
+  buffer: Buffer,
+  ext: string,
+  mime_type: string,
+): Promise<FileRow> {
+  const id = randomUUID();
+  const row: FileRow = {
+    id,
+    filename: id,
+    ext,
+    mime_type,
+    size: buffer.byteLength,
+    created_at: now(),
+  };
+  fs.writeFileSync(resolveWithin(config.filesDir, id + ext), buffer);
+  db.prepare(
+    `INSERT INTO files (id, filename, ext, mime_type, size, created_at)
+     VALUES (@id, @filename, @ext, @mime_type, @size, @created_at)`,
+  ).run(row);
+  return row;
+}
+
 function safeExt(name: string): string {
   const ext = path.extname(name).toLowerCase();
   return /^\.[a-z0-9]{1,11}$/.test(ext) ? ext : "";

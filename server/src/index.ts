@@ -6,6 +6,7 @@ import { mcpApp } from "./mcp/server.js";
 import { auth } from "./middleware/auth.js";
 import { entries } from "./routes/entries.js";
 import { links } from "./routes/links.js";
+import { categories } from "./routes/categories.js";
 import { files, uploads } from "./routes/uploads.js";
 
 // CORS 白名单：环境变量里的精确来源（默认含 vite 5173），
@@ -45,6 +46,7 @@ app.use("/api/*", auth());
 app.use("/mcp", auth());
 app.route("/api/entries", entries);
 app.route("/api/links", links);
+app.route("/api/categories", categories);
 app.route("/api/uploads", uploads);
 app.route("/mcp", mcpApp);
 

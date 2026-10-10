@@ -11,6 +11,7 @@
 | 03 | 接入 Hermes Agent（MCP + 智谱 GLM） | 📋 待开始 | [03-hermes-agent.md](./03-hermes-agent.md) |
 | 04 | App「收藏链接」页面（小红书闭环） | 📋 规划中（依赖 03） | [04-links-page.md](./04-links-page.md) |
 | 05 | 前端功能剥离与骨架重置 | ✅ 完成（2026-10-10） | [05-skeleton-reset.md](./05-skeleton-reset.md) |
+| 06 | 整体风格与设计 Token | ✅ 完成（2026-10-10） | [06-style-tokens.md](./06-style-tokens.md) |
 
 状态标记：✅ 完成 · 🚧 进行中 · 📋 待开始 / 规划中 · ⛔ 受阻
 

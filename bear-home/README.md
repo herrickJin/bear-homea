@@ -57,9 +57,12 @@ npm run build        # 类型检查 + 两端构建
 - `config/index.ts`：编译、开发服务和双端输出配置。
 - `src/app.config.ts`：四个页面与自定义导航配置。
 - `src/pages/`：四个页面入口（各自渲染 `<Screen page="..." />`）。
+- `src/styles/tokens.css`：设计 Token 唯一真源（色彩/排印/间距/圆角/阴影/动效）。
+- `src/styles.css`：骨架样式，全部消费 token。
+- `DESIGN.md`：视觉方向与设计规范（重建功能页前必读）。
 - `src/components/Screen.tsx`：应用外壳与页面容器（功能剥离后的唯一主组件）。
 - `src/components/Bear.tsx`：CSS 小熊。
 - `src/components/Icons.tsx`、`src/assets/icons/`：跨端 PNG 图标。
-- `src/styles.css`：骨架样式（设计变量、外壳、响应式、小程序安全区）。
+详见 [DESIGN.md](./DESIGN.md)。
 
 `npm run icons` 可重新生成图标。lucide-react 和 sharp 仅用于开发时生成资源，不进入运行时页面。

@@ -1,29 +1,24 @@
 /*
- * 熊熊之家 · 骨架样式
- * 只保留：设计变量、ui 原子、应用外壳（侧边栏 / 顶栏 / 底部导航）、
- * 小熊组件、通用面板与空态、响应式断点、小程序安全区。
- * 功能页样式（进度 / 记录 / 预算 / 我的 / 编辑弹层）已在重设计中移除。
+ * 熊熊之家 · 骨架样式（消费 src/styles/tokens.css）
+ * 只保留：应用外壳（侧边栏 / 顶栏 / 底部导航）、小熊、通用面板与空态、
+ * 响应式断点、小程序安全区。功能页样式待重建时按 DESIGN.md 增补。
  */
 
+@import "./styles/tokens.css";
+
 page {
-  background: #f7f9f6;
-  color: #293f39;
-  font-family: "PingFang SC", "Microsoft YaHei", system-ui, sans-serif;
-  font-size: 14px;
+  background: var(--c-bg);
+  color: var(--c-ink);
+  font-family: var(--font-sans);
+  font-size: var(--fs-base);
 }
 
 .app-shell {
-  --green: #356d5b;
-  --muted: #8a9790;
-  --line: #e9eeea;
-  --mint: #e8f2e9;
-  --yellow: #f4dc85;
-  --coral: #d59076;
-  background: #f7f9f6;
+  background: var(--c-bg);
   min-height: 100dvh;
-  color: #293f39;
-  font-family: "PingFang SC", "Microsoft YaHei", system-ui, sans-serif;
-  font-size: 14px;
+  color: var(--c-ink);
+  font-family: var(--font-sans);
+  font-size: var(--fs-base);
 }
 
 .ui-div,
@@ -53,7 +48,7 @@ page {
 }
 
 .ui-strong {
-  font-weight: 600;
+  font-weight: var(--fw-semibold);
 }
 
 .ui-button {
@@ -70,8 +65,8 @@ page {
   align-items: center;
   justify-content: center;
   transition:
-    background 0.15s,
-    transform 0.15s;
+    background var(--dur-fast),
+    transform var(--dur-fast);
 }
 
 .ui-button::after {
@@ -83,7 +78,7 @@ page {
 }
 
 .ui-button:focus-visible {
-  outline: 3px solid #d59076;
+  outline: 3px solid var(--c-clay);
   outline-offset: 4px;
 }
 
@@ -111,10 +106,10 @@ page {
 .sidebar {
   position: fixed;
   inset: 0 auto 0 0;
-  width: 244px;
-  background: #fff;
-  border-right: 1px solid var(--line);
-  padding: 36px 24px;
+  width: var(--layout-sidebar);
+  background: var(--c-surface);
+  border-right: 1px solid var(--c-line);
+  padding: var(--sp-9) var(--sp-6);
   display: flex;
   flex-direction: column;
 }
@@ -122,96 +117,96 @@ page {
 .brand {
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: var(--sp-3);
 }
 
 .brand .ui-strong {
-  font-size: 20px;
-  letter-spacing: 1px;
+  font-size: var(--fs-lg);
+  letter-spacing: var(--ls-title);
 }
 
 .brand .ui-span {
   display: block;
-  font-size: 9px;
-  color: var(--muted);
+  font-size: var(--fs-3xs);
+  color: var(--c-mute);
   margin-top: 6px;
   white-space: nowrap;
 }
 
 .sidebar-label {
-  margin: 60px 12px 16px;
-  color: #a1aaa5;
-  font-size: 11px;
-  letter-spacing: 2px;
+  margin: 60px var(--sp-3) var(--sp-4);
+  color: var(--c-faint);
+  font-size: var(--fs-xs);
+  letter-spacing: var(--ls-label);
 }
 
 .sidebar .ui-nav {
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: var(--sp-3);
 }
 
 .nav-item {
   display: flex;
-  gap: 14px;
+  gap: var(--sp-4);
   align-items: center;
   justify-content: flex-start;
   background: transparent;
   width: 100%;
   padding: 15px 18px;
-  border-radius: 12px;
-  color: #819087;
+  border-radius: var(--r-md);
+  color: var(--c-mute);
   text-align: left;
 }
 
 .nav-item.active {
-  background: var(--mint);
-  color: var(--green);
-  font-weight: 600;
+  background: var(--c-primary-soft);
+  color: var(--c-primary);
+  font-weight: var(--fw-semibold);
 }
 
 .nav-item .ui-i {
   width: 5px;
   height: 5px;
   border-radius: 50%;
-  background: var(--green);
+  background: var(--c-primary);
   margin-left: auto;
 }
 
 .sidebar-footer {
   display: flex;
-  gap: 12px;
+  gap: var(--sp-3);
   margin-top: auto;
-  padding: 20px 8px 0;
-  color: #a2aea6;
-  font-size: 12px;
-  line-height: 1.9;
+  padding: var(--sp-5) var(--sp-2) 0;
+  color: var(--c-faint);
+  font-size: var(--fs-sm);
+  line-height: var(--lh-loose);
 }
 
 .sidebar-footer .ui-span {
-  font-size: 10px;
+  font-size: var(--fs-2xs);
 }
 
 .ui-main {
-  margin-left: 244px;
+  margin-left: var(--layout-sidebar);
 }
 
 .topbar {
   height: 64px;
-  padding: 0 44px;
+  padding: 0 var(--sp-12);
   display: flex;
   align-items: center;
-  gap: 18px;
-  border-bottom: 1px solid var(--line);
+  gap: var(--sp-4);
+  border-bottom: 1px solid var(--c-line);
   background: rgba(255, 255, 255, 0.6);
 }
 
 .desktop-breadcrumb {
   display: flex;
   align-items: center;
-  gap: 12px;
-  color: #89988f;
-  font-size: 12px;
+  gap: var(--sp-3);
+  color: var(--c-mute);
+  font-size: var(--fs-sm);
 }
 
 .avatar {
@@ -230,13 +225,13 @@ page {
 }
 
 .mobile-brand .ui-strong {
-  font-weight: 600;
+  font-weight: var(--fw-semibold);
 }
 
 .page-content {
-  max-width: 1220px;
+  max-width: var(--layout-content-max);
   margin: auto;
-  padding: 37px 44px 20px;
+  padding: 37px var(--sp-12) var(--sp-5);
 }
 
 .page-heading {
@@ -246,91 +241,104 @@ page {
   margin-bottom: 29px;
 }
 
+/* 签名元素 · 胶带标签：斜贴的蜂蜜色胶带，全站唯一放胆处（见 DESIGN.md） */
 .eyebrow {
-  font-size: 11px;
-  letter-spacing: 2px;
-  color: #8c9b90;
+  display: inline-block;
+  padding: 5px var(--sp-3);
+  background:
+    repeating-linear-gradient(
+      45deg,
+      rgba(255, 255, 255, 0.28) 0 5px,
+      rgba(255, 255, 255, 0) 5px 10px
+    ),
+    var(--c-honey);
+  color: #57491f;
+  font-size: var(--fs-xs);
+  letter-spacing: var(--ls-label);
+  border-radius: 2px;
+  box-shadow: var(--shadow-sm);
+  transform: rotate(-1.5deg);
 }
 
 .ui-h1 {
-  font-size: 30px;
-  letter-spacing: 1px;
-  line-height: 1.4;
-  margin-top: 8px;
-  font-weight: 650;
+  font-size: var(--fs-2xl);
+  letter-spacing: var(--ls-title);
+  line-height: var(--lh-tight);
+  margin-top: var(--sp-2);
+  font-weight: var(--fw-display);
 }
 
 .heading-dot {
-  color: var(--coral);
+  color: var(--c-clay);
   margin-left: 4px;
 }
 
 /* ===== 通用面板与空态 ===== */
 
 .panel {
-  padding: 23px;
-  background: white;
-  border: 1px solid var(--line);
-  border-radius: 16px;
+  padding: var(--sp-6);
+  background: var(--c-surface);
+  border: 1px solid var(--c-line);
+  border-radius: var(--r-lg);
 }
 
 .section-heading {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 10px;
+  gap: var(--sp-3);
   margin-bottom: 22px;
 }
 
 .section-heading .ui-h2 {
   flex-shrink: 0;
   white-space: nowrap;
-  font-size: 16px;
-  font-weight: 600;
+  font-size: var(--fs-md);
+  font-weight: var(--fw-semibold);
   letter-spacing: 0.5px;
 }
 
 .subtle {
-  font-size: 11px;
-  color: var(--muted);
+  font-size: var(--fs-xs);
+  color: var(--c-mute);
 }
 
 .empty {
-  padding: 70px 20px;
+  padding: 70px var(--sp-5);
   text-align: center;
-  color: #8b9b8c;
+  color: var(--c-mute);
 }
 
 .empty .bear {
-  margin: 0 auto 20px;
+  margin: 0 auto var(--sp-5);
 }
 
 .empty .ui-h3 {
-  margin-top: 20px;
-  color: #536c5b;
+  margin-top: var(--sp-5);
+  color: var(--c-ink-2);
 }
 
 .empty .ui-p {
-  margin: 10px 0 0;
-  font-size: 12px;
+  margin: var(--sp-2) 0 0;
+  font-size: var(--fs-sm);
 }
 
 .footnote {
   text-align: center;
-  font-size: 11px;
-  line-height: 1.9;
-  color: #9ca89b;
-  padding: 24px 10px;
+  font-size: var(--fs-xs);
+  line-height: var(--lh-loose);
+  color: var(--c-mute);
+  padding: var(--sp-6) var(--sp-2);
 }
 
 .page-footer {
   display: flex;
   justify-content: center;
   align-items: center;
-  gap: 8px;
-  font-size: 10px;
-  color: #b1bbb2;
-  margin-top: 40px;
+  gap: var(--sp-2);
+  font-size: var(--fs-2xs);
+  color: var(--c-faint);
+  margin-top: var(--sp-10);
   padding: 15px;
 }
 
@@ -352,7 +360,7 @@ page {
   top: 0;
   width: 15px;
   height: 15px;
-  background: #cda572;
+  background: var(--c-wood);
   border-radius: 50%;
 }
 
@@ -426,15 +434,15 @@ page {
   right: 5px;
 }
 
-/* ===== 响应式 ===== */
+/* ===== 响应式（断点见 DESIGN.md：700 / 900 / 1100） ===== */
 
 @media (max-width: 1100px) {
   .sidebar {
-    width: 190px;
-    padding: 30px 16px;
+    width: var(--layout-sidebar-md);
+    padding: 30px var(--sp-4);
   }
   .brand {
-    gap: 8px;
+    gap: var(--sp-2);
   }
   .brand .ui-strong {
     font-size: 17px;
@@ -446,20 +454,20 @@ page {
     width: 32px;
   }
   .ui-main {
-    margin-left: 190px;
+    margin-left: var(--layout-sidebar-md);
   }
   .topbar {
     padding: 0 27px;
   }
   .page-content {
-    padding: 30px 27px 20px;
+    padding: 30px 27px var(--sp-5);
   }
 }
 
 @media (min-width: 701px) and (max-width: 900px) {
   .sidebar {
-    width: 150px;
-    padding: 28px 12px;
+    width: var(--layout-sidebar-sm);
+    padding: 28px var(--sp-3);
   }
   .brand {
     gap: 3px;
@@ -478,17 +486,17 @@ page {
     letter-spacing: 1px;
   }
   .nav-item {
-    padding: 15px 12px;
+    padding: 15px var(--sp-3);
   }
   .sidebar-footer {
-    font-size: 10px;
+    font-size: var(--fs-2xs);
     gap: 6px;
   }
   .sidebar-footer .ui-span {
     font-size: 8px;
   }
   .ui-main {
-    margin-left: 150px;
+    margin-left: var(--layout-sidebar-sm);
   }
 }
 
@@ -508,9 +516,9 @@ page {
   .mobile-brand {
     display: flex;
     align-items: center;
-    gap: 10px;
+    gap: var(--sp-3);
     font-size: 17px;
-    letter-spacing: 1px;
+    letter-spacing: var(--ls-title);
   }
   .mobile-brand .bear {
     transform: scale(0.86);
@@ -533,35 +541,35 @@ page {
     margin-bottom: 23px;
   }
   .eyebrow {
-    font-size: 10px;
-    letter-spacing: 1px;
+    font-size: var(--fs-2xs);
+    letter-spacing: var(--ls-title);
   }
   .ui-h1 {
-    font-size: 27px;
+    font-size: var(--fs-xl);
     margin-top: 5px;
   }
   .panel {
     padding: 19px;
-    border-radius: 15px;
+    border-radius: var(--r-lg);
   }
   .section-heading {
-    margin-bottom: 20px;
+    margin-bottom: var(--sp-5);
   }
   .section-heading .ui-h2 {
     font-size: 15px;
   }
   .section-heading .subtle {
-    font-size: 10px;
+    font-size: var(--fs-2xs);
   }
   .empty {
     padding: 50px 15px;
   }
   .footnote {
-    font-size: 10px;
+    font-size: var(--fs-2xs);
   }
   .page-footer {
-    margin-top: 26px;
-    font-size: 9px;
+    margin-top: var(--sp-6);
+    font-size: var(--fs-3xs);
   }
   .bottom-nav {
     display: flex;
@@ -569,11 +577,11 @@ page {
     inset: auto 0 0;
     align-items: center;
     justify-content: space-around;
-    background: #ffffffed;
+    background: rgba(255, 255, 255, 0.93);
     backdrop-filter: blur(15px);
-    border-top: 1px solid #e9eee8;
-    padding: 4px 10px calc(4px + env(safe-area-inset-bottom));
-    z-index: 10;
+    border-top: 1px solid var(--c-line);
+    padding: var(--sp-1) 10px calc(var(--sp-1) + env(safe-area-inset-bottom));
+    z-index: var(--z-nav);
   }
   .bottom-nav .ui-button {
     display: flex;
@@ -582,31 +590,31 @@ page {
     gap: 3px;
     min-width: 62px;
     min-height: 44px;
-    padding: 4px 12px;
+    padding: var(--sp-1) var(--sp-3);
     background: none;
-    color: #a5afa5;
-    font-size: 9px;
+    color: var(--c-faint);
+    font-size: var(--fs-3xs);
   }
   .bottom-nav .ui-icon {
     width: 19px !important;
     height: 19px !important;
   }
   .bottom-nav .active {
-    color: var(--green);
+    color: var(--c-primary);
   }
   .bottom-nav .active .ui-icon {
-    fill: #e6efe5;
+    fill: var(--c-primary-soft);
   }
 }
 
 @media (max-width: 360px) {
   .page-content {
-    padding-left: 16px;
-    padding-right: 16px;
+    padding-left: var(--sp-4);
+    padding-right: var(--sp-4);
   }
   .topbar {
-    padding-left: 16px;
-    padding-right: 16px;
+    padding-left: var(--sp-4);
+    padding-right: var(--sp-4);
   }
 }
 

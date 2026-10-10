@@ -1,0 +1,104 @@
+/**
+ * 熊熊之家 · 设计 Token（唯一真源）
+ * 风格方向与使用规范见 bear-home/DESIGN.md。
+ * 改色值 / 字号 / 间距只改这个文件，页面与组件只消费变量。
+ *
+ * 跨端说明：小程序没有 :root，变量同时挂在 page 与 .app-shell 上。
+ * 断点值无法用变量，见 DESIGN.md「断点」（700 / 900 / 1100）。
+ */
+
+page,
+.app-shell {
+  /* ===== 色彩 · 出自装修材料世界 ===== */
+  --c-ink: #293f39; /* 深林墨 · 标题与正文 */
+  --c-ink-2: #536c5b; /* 次级标题 */
+  --c-mute: #8a9790; /* 岩灰 · 辅助文字 */
+  --c-faint: #a9b4ac; /* 浅岩 · 弱标注 */
+  --c-line: #e9eeea; /* 素线 · 分割线与描边 */
+  --c-bg: #f7f9f6; /* 暖墙白 · 页面底色 */
+  --c-surface: #ffffff; /* 白墙 · 卡片面 */
+  --c-primary: #356d5b; /* 苔绿 · 主色 */
+  --c-primary-deep: #2a5648; /* 苔绿按压态 */
+  --c-primary-soft: #e8f2e9; /* 苔绿浅 · 选中底色 */
+  --c-clay: #d59076; /* 陶橘 · 焦点与强调点 */
+  --c-honey: #f4dc85; /* 蜂蜜黄 · 胶带与点缀 */
+  --c-wood: #cda572; /* 木色 · 小熊与暖饰 */
+  --c-on-primary: #ffffff; /* 主色上的文字 */
+
+  /* 语义状态（初版值，随功能落地校准） */
+  --c-success: #4f8a5f;
+  --c-warning: #c9932f;
+  --c-danger: #c15b4a;
+  --c-info: #4a7ba7;
+
+  /* ===== 排印 ===== */
+  --font-sans:
+    "PingFang SC", "Microsoft YaHei", system-ui, -apple-system, sans-serif;
+  --font-mono: ui-monospace, "SF Mono", Menlo, monospace; /* 数字与标注 */
+
+  --fs-3xs: 9px; /* 微字：侧栏标语、底导标签 */
+  --fs-2xs: 10px; /* 微标注：页脚、脚注 */
+  --fs-xs: 11px; /* 标签：胶带 eyebrow、侧栏区块名 */
+  --fs-sm: 12px; /* 辅助说明 */
+  --fs-base: 14px; /* 正文默认 */
+  --fs-md: 16px; /* 强调正文 / 输入框 */
+  --fs-lg: 20px; /* 卡片标题 / 品牌名 */
+  --fs-xl: 27px; /* 手机页标题 */
+  --fs-2xl: 30px; /* 桌面页标题 */
+
+  --fw-regular: 400;
+  --fw-medium: 500;
+  --fw-semibold: 600;
+  --fw-display: 650; /* 大标题 */
+
+  --lh-tight: 1.4;
+  --lh-base: 1.7;
+  --lh-loose: 1.9;
+
+  --ls-label: 2px; /* eyebrow / 区块名 字距 */
+  --ls-title: 1px; /* 大标题字距 */
+
+  /* ===== 间距（4px 基准） ===== */
+  --sp-1: 4px;
+  --sp-2: 8px;
+  --sp-3: 12px;
+  --sp-4: 16px;
+  --sp-5: 20px;
+  --sp-6: 24px;
+  --sp-7: 28px;
+  --sp-8: 32px;
+  --sp-9: 36px;
+  --sp-10: 40px;
+  --sp-12: 48px;
+  --sp-16: 64px;
+
+  /* ===== 圆角 ===== */
+  --r-sm: 8px; /* 小控件 */
+  --r-md: 12px; /* 按钮 */
+  --r-lg: 16px; /* 卡片 */
+  --r-xl: 22px; /* 大面板（手机） */
+  --r-pill: 999px; /* 药丸 */
+
+  /* ===== 阴影（墨绿调，轻量） ===== */
+  --shadow-sm: 0 1px 2px rgba(41, 63, 57, 0.05);
+  --shadow-md: 0 6px 24px rgba(41, 63, 57, 0.08);
+  --shadow-lg: 0 20px 60px rgba(27, 56, 37, 0.12);
+
+  /* ===== 动效 ===== */
+  --dur-fast: 150ms; /* 按压 / hover */
+  --dur-base: 250ms; /* 面板 / 展开 */
+  --dur-slow: 400ms; /* 飞入 / 页面级 */
+  --ease-out: cubic-bezier(0.22, 0.61, 0.36, 1);
+  --ease-spring: cubic-bezier(0.34, 1.36, 0.64, 1);
+
+  /* ===== 层级 ===== */
+  --z-nav: 10; /* 底部导航 */
+  --z-modal: 30; /* 弹层 */
+  --z-toast: 40; /* 轻提示 */
+
+  /* ===== 外壳布局 ===== */
+  --layout-sidebar: 244px;
+  --layout-sidebar-md: 190px;
+  --layout-sidebar-sm: 150px;
+  --layout-content-max: 1220px;
+}

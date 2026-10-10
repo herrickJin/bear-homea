@@ -1,0 +1,77 @@
+import { Button, Image, Text, View } from "@tarojs/components";
+import type { Category, InspirationLink } from "../data/mockInspiration";
+import { Bookmark } from "./Icons";
+import {
+  displayDate,
+  displayTitle,
+  sourceLabel,
+  statusLabel,
+} from "../data/mockInspiration";
+
+interface LinkCardProps {
+  link: InspirationLink;
+  categories: Category[];
+  onOpen: (link: InspirationLink) => void;
+  onCopy: (link: InspirationLink) => void;
+}
+
+export default function LinkCard({
+  link,
+  categories,
+  onOpen,
+  onCopy,
+}: LinkCardProps) {
+  const tags = categories.filter((c) => link.categoryIds.includes(c.id));
+  const status = statusLabel(link.status);
+  const title = displayTitle(link);
+
+  return (
+    <View
+      className={`ui-div ${`ui-a link-card${link.shotPath || link.shotTint || link.coverUrl ? " has-shot" : ""}${link.url ? "" : " card-idea"}`}`}
+      onClick={() => onOpen(link)}
+    >
+      {(link.shotPath || link.coverUrl) ? (
+        <Image
+          className="link-shot"
+          src={link.shotPath ?? link.coverUrl ?? ""}
+          mode="aspectFill"
+        />
+      ) : link.shotTint ? (
+        <View className={`ui-div ${`link-shot shot-mock shot-${link.shotTint}`}`}>
+          <Bookmark size={22} tone="muted" />
+        </View>
+      ) : null}
+      <View className="ui-div link-body">
+        <View className="ui-h3 link-note">{title}</View>
+        {tags.length > 0 && (
+          <View className="ui-div link-tags">
+            {tags.map((t) => (
+              <View className="ui-div tag-chip" key={t.id}>
+                <View className="ui-i chip-dot" />
+                <Text className="ui-span">{t.name}</Text>
+              </View>
+            ))}
+          </View>
+        )}
+        <View className="ui-div link-meta">
+          <Text className="ui-time">
+            {sourceLabel(link.source)} · {displayDate(link.date)}
+            {status ? ` · ${status}` : ""}
+          </Text>
+          {link.url && (
+            <Button
+              ariaRole="button"
+              className="ui-button link-open"
+              onClick={(e) => {
+                e.stopPropagation();
+                onCopy(link);
+              }}
+            >
+              打开 ↗
+            </Button>
+          )}
+        </View>
+      </View>
+    </View>
+  );
+}

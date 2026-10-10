@@ -1,19 +1,28 @@
 import { useState } from "react";
-import type { CSSProperties } from "react";
+import type { CSSProperties, ReactNode } from "react";
 import Taro, { useResize } from "@tarojs/taro";
 import { Button, Text, View } from "@tarojs/components";
-import { BookOpen, ChevronRight, Heart, Home, LayoutGrid, Wallet } from "./Icons";
+import {
+  BookOpen,
+  Bookmark,
+  ChevronRight,
+  Heart,
+  Home,
+  LayoutGrid,
+  Wallet,
+} from "./Icons";
 import Bear from "./Bear";
 
 /**
- * 骨架版 Screen：只保留应用外壳（品牌侧边栏 / 顶栏 / 底部导航）与页面容器。
- * 所有业务功能（记录、进度、预算、账号）已移除，待重新设计后逐页填充。
+ * 骨架版 Screen：应用外壳（品牌侧边栏 / 顶栏 / 底部导航）与页面容器。
+ * 页面内容通过 children 传入；不传则显示「功能重设计中」空态。
  */
 
-export type Page = "home" | "diary" | "budget" | "profile";
+export type Page = "home" | "inspiration" | "diary" | "budget" | "profile";
 
 const navigation = [
   { id: "home", label: "小家", icon: Home },
+  { id: "inspiration", label: "方案", icon: Bookmark },
   { id: "diary", label: "记录", icon: BookOpen },
   { id: "budget", label: "预算", icon: Wallet },
   { id: "profile", label: "我的", icon: LayoutGrid },
@@ -21,6 +30,7 @@ const navigation = [
 
 const pageCopy: Record<Page, { eyebrow: string; title: string }> = {
   home: { eyebrow: "一点点，住进理想生活", title: "小家" },
+  inspiration: { eyebrow: "我们家的样子", title: "方案库" },
   diary: { eyebrow: "把装修的日常留成回忆", title: "装修记录" },
   budget: { eyebrow: "每一笔花费都在变成家", title: "预算" },
   profile: { eyebrow: "关于这个小家", title: "我的" },
@@ -49,7 +59,24 @@ function getHeaderStyle(): CSSProperties {
   }
 }
 
-export default function Screen({ page }: { page: Page }) {
+interface ScreenProps {
+  page: Page;
+  eyebrow?: string;
+  title?: string;
+  action?: ReactNode;
+  /** 详情类页面：不渲染大字标题区 */
+  hideHeading?: boolean;
+  children?: ReactNode;
+}
+
+export default function Screen({
+  page,
+  eyebrow,
+  title,
+  action,
+  hideHeading,
+  children,
+}: ScreenProps) {
   const [headerStyle, setHeaderStyle] = useState(getHeaderStyle);
   useResize(() => setHeaderStyle(getHeaderStyle()));
 
@@ -61,7 +88,10 @@ export default function Screen({ page }: { page: Page }) {
     Taro.redirectTo({ url: `/pages/${next}/index` });
   }
 
-  const copy = pageCopy[page];
+  const copy = {
+    eyebrow: eyebrow ?? pageCopy[page].eyebrow,
+    title: title ?? pageCopy[page].title,
+  };
   const currentLabel = navigation.find((n) => n.id === page)?.label ?? "";
 
   return (
@@ -114,24 +144,29 @@ export default function Screen({ page }: { page: Page }) {
           </Button>
         </View>
         <View className="ui-div page-content">
-          <View className="ui-div page-heading">
-            <View className="ui-div">
-              <Text className="ui-span eyebrow">{copy.eyebrow}</Text>
-              <View className="ui-h1">
-                {copy.title}
-                <Text className="ui-span heading-dot">.</Text>
+          {!hideHeading && (
+            <View className="ui-div page-heading">
+              <View className="ui-div">
+                <Text className="ui-span eyebrow">{copy.eyebrow}</Text>
+                <View className="ui-h1">
+                  {copy.title}
+                  <Text className="ui-span heading-dot">.</Text>
+                </View>
+              </View>
+              {action}
+            </View>
+          )}
+          {children ?? (
+            <View className="ui-section panel">
+              <View className="ui-div empty">
+                <Bear />
+                <View className="ui-h3">功能重设计中</View>
+                <View className="ui-p">
+                  这里只保留了页面骨架，正式功能将在重新设计后填充。
+                </View>
               </View>
             </View>
-          </View>
-          <View className="ui-section panel">
-            <View className="ui-div empty">
-              <Bear />
-              <View className="ui-h3">功能重设计中</View>
-              <View className="ui-p">
-                这里只保留了页面骨架，正式功能将在重新设计后填充。
-              </View>
-            </View>
-          </View>
+          )}
           <View className="ui-p footnote">
             熊熊之家 · 跨端骨架（微信小程序 / H5）
           </View>

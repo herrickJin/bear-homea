@@ -1,0 +1,270 @@
+{
+  "meta": {
+    "source": "chemny/visualize-floorplans sample data",
+    "project_id": "sample-two-bedroom",
+    "revision": "converted-v1",
+    "schema_version": "0.3",
+    "scale_m_per_px": 0.01,
+    "selected_style": "wood_cream",
+    "style_name": "原木奶油",
+    "palette": [
+      "warm white",
+      "light oak",
+      "soft beige"
+    ],
+    "requirements": [
+      "child-friendly storage",
+      "easy-clean surfaces"
+    ],
+    "relationships": [
+      "客厅连接阳台",
+      "餐厅靠近厨房",
+      "主卧和次卧通过走廊连接公共区域"
+    ],
+    "uncertainties": [
+      "原图没有可靠的层高信息"
+    ]
+  },
+  "unit": "m",
+  "canvas_m": [
+    8.0,
+    6.0
+  ],
+  "walls": [
+    {
+      "id": "north",
+      "a": [
+        0.4,
+        5.5
+      ],
+      "b": [
+        7.6,
+        5.5
+      ],
+      "thickness": 0.12,
+      "height": 2.8,
+      "assumed": {
+        "height": "sample-project.json 不含层高, 默认 2.8m"
+      }
+    },
+    {
+      "id": "west",
+      "a": [
+        0.4,
+        5.5
+      ],
+      "b": [
+        0.4,
+        0.7
+      ],
+      "thickness": 0.12,
+      "height": 2.8,
+      "assumed": {
+        "height": "sample-project.json 不含层高, 默认 2.8m"
+      }
+    },
+    {
+      "id": "east",
+      "a": [
+        7.6,
+        5.5
+      ],
+      "b": [
+        7.6,
+        0.7
+      ],
+      "thickness": 0.12,
+      "height": 2.8,
+      "assumed": {
+        "height": "sample-project.json 不含层高, 默认 2.8m"
+      }
+    },
+    {
+      "id": "south-a",
+      "a": [
+        0.4,
+        0.7
+      ],
+      "b": [
+        3.6,
+        0.7
+      ],
+      "thickness": 0.12,
+      "height": 2.8,
+      "assumed": {
+        "height": "sample-project.json 不含层高, 默认 2.8m"
+      }
+    },
+    {
+      "id": "south-b",
+      "a": [
+        4.5,
+        0.7
+      ],
+      "b": [
+        7.6,
+        0.7
+      ],
+      "thickness": 0.12,
+      "height": 2.8,
+      "assumed": {
+        "height": "sample-project.json 不含层高, 默认 2.8m"
+      }
+    }
+  ],
+  "rooms": [
+    {
+      "id": "studio",
+      "name": "工作室",
+      "type": "studio",
+      "polygon": [
+        [
+          0.47,
+          5.43
+        ],
+        [
+          7.53,
+          5.43
+        ],
+        [
+          7.53,
+          0.77
+        ],
+        [
+          0.47,
+          0.77
+        ]
+      ],
+      "area_m2": 32.9,
+      "floor_color": 16117734,
+      "label_point": [
+        4.0,
+        2.9
+      ],
+      "certainty": "synthetic"
+    }
+  ],
+  "doors": [
+    {
+      "id": "entry",
+      "hinge": [
+        3.6,
+        0.7
+      ],
+      "closed_tip": [
+        4.5,
+        0.7
+      ],
+      "open_tip": [
+        3.6,
+        1.6
+      ],
+      "width_m": 0.9,
+      "swing": "counterclockwise",
+      "connects": null,
+      "swing_into": null,
+      "certainty": "synthetic"
+    }
+  ],
+  "furniture": [
+    {
+      "id": "bed",
+      "symbol": "bed",
+      "label": "Bed",
+      "x": 0.8,
+      "y": 5.1,
+      "w": 1.5,
+      "d": 2.2,
+      "h": 0.5,
+      "color": 14208960
+    },
+    {
+      "id": "cabinet",
+      "symbol": "cabinet",
+      "label": "Cabinet",
+      "x": 0.8,
+      "y": 2.5,
+      "w": 1.9,
+      "d": 0.6,
+      "h": 0.9,
+      "color": 13220250
+    },
+    {
+      "id": "sofa",
+      "symbol": "sofa",
+      "label": "Sofa",
+      "x": 5.5,
+      "y": 5.1,
+      "w": 1.5,
+      "d": 0.7,
+      "h": 0.75,
+      "color": 12167826
+    },
+    {
+      "id": "table",
+      "symbol": "table",
+      "label": "Table",
+      "x": 5.65,
+      "y": 3.8,
+      "w": 1.0,
+      "d": 0.65,
+      "h": 0.72,
+      "color": 13220250
+    }
+  ],
+  "structural_locks": [
+    {
+      "id": "lock-seven-rooms",
+      "kind": "room_count",
+      "applies_to": [
+        "all"
+      ],
+      "rule": "Preserve all seven named rooms and their relative adjacency",
+      "source": "confirmed_2d",
+      "evidence": [
+        "approved zoning plan"
+      ],
+      "status": "confirmed"
+    },
+    {
+      "id": "lock-balcony-adjacency",
+      "kind": "adjacency",
+      "applies_to": [
+        "living-room",
+        "balcony"
+      ],
+      "rule": "Preserve the balcony connected to the living room",
+      "source": "user_confirmation",
+      "evidence": [
+        "user-approved zone relationship"
+      ],
+      "status": "confirmed"
+    },
+    {
+      "id": "lock-walls-openings",
+      "kind": "opening",
+      "applies_to": [
+        "all"
+      ],
+      "rule": "Preserve visible wall, door, window, sliding-door, and bay-window locations and types",
+      "source": "confirmed_access",
+      "evidence": [
+        "approved access map"
+      ],
+      "status": "confirmed"
+    },
+    {
+      "id": "lock-no-room-mutation",
+      "kind": "room_count",
+      "applies_to": [
+        "all"
+      ],
+      "rule": "Do not add, remove, merge, or split rooms",
+      "source": "confirmed_2d",
+      "evidence": [
+        "approved room inventory"
+      ],
+      "status": "confirmed"
+    }
+  ]
+}

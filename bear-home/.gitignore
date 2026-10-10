@@ -1,0 +1,7 @@
+node_modules/
+dist/
+*.tsbuildinfo
+project.private.config.json
+.swc/
+.env
+.env.local

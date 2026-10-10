@@ -1,0 +1,44 @@
+services:
+  server:
+    build: .
+    restart: unless-stopped
+    environment:
+      - BEAR_HOME_TOKEN=${BEAR_HOME_TOKEN}
+      - PORT=8787
+      - DATA_DIR=/data
+    volumes:
+      - ./data:/data
+    expose:
+      - "8787"
+
+  # 自动 HTTPS 反向代理；BEAR_HOME_DOMAIN 留空时用 localhost 自签证书（本地联调）
+  caddy:
+    image: caddy:2
+    restart: unless-stopped
+    ports:
+      - "80:80"
+      - "443:443"
+    environment:
+      # 留空/不设 = Caddy 在 80 端口提供纯 HTTP（IP 直访、无备案场景）
+      # 填域名 = 自动申请 HTTPS 证书（域名需已备案并解析到本机）
+      - BEAR_HOME_DOMAIN=${BEAR_HOME_DOMAIN:-:80}
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile:ro
+      - caddy_data:/data
+      - caddy_config:/config
+    depends_on:
+      - server
+
+  # 后续接入：Hermes Agent（开源自托管智能体）
+  # 官方一键脚本安装，或参考其仓库的容器部署方式；通过 MCP 调用本服务：
+  #   mcp server 地址: http://server:8787/mcp（容器内），Authorization: Bearer ${BEAR_HOME_TOKEN}
+  # hermes:
+  #   image: <hermes 官方镜像>
+  #   restart: unless-stopped
+  #   env_file: .env
+  #   depends_on:
+  #     - server
+
+volumes:
+  caddy_data:
+  caddy_config:

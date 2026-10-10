@@ -1,0 +1,24 @@
+# ===== 通用 =====
+.DS_Store
+node_modules/
+dist/
+*.log
+tsconfig.tsbuildinfo
+
+# ===== 工具状态 =====
+.mimosa/
+.swc/
+.playwright-mcp/
+
+# floorplan-3d 有独立 git 仓库，不入本仓库
+floorplan-3d/
+
+# ===== bear-home (Taro) =====
+bear-home/.swc/
+
+# ===== server (运行时数据与密钥，切勿提交) =====
+server/.env
+server/data/
+
+# ===== floorplan-3d / vf-viewer 方案导出 =====
+*.local.json

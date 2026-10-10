@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>VF Viewer — visualize-floorplans 数据 · three.js 查看器</title>
+<style>
+  :root { --bg:#17181c; --panel:#1f2127; --line:#34363e; --fg:#e8e6e1; --dim:#9a978f; --accent:#d8a25a; }
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body { background:var(--bg); color:var(--fg); font:14px/1.5 -apple-system,"PingFang SC",sans-serif; height:100vh; display:flex; flex-direction:column; overflow:hidden; }
+  header { padding:10px 16px; border-bottom:1px solid var(--line); display:flex; gap:16px; align-items:baseline; flex-shrink:0; }
+  header h1 { font-size:15px; font-weight:600; }
+  header .meta { color:var(--dim); font-size:12px; }
+  header .style { color:var(--accent); }
+  .workspace { flex:1; display:flex; min-height:0; }
+  main { flex:1; display:grid; grid-template-columns: 1fr 1fr; min-height:0; }
+  .pane { position:relative; min-width:0; border-right:1px solid var(--line); }
+  .pane:last-child { border-right:none; }
+  .pane-label { position:absolute; top:8px; left:10px; z-index:5; font-size:11px; color:var(--dim); letter-spacing:.05em; background:rgba(23,24,28,.7); padding:2px 8px; border-radius:4px; }
+  aside { width:260px; flex-shrink:0; border-left:1px solid var(--line); padding:14px; overflow-y:auto; background:var(--panel); }
+  aside h2 { font-size:12px; color:var(--dim); text-transform:uppercase; letter-spacing:.08em; margin:14px 0 8px; }
+  aside h2:first-child { margin-top:0; }
+  .room-item, .furn-item { padding:6px 8px; border-radius:6px; cursor:pointer; display:flex; justify-content:space-between; font-size:13px; }
+  .room-item:hover, .furn-item:hover, .room-item.active, .furn-item.active { background:rgba(216,162,90,.15); }
+  .area { color:var(--dim); font-size:12px; }
+  .lock { font-size:12px; padding:6px 8px; border-left:2px solid var(--accent); margin-bottom:6px; color:var(--fg); background:rgba(216,162,90,.06); border-radius:0 6px 6px 0; }
+  .uncertain { color:#d8a25a; font-size:12px; }
+  #tooltip { position:absolute; pointer-events:none; background:rgba(23,24,28,.92); border:1px solid var(--line); padding:4px 10px; border-radius:6px; font-size:12px; display:none; z-index:10; white-space:nowrap; }
+  footer { padding:6px 16px; border-top:1px solid var(--line); color:var(--dim); font-size:11px; flex-shrink:0; }
+  /* SVG 2D plan */
+  #svg2d { position:absolute; inset:0; width:100%; height:100%; display:block; cursor:default; }
+  .room-shape { cursor:pointer; }
+  .room-shape:hover, .room-shape.hl { stroke:#d8a25a; stroke-width:2.5; }
+  .furn-rect { cursor:pointer; }
+  .furn-rect:hover, .furn-rect.hl { fill:#d8a25a; stroke:#ffd9a0; }
+</style>
+</head>
+<body>
+<header>
+  <h1>VF Viewer</h1>
+  <span class="meta" id="meta-line">加载中…</span>
+  <span class="style" id="style-line"></span>
+</header>
+<div class="workspace">
+<main>
+  <div class="pane">
+    <span class="pane-label">2D 平面 · 点击房间/家具定位</span>
+    <svg id="svg2d" xmlns="http://www.w3.org/2000/svg"></svg>
+    <div id="tooltip"></div>
+  </div>
+  <div class="pane"><span class="pane-label">3D 视图 · 拖拽旋转 / 滚轮缩放</span><div id="c3d" style="position:absolute;inset:0;"></div></div>
+</main>
+<aside>
+  <h2>房间</h2><div id="room-list"></div>
+  <h2>家具</h2><div id="furn-list"></div>
+  <h2>结构锁 (structural_locks)</h2><div id="lock-list"></div>
+  <h2>不确定项</h2><div id="uncertain-list"></div>
+</aside>
+</div>
+<footer id="foot"></footer>
+
+<script type="importmap">
+{
+  "imports": {
+    "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js",
+    "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/"
+  }
+}
+</script>
+<script type="module">
+import * as THREE from 'three';
+import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+
+const data = await (await fetch('./data/floorplan.json')).json();
+const W = data.canvas_m[0], H = data.canvas_m[1];
+
+// ---------- header / aside ----------
+const styleName = data.meta.style_name || data.meta.selected_style || '—';
+document.getElementById('meta-line').textContent =
+  `${data.meta.project_id} · ${data.meta.revision} · ${W}m × ${H}m · schema ${data.meta.schema_version}`;
+document.getElementById('style-line').textContent = `风格：${styleName}`;
+document.getElementById('foot').textContent =
+  `数据来源: ${data.meta.source} · 坐标为合成示例 (${data.meta.scale_m_per_px} m/px) · 非实测尺寸，仅概念演示`;
+const $list = (id, items, cls, fmt) => {
+  const el = document.getElementById(id);
+  el.innerHTML = '';
+  if (!items.length) { el.innerHTML = `<div class="area">（无）</div>`; return; }
+  for (const it of items) {
+    const d = document.createElement('div');
+    d.className = cls; d.dataset.id = it.id; d.innerHTML = fmt(it);
+    d.onclick = () => select(it.id, d);
+    el.appendChild(d);
+  }
+};
+$list('room-list', data.rooms, 'room-item',
+  r => `<span>${r.name}</span><span class="area">${r.area_m2} m²</span>`);
+$list('furn-list', data.furniture, 'furn-item',
+  f => `<span>${f.label}</span><span class="area">${f.w}×${f.d}m</span>`);
+document.getElementById('lock-list').innerHTML =
+  data.structural_locks.map(l => `<div class="lock"><b>${l.kind}</b> · ${l.rule}</div>`).join('');
+document.getElementById('uncertain-list').innerHTML =
+  (data.meta.uncertainties || []).map(u => `<div class="uncertain">⚠ ${u}</div>`).join('')
+  + `<div class="uncertain">⚠ 层高假定为 2.8m（源数据无此信息）</div>`;
+
+// ---------- selection state ----------
+let selectedId = null;
+function select(id, el) {
+  selectedId = (selectedId === id) ? null : id;
+  document.querySelectorAll('.room-item,.furn-item').forEach(e => e.classList.remove('active'));
+  if (selectedId) el.classList.add('active');
+  updateHighlight();
+}
+
+// ============================================================
+// 2D SVG plan — model coords (meters, y-up); svg y-down flip: sy = H - y
+// ============================================================
+const svg = document.getElementById('svg2d');
+const SVGNS = 'http://www.w3.org/2000/svg';
+const PAD = 0.7; // model-unit margin
+svg.setAttribute('viewBox', `${-PAD} ${-PAD} ${W + PAD*2} ${H + PAD*2}`);
+svg.setAttribute('preserveAspectRatio', 'xMidYMid meet');
+const P = (x, y) => `${x},${H - y}`;           // model → svg point string
+const SX = x => x, SY = y => H - y;            // model → svg scalar
+
+function el(tag, attrs, parent = svg) {
+  const e = document.createElementNS(SVGNS, tag);
+  for (const [k, v] of Object.entries(attrs)) e.setAttribute(k, v);
+  parent.appendChild(e);
+  return e;
+}
+
+// tooltip
+const tip = document.getElementById('tooltip');
+const pane = svg.parentElement;
+const showTip = (e, text) => {
+  const r = pane.getBoundingClientRect();
+  tip.style.display = 'block';
+  tip.style.left = (e.clientX - r.left + 12) + 'px';
+  tip.style.top = (e.clientY - r.top + 12) + 'px';
+  tip.textContent = text;
+};
+const hideTip = () => { tip.style.display = 'none'; };
+
+// --- rooms (fill) ---
+const roomShapes = {};
+for (const r of data.rooms) {
+  const pts = r.polygon.map(p => P(p[0], p[1])).join(' ');
+  const s = el('polygon', { points: pts, class: 'room-shape',
+    fill: '#' + r.floor_color.toString(16).padStart(6, '0'),
+    'fill-opacity': '0.8', stroke: '#555', 'stroke-width': '0.04' });
+  s.addEventListener('click', () => { const li = document.querySelector(`[data-id="${r.id}"]`); if (li) { selectedId = null; li.click(); } });
+  s.addEventListener('mousemove', e => showTip(e, `${r.name} · ${r.area_m2} m² · ${r.type}`));
+  s.addEventListener('mouseleave', hideTip);
+  roomShapes[r.id] = s;
+  if (r.label_point) {
+    const t = el('text', { x: r.label_point[0], y: SY(r.label_point[1]),
+      'text-anchor': 'middle', 'dominant-baseline': 'middle',
+      fill: '#8a877f', 'font-size': '0.32' });
+    t.textContent = `${r.name} ${r.area_m2}m²`;
+    t.style.pointerEvents = 'none';
+  }
+}
+// --- walls (physical thickness) ---
+for (const w of data.walls) {
+  el('line', { x1: w.a[0], y1: SY(w.a[1]), x2: w.b[0], y2: SY(w.b[1]),
+    stroke: '#3a3d45', 'stroke-width': w.thickness, 'stroke-linecap': 'round' });
+}
+// --- doors: gap + leaf + swing arc ---
+for (const d of data.doors) {
+  // gap cut (draw background over wall)
+  el('line', { x1: d.hinge[0], y1: SY(d.hinge[1]), x2: d.closed_tip[0], y2: SY(d.closed_tip[1]),
+    stroke: '#17181c', 'stroke-width': d.width_m, 'stroke-linecap': 'butt' });
+  // swing arc as sampled polyline (model space, y-up; direction from swing field;
+  // canvas→model y-flip inverts handedness: counterclockwise(canvas) = clockwise(model))
+  const a0 = Math.atan2(SY(d.closed_tip[1]) - SY(d.hinge[1]), d.closed_tip[0] - d.hinge[0]);
+  const a1 = Math.atan2(SY(d.open_tip[1]) - SY(d.hinge[1]), d.open_tip[0] - d.hinge[0]);
+  const r = Math.hypot(d.closed_tip[0] - d.hinge[0], d.closed_tip[1] - d.hinge[1]);
+  // in SVG (y-down) space: counterclockwise (original canvas) means angle decreasing
+  let delta = a1 - a0;
+  while (delta > Math.PI) delta -= 2 * Math.PI;
+  while (delta < -Math.PI) delta += 2 * Math.PI;
+  const ccwSVG = (d.swing === 'counterclockwise');  // two flips cancel → same in SVG space
+  if (ccwSVG && delta > 0) delta -= 2 * Math.PI;
+  if (!ccwSVG && delta < 0) delta += 2 * Math.PI;
+  const N = 20, pts = [];
+  for (let i = 0; i <= N; i++) {
+    const a = a0 + delta * i / N;
+    // a0/a1/SY already give SVG-space coords — build point strings directly (no P(): no double flip)
+    pts.push(`${(d.hinge[0] + r * Math.cos(a)).toFixed(4)},${(SY(d.hinge[1]) + r * Math.sin(a)).toFixed(4)}`);
+  }
+  el('polyline', { points: pts.join(' '), fill: 'none', stroke: '#d8a25a',
+    'stroke-width': '0.03', 'stroke-dasharray': '0.12 0.09', opacity: '0.85' });
+  // door leaf
+  el('line', { x1: d.hinge[0], y1: SY(d.hinge[1]), x2: d.open_tip[0], y2: SY(d.open_tip[1]),
+    stroke: '#d8a25a', 'stroke-width': '0.05' });
+}
+// --- furniture ---
+const furnShapes = {};
+for (const f of data.furniture) {
+  // f.y is the furniture's TOP edge in model (y-up) space → SVG rect starts there, grows down
+  const s = el('rect', { x: f.x, y: SY(f.y), width: f.w, height: f.d,
+    class: 'furn-rect', fill: '#b9aa92', stroke: '#8a7c64', 'stroke-width': '0.025' });
+  s.addEventListener('click', () => { const li = document.querySelector(`[data-id="${f.id}"]`); if (li) { selectedId = null; li.click(); } });
+  s.addEventListener('mousemove', e => showTip(e, `${f.label} ${f.w}×${f.d}×${f.h}m`));
+  s.addEventListener('mouseleave', hideTip);
+  furnShapes[f.id] = s;
+}
+// --- overall dimension ticks (bottom) ---
+el('line', { x1: 0, y1: -0.35, x2: W, y2: -0.35, stroke: '#5a5d66', 'stroke-width': '0.02' });
+el('line', { x1: 0, y1: -0.5, x2: 0, y2: -0.2, stroke: '#5a5d66', 'stroke-width': '0.02' });
+el('line', { x1: W, y1: -0.5, x2: W, y2: -0.2, stroke: '#5a5d66', 'stroke-width': '0.02' });
+const dimT = el('text', { x: W / 2, y: -0.45, 'text-anchor': 'middle', fill: '#6b6e77', 'font-size': '0.28' });
+dimT.textContent = `${W} m`;
+dimT.style.pointerEvents = 'none';
+
+// ============================================================
+// 3D (three.js) — model y → z
+// ============================================================
+const box = document.getElementById('c3d');
+const renderer = new THREE.WebGLRenderer({ antialias: true });
+box.appendChild(renderer.domElement);
+const scene = new THREE.Scene();
+scene.background = new THREE.Color(0x17181c);
+const camera = new THREE.PerspectiveCamera(50, 1, 0.1, 200);
+const controls = new OrbitControls(camera, renderer.domElement);
+camera.position.set(W * 0.8, 9, H * 1.1);
+controls.target.set(W / 2, 0, H / 2);
+controls.enableDamping = true;
+
+scene.add(new THREE.AmbientLight(0xffffff, 0.55));
+const sun = new THREE.DirectionalLight(0xfff2dd, 1.4);
+sun.position.set(W, 14, -4); scene.add(sun);
+const fill = new THREE.DirectionalLight(0xcfd8ff, 0.35);
+fill.position.set(-W, 8, H); scene.add(fill);
+
+const group = new THREE.Group(); scene.add(group);
+const wallMat = new THREE.MeshStandardMaterial({ color: 0x5c6068, roughness: .9 });
+const meshes = {}; // id → [meshes]
+const reg = (id, mesh) => { (meshes[id] ??= []).push(mesh); };
+
+// floor per room
+for (const r of data.rooms) {
+  const shape = new THREE.Shape(r.polygon.map(p => new THREE.Vector2(p[0], p[1])));
+  const m = new THREE.Mesh(new THREE.ShapeGeometry(shape), new THREE.MeshStandardMaterial({
+    color: r.floor_color, roughness: .95, transparent: true, opacity: .92 }));
+  m.rotation.x = -Math.PI / 2; m.position.y = 0.01;
+  group.add(m); reg(r.id, m);
+}
+// ground slab
+const ground = new THREE.Mesh(new THREE.BoxGeometry(W + 2, .1, H + 2),
+  new THREE.MeshStandardMaterial({ color: 0x23252b, roughness: 1 }));
+ground.position.set(W / 2, -0.06, H / 2); group.add(ground);
+
+// walls
+for (const w of data.walls) {
+  const len = Math.hypot(w.b[0] - w.a[0], w.b[1] - w.a[1]);
+  const ang = Math.atan2(w.b[1] - w.a[1], w.b[0] - w.a[0]);
+  const m = new THREE.Mesh(new THREE.BoxGeometry(len, w.height, w.thickness), wallMat);
+  m.position.set((w.a[0] + w.b[0]) / 2, w.height / 2, (w.a[1] + w.b[1]) / 2);
+  m.rotation.y = -ang;
+  group.add(m); reg(w.id, m);
+}
+// doors: leaf panel at mid angle
+for (const d of data.doors) {
+  const angClosed = Math.atan2(d.closed_tip[1] - d.hinge[1], d.closed_tip[0] - d.hinge[0]);
+  const angOpen = Math.atan2(d.open_tip[1] - d.hinge[1], d.open_tip[0] - d.hinge[0]);
+  let deltaA = angOpen - angClosed;
+  while (deltaA > Math.PI) deltaA -= 2 * Math.PI;
+  while (deltaA < -Math.PI) deltaA += 2 * Math.PI;
+  const midAng = angClosed + deltaA / 2;
+  const leafLen = d.width_m;
+  const m = new THREE.Mesh(new THREE.BoxGeometry(leafLen, 2.1, .05),
+    new THREE.MeshStandardMaterial({ color: 0xd8a25a, roughness: .6 }));
+  m.position.set(d.hinge[0] + Math.cos(midAng) * leafLen / 2, 1.05, d.hinge[1] + Math.sin(midAng) * leafLen / 2);
+  m.rotation.y = -midAng;
+  group.add(m); reg(d.id, m);
+}
+// furniture
+for (const f of data.furniture) {
+  const m = new THREE.Mesh(new THREE.BoxGeometry(f.w, f.h, f.d),
+    new THREE.MeshStandardMaterial({ color: f.color, roughness: .85 }));
+  // f.y = top edge (model y-up); box center is d/2 BELOW it in model space
+  m.position.set(f.x + f.w / 2, f.h / 2, f.y - f.d / 2);
+  group.add(m); reg(f.id, m);
+}
+
+// ---------- highlight sync ----------
+function updateHighlight() {
+  for (const [id, arr] of Object.entries(meshes)) {
+    const hl = id === selectedId;
+    for (const m of arr) if (m.material.emissive) m.material.emissive.setHex(hl ? 0x7a4f16 : 0x000000);
+  }
+  for (const [id, s] of Object.entries(roomShapes)) s.classList.toggle('hl', id === selectedId);
+  for (const [id, s] of Object.entries(furnShapes)) s.classList.toggle('hl', id === selectedId);
+}
+
+// ---------- resize ----------
+function fit3d() {
+  const r = box.getBoundingClientRect();
+  renderer.setSize(r.width, r.height);
+  renderer.setPixelRatio(devicePixelRatio);
+  camera.aspect = r.width / r.height;
+  camera.updateProjectionMatrix();
+}
+window.addEventListener('resize', fit3d);
+fit3d();
+
+(function loop() { requestAnimationFrame(loop); controls.update(); renderer.render(scene, camera); })();
+</script>
+</body>
+</html>

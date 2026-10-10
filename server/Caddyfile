@@ -1,0 +1,3 @@
+{$BEAR_HOME_DOMAIN} {
+	reverse_proxy server:8787
+}

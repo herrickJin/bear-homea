@@ -1,0 +1,14 @@
+{
+  "description": "熊熊之家 · React + TypeScript 跨端 Demo",
+  "miniprogramRoot": "dist/weapp/",
+  "projectname": "bear-home",
+  "appid": "wxb7ec6b9b87815efd",
+  "compileType": "miniprogram",
+  "setting": {
+    "urlCheck": true,
+    "es6": false,
+    "postcss": false,
+    "minified": false
+  },
+  "condition": {}
+}

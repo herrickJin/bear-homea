@@ -53,6 +53,7 @@ import Walletwhite from "../assets/icons/Wallet-white.png";
 import Xgreen from "../assets/icons/X-green.png";
 import Xmuted from "../assets/icons/X-muted.png";
 import Xwhite from "../assets/icons/X-white.png";
+import Xiaohongshupng from "../assets/icons/Xiaohongshu.png";
 
 type IconProps = {
   size?: number;
@@ -313,6 +314,19 @@ export function Send({ size = 20, tone = "green" }: IconProps) {
     <Image
       className="ui-icon"
       src={sources[tone]}
+      style={{ width: `${size}px`, height: `${size}px` }}
+      mode="aspectFit"
+      ariaHidden
+    />
+  );
+}
+
+/** 小红书品牌标：官方字标反白于品牌红圆角块（scripts/generate-icons.cjs 合成，不走三色体系） */
+export function Xiaohongshu({ size = 13 }: { size?: number }) {
+  return (
+    <Image
+      className="ui-icon"
+      src={Xiaohongshupng}
       style={{ width: `${size}px`, height: `${size}px` }}
       mode="aspectFit"
       ariaHidden

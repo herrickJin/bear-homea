@@ -41,5 +41,18 @@ const names = [
         .toFile(path.join(dir, `${name}-${tone}.png`));
     }
   }
+
+  // 品牌标：小红书。官方字标（scripts/xiaohongshu.svg，Simple Icons 收录）反白
+  // 压在品牌红 #ff2442 圆角块上（App 图标形态）；品牌色固定，不走三色体系。
+  const brandSvg = await fs.readFile(path.resolve(__dirname, "xiaohongshu.svg"), "utf8");
+  const glyph = brandSvg.match(/ d="([^"]+)"/)?.[1];
+  if (!glyph) throw new Error("xiaohongshu.svg: path not found");
+  const xhsSvg =
+    `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="72" height="72">` +
+    `<rect width="24" height="24" rx="5.4" fill="#ff2442"/>` +
+    `<g transform="translate(3.36 3.36) scale(0.72)"><path d="${glyph}" fill="#fff"/></g>` +
+    `</svg>`;
+  await sharp(Buffer.from(xhsSvg)).png().toFile(path.join(dir, "Xiaohongshu.png"));
+
   console.log("Generated cross-platform PNG icons");
 })();

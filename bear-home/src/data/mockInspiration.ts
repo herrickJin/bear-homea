@@ -74,7 +74,7 @@ export const initialLinks: InspirationLink[] = [
     categoryIds: ["cat-living"],
     shotPath: null,
     shotTint: null,
-    source: "想法",
+    source: "笔记",
     status: "done",
     date: "2026-10-13",
   },
@@ -217,7 +217,7 @@ export function addLink(draft: SaveDraft): InspirationLink {
     categoryIds: [...draft.categoryIds],
     shotPath: draft.shotPath,
     shotTint: null,
-    source: draft.url ? hostnameOf(draft.url) : "想法",
+    source: draft.url ? hostnameOf(draft.url) : "笔记",
     status: draft.url ? "pending" : "done",
     date: new Date().toISOString().slice(0, 10),
   };
@@ -309,8 +309,11 @@ export function filterLinks(
   });
 }
 
-export function displayDate(date: string): string {
-  return date.slice(5).replace("-", ".");
+/** 日期展示：默认「10.11」；withYear 时带年份「2026.10.11」 */
+export function displayDate(date: string, withYear = false): string {
+  return withYear
+    ? date.replace(/-/g, ".")
+    : date.slice(5).replace("-", ".");
 }
 
 /** 状态文案：done 无标 */
@@ -324,9 +327,14 @@ export function statusLabel(status: LinkStatus): string | null {
   return map[status];
 }
 
+/** 是否小红书来源（卡片显示官方品牌标） */
+export function isXiaohongshu(source: string): boolean {
+  return source.includes("xiaohongshu");
+}
+
 /** 来源展示名：小红书用中文名，其余用域名 */
 export function sourceLabel(source: string): string {
-  return source.includes("xiaohongshu") ? "小红书" : source;
+  return isXiaohongshu(source) ? "小红书" : source;
 }
 
 /** 卡片/详情标题：备注 > 标题 > 待整理占位（不裸露 URL） */

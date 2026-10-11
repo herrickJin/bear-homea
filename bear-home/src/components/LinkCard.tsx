@@ -1,9 +1,10 @@
 import { Image, Text, View } from "@tarojs/components";
 import type { Category, InspirationLink } from "../data/mockInspiration";
-import { Bookmark } from "./Icons";
+import { Bookmark, Xiaohongshu } from "./Icons";
 import {
   displayDate,
   displayTitle,
+  isXiaohongshu,
   sourceLabel,
   statusLabel,
 } from "../data/mockInspiration";
@@ -23,6 +24,7 @@ export default function LinkCard({
   const status = statusLabel(link.status);
   const title = displayTitle(link);
   const isIdea = !link.url;
+  const isXhs = !isIdea && isXiaohongshu(link.source);
 
   return (
     <View
@@ -58,9 +60,15 @@ export default function LinkCard({
       )}
       <View className="ui-div link-meta">
         <Text className="ui-time">
-          {sourceLabel(link.source)} · {displayDate(link.date)}
+          {displayDate(link.date, true)}
           {status ? ` · ${status}` : ""}
         </Text>
+        <View className="ui-div link-src">
+          {isXhs && <Xiaohongshu size={13} />}
+          <Text className="ui-src">
+            {isIdea ? "笔记" : sourceLabel(link.source)}
+          </Text>
+        </View>
       </View>
     </View>
   );

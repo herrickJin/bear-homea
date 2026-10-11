@@ -521,6 +521,7 @@
   color: var(--c-ink);
   flex: 1;
   overflow-wrap: anywhere;
+  margin-bottom: var(--sp-4);
 }
 
 .detail-edit-hint {
@@ -573,13 +574,13 @@
   font-size: var(--fs-sm);
   color: var(--c-ink-2);
   line-height: var(--lh-loose);
-  margin-bottom: var(--sp-4);
+  margin-bottom: var(--sp-5);
   overflow-wrap: anywhere;
 }
 
-/* 详情标签：统一胶囊规格（此前 tag-chip 与 chip 大小混排、间距过挤） */
+/* 详情标签：统一胶囊规格，标签之间留足间距 */
 .detail-tags {
-  gap: var(--sp-2);
+  gap: var(--sp-3);
   margin-bottom: var(--sp-4);
 }
 

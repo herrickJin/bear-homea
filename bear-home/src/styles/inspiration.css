@@ -159,7 +159,8 @@
 }
 
 /* ===== 添加想法：右下角圆形悬浮钮（小红书发布键的对应物）=====
-   仍走零阴影平面规则：纯苔绿圆 + 白加号；手机端抬高避开底导 */
+   仍走零阴影平面规则：纯陶橘圆 + 白加号；手机端抬高避开底导。
+   不挂 primary 类——其圆角/苔绿定义在本文件之后，级联上会盖掉 fab */
 .ui-button.fab {
   position: fixed;
   right: 21px;
@@ -171,6 +172,19 @@
   min-height: 0;
   padding: 0;
   border-radius: 50%;
+  color: var(--c-on-primary);
+  background: var(--c-clay);
+}
+
+.ui-button.fab:active {
+  background: var(--c-clay-deep);
+  transform: scale(0.98);
+}
+
+@media (hover: hover) {
+  .ui-button.fab:hover {
+    background: var(--c-clay-deep);
+  }
 }
 
 @media (max-width: 700px) {
@@ -322,10 +336,11 @@
   border-radius: var(--r-xs);
 }
 
+/* 来源行：「小红书 · 日期（· 状态）」右对齐（打开动作收进详情弹层） */
 .link-meta {
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  justify-content: flex-end;
   gap: var(--sp-2);
   margin-top: var(--sp-2);
 }
@@ -336,22 +351,6 @@
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-}
-
-/* 打开：纯文字链接 */
-.ui-button.link-open {
-  flex-shrink: 0;
-  color: var(--c-primary);
-  font-size: var(--fs-2xs);
-  min-height: 30px;
-  padding: 0 2px;
-  border-radius: var(--r-xs);
-}
-
-@media (hover: hover) {
-  .ui-button.link-open:hover {
-    color: var(--c-primary-deep);
-  }
 }
 
 /* ===== 详情页：小红书笔记详情式覆盖层 =====
@@ -1267,7 +1266,8 @@
     height: 100%;
     object-fit: contain;
   }
-  /* 顶部作者栏：XHS 式置顶 sticky（来源 + 打开原文），scroll 内作者行隐藏 */
+  /* 顶部作者栏：XHS 式置顶 sticky（来源 + 打开原文），scroll 内作者行隐藏。
+     固定高 52 = 关闭钮 36 + 上下 8，悬浮关闭钮与行严格垂直居中 */
   .detail-topbar {
     display: flex;
     align-items: center;
@@ -1276,9 +1276,18 @@
     top: 0;
     z-index: 3;
     flex-shrink: 0;
-    padding: 8px 12px 8px 56px; /* 左侧让位给悬浮关闭钮 */
+    height: 52px;
+    padding: 0 12px 0 56px; /* 左侧让位给悬浮关闭钮 */
     background: var(--c-surface);
     border-bottom: 1px solid var(--c-line);
+  }
+  .detail-sheet .ui-button.detail-close {
+    top: 8px;
+    left: 8px;
+  }
+  .detail-sheet.no-media .ui-button.detail-close {
+    left: auto;
+    right: 8px;
   }
   .detail-scroll .detail-author-row {
     display: none;

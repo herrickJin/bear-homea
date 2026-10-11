@@ -7,6 +7,7 @@ import CategoryTabs from "../../components/CategoryTabs";
 import SearchBar from "../../components/SearchBar";
 import SaveSheet from "../../components/SaveSheet";
 import CategoryManager from "../../components/CategoryManager";
+import LinkDetailSheet from "../../components/LinkDetailSheet";
 import Bear from "../../components/Bear";
 import { Plus } from "../../components/Icons";
 import * as inspiration from "../../services/inspiration";
@@ -26,6 +27,8 @@ export default function Page() {
   const [query, setQuery] = useState("");
   const [saveOpen, setSaveOpen] = useState(false);
   const [manageOpen, setManageOpen] = useState(false);
+  // 详情弹层：原地渲染，不走路由（小红书式，列表保持在背后）
+  const [activeLink, setActiveLink] = useState<InspirationLink | null>(null);
 
   const refresh = useCallback(async () => {
     try {
@@ -115,7 +118,7 @@ export default function Page() {
   }
 
   function openDetail(link: InspirationLink) {
-    Taro.navigateTo({ url: `/pages/inspiration-detail/index?id=${link.id}` });
+    setActiveLink(link);
   }
 
   function copyLink(link: InspirationLink) {
@@ -206,6 +209,18 @@ export default function Page() {
       >
         <Plus size={24} tone="white" />
       </Button>
+      {activeLink && (
+        <LinkDetailSheet
+          link={activeLink}
+          categories={categories}
+          onClose={() => setActiveLink(null)}
+          onChange={(next) =>
+            setLinks((prev) =>
+              prev.map((l) => (l.id === next.id ? next : l)),
+            )
+          }
+        />
+      )}
       <SaveSheet
         open={saveOpen}
         categories={categories}

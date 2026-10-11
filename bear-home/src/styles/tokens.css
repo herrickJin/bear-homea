@@ -53,11 +53,11 @@ page,
   --fs-md: 16px; /* 强调正文 / 输入框 */
   --fs-lg: 20px; /* 卡片标题 / 品牌名 */
   --fs-xl: 26px; /* 手机页标题 */
-  --fs-2xl: 34px; /* 桌面页标题 */
+  --fs-2xl: 30px; /* 桌面页标题 */
 
   --fw-regular: 400;
   --fw-medium: 500;
-  --fw-display: 700; /* serif Display（宋体粗一档即成型） */
+  --fw-display: 400; /* serif Display：宋体常规即挺括，粗宋易笨（品牌字标/页标题） */
 
   --lh-display: 1.2;
   --lh-tight: 1.4;

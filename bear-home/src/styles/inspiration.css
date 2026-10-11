@@ -223,9 +223,9 @@
   transition: color var(--dur-fast) var(--ease-out);
 }
 
-/* 纯想法：蜜色语录卡（小红书文字卡的对应物） */
+/* 纯想法：蜜色语录卡（小红书文字卡的对应物）——高度随内容收缩，不撑满比例 */
 .idea-quote {
-  aspect-ratio: 3 / 4;
+  min-height: 140px;
   background: var(--c-honey-mist);
   border-radius: var(--r-md);
   padding: var(--sp-4);
@@ -235,7 +235,7 @@
 
 .idea-mark {
   font-family: var(--font-serif);
-  font-size: 40px;
+  font-size: 28px;
   line-height: 1;
   color: var(--c-honey);
 }

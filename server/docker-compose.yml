@@ -24,6 +24,8 @@ services:
       - BEAR_HOME_DOMAIN=${BEAR_HOME_DOMAIN:-:80}
     volumes:
       - ./Caddyfile:/etc/caddy/Caddyfile:ro
+      # 前端静态产物（本机构建后 rsync 到 ./web），由 Caddy 直接托管
+      - ./web:/srv/web:ro
       - caddy_data:/data
       - caddy_config:/config
     depends_on:

@@ -1,3 +1,23 @@
 {$BEAR_HOME_DOMAIN} {
-	reverse_proxy server:8787
+	encode gzip
+
+	# 后端：API / 上传文件读取 / MCP（Agent 接入）
+	handle /api/* {
+		reverse_proxy server:8787
+	}
+	handle /files/* {
+		reverse_proxy server:8787
+	}
+	handle /mcp* {
+		reverse_proxy server:8787
+	}
+
+	# 前端：Taro H5 构建产物（hash 路由，bind mount ./web）
+	# /static/* 文件名带内容 hash，可长缓存；index.html 不缓存
+	handle {
+		root * /srv/web
+		header /static/* Cache-Control "public, max-age=31536000, immutable"
+		try_files {path} /index.html
+		file_server
+	}
 }

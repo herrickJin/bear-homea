@@ -428,6 +428,7 @@
 
 .idea-dash {
   margin-top: auto;
+  align-self: flex-end; /* 沉右下，与左上引号成对角 */
   width: 24px;
   height: 3px;
   border-radius: var(--r-pill);

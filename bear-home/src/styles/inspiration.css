@@ -157,12 +157,12 @@
 
 /* ===== 画廊图块 ===== */
 
-/* 图块网格：手机双列，≥700 两列加大间距，≥1100 三列 */
+/* 图块网格：手机双列，≥700 两列加大间距，≥1100 三列。
+   默认 stretch：同行卡片等高——图片卡定高，想法卡拉满为完整展签板 */
 .link-list {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: var(--sp-5) var(--sp-3);
-  align-items: start; /* 想法卡不被拉伸到图片卡等高 */
 }
 
 /* 有图图块：图片通栏置顶，无框无底，文字挂在图下 */
@@ -278,13 +278,14 @@
   }
 }
 
-/* 纯想法（无链接无图）：白底 hairline「展签板」——与图片图块同比例，网格节奏一致 */
+/* 纯想法（无链接无图）：白底 hairline「展签板」——同行内与图片卡等高（stretch），
+   纯想法行的兜底高度 180px；文字组垂直居中、meta 沉底 */
 .link-card.card-idea {
   background: var(--c-surface);
   border: 1px solid var(--c-line);
   border-radius: var(--r-md);
   padding: var(--sp-4);
-  aspect-ratio: 4 / 3;
+  min-height: 180px;
 }
 
 .link-card.card-idea .link-body {
@@ -295,6 +296,7 @@
 
 .link-card.card-idea .link-note {
   font-size: var(--fs-base);
+  margin-top: auto;
 }
 
 .link-card.card-idea .link-meta {

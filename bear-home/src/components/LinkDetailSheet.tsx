@@ -271,23 +271,25 @@ export default function LinkDetailSheet({
           </View>
 
           <View className="ui-div note-add">
-            <Textarea
-              className="note-input"
-              value={noteDraft}
-              placeholder="补充一条备注…"
-              placeholderClass="search-placeholder"
-              maxlength={500}
-              autoHeight
-              onInput={(e) => setNoteDraft(e.detail.value)}
-            />
-            <Button
-              ariaRole="button"
-              className={`ui-button ${`primary note-send${noteDraft.trim() ? "" : " disabled"}`}`}
-              disabled={!noteDraft.trim()}
-              onClick={addNote}
-            >
-              发送
-            </Button>
+            <View className="ui-div note-box">
+              <Textarea
+                className="note-input"
+                value={noteDraft}
+                placeholder="补充一条备注…"
+                placeholderClass="search-placeholder"
+                maxlength={500}
+                autoHeight
+                onInput={(e) => setNoteDraft(e.detail.value)}
+              />
+              <Button
+                ariaRole="button"
+                className={`ui-button ${`primary note-send${noteDraft.trim() ? "" : " disabled"}`}`}
+                disabled={!noteDraft.trim()}
+                onClick={addNote}
+              >
+                发送
+              </Button>
+            </View>
           </View>
         </View>
       </View>

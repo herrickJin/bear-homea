@@ -618,39 +618,44 @@
   color: var(--c-faint);
 }
 
-/* 底部输入条：固定在文区底部（XHS 评论输入位），无边框浅灰大圆角框 */
+/* 底部输入条：固定在文区底部（XHS 评论输入位）。
+   输入框 = 浅灰大圆角容器，textarea 透明无边框，发送钮常驻框内右下角 */
 .note-add {
   flex-shrink: 0;
-  display: flex;
-  gap: var(--sp-3);
-  align-items: flex-end;
   padding: var(--sp-3) var(--sp-6) var(--sp-4);
   background: var(--c-surface);
   border-top: 1px solid var(--c-line);
 }
 
+.note-box {
+  display: flex;
+  align-items: flex-end;
+  gap: var(--sp-2);
+  background: var(--c-bg-deep);
+  border-radius: var(--r-lg);
+  padding: var(--sp-1) var(--sp-1) var(--sp-1) var(--sp-3);
+}
+
 .note-input {
   flex: 1;
   min-width: 0;
-  min-height: 44px;
-  max-height: 132px;
+  min-height: 32px;
+  max-height: 120px;
   display: flex;
   align-items: center;
-  border: 0;
-  background: var(--c-bg-deep);
-  border-radius: var(--r-lg);
-  padding: var(--sp-2) var(--sp-3);
+  background: transparent;
+  padding: 2px 0;
   font-size: var(--fs-sm);
   color: var(--c-ink);
 }
 
-/* 发送：苔绿胶囊（XHS 发送键位），无输入时灰禁用 */
+/* 发送：苔绿小圆角钮（XHS 发送键位），多行时随底边下沉；空输入灰禁用 */
 .ui-button.note-send {
   flex-shrink: 0;
-  min-height: 36px;
-  padding: 0 var(--sp-4);
-  border-radius: var(--r-pill);
-  font-size: var(--fs-sm);
+  min-height: 32px;
+  padding: 0 var(--sp-3);
+  border-radius: var(--r-md);
+  font-size: var(--fs-xs);
 }
 
 /* 内层原生 textarea 继承字号（≥16px 防 iOS 缩放），高度自适应；去掉拖拽角标 */

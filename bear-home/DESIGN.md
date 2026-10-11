@@ -176,8 +176,8 @@ PNG 三色（green `#356d5b` / muted / white）由 `scripts/generate-icons.cjs` 
      苔绿胶囊占关注位）→ serif 标题（可编辑）→ 正文摘要（平铺）→ 标签胶囊 →
      灰色日期（XHS 日期位）→ hairline → 「共 N 条备注」（评论区对应物）；
      右栏分上下两段：上段滚动（`.detail-scroll`），**备注输入条固定底部**——
-     无边框浅灰大圆角框（r-lg、44px 高、去 resize 角标）+「发送」苔绿胶囊
-     （空输入灰禁用），对应 XHS 评论输入位。
+     浅灰大圆角容器（r-lg）内嵌透明 textarea +「发送」苔绿小圆角钮
+     （常驻框内右下角，多行随底边下沉，空输入灰禁用），对应 XHS 评论输入位。
    - Taro 坑：H5 Image aspectFit 内层 img 绝对定位，容器 height:auto 塌 0——
      窄屏用 `widthFix`（按 `window.innerWidth > 700` 切换 mode）。
 8. 占位块仍中性井底 + 弱图标；整体仍无边框、无阴影、零渐变（语录卡蜜雾底除外）。

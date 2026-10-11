@@ -124,13 +124,13 @@ page {
   outline-offset: 3px;
 }
 
-/* 小主按钮（顶栏「收藏」、空态动作） */
+/* 小主按钮（页首动作、空态动作） */
 .ui-button.primary {
   display: inline-flex;
   align-items: center;
   justify-content: center;
   gap: var(--sp-1);
-  min-height: 38px;
+  min-height: 34px;
   border-radius: var(--r-md);
   padding: 0 var(--sp-4);
   font-size: var(--fs-sm);

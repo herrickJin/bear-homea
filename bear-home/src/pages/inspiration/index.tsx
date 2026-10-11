@@ -177,7 +177,7 @@ export default function Page() {
           </View>
           <View className="ui-p">
             {links.length === 0
-              ? "小红书里点「分享 → 复制链接」，回来点右上角「收藏」。"
+              ? "小红书里点「分享 → 复制链接」，回来点右上角「添加想法」。"
               : "换个分类，或清空搜索看看。"}
           </View>
         </View>
@@ -194,7 +194,7 @@ export default function Page() {
           className="ui-button primary"
           onClick={() => setSaveOpen(true)}
         >
-          <Plus size={16} tone="white" /> 收藏
+          <Plus size={16} tone="white" /> 添加想法
         </Button>
       }
     >

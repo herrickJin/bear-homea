@@ -8,6 +8,7 @@ import { entries } from "./routes/entries.js";
 import { links } from "./routes/links.js";
 import { categories } from "./routes/categories.js";
 import { files, uploads } from "./routes/uploads.js";
+import { chat } from "./routes/chat.js";
 
 // CORS 白名单：环境变量里的精确来源（默认含 vite 5173），
 // 外加本机/局域网 http 来源（手机连同一 Wi-Fi 调试 H5 的场景）。
@@ -48,6 +49,7 @@ app.route("/api/entries", entries);
 app.route("/api/links", links);
 app.route("/api/categories", categories);
 app.route("/api/uploads", uploads);
+app.route("/api/chat", chat);
 app.route("/mcp", mcpApp);
 
 // 文件读取免鉴权：UUID 不可枚举即为凭证（capability URL）

@@ -72,6 +72,29 @@ export const statements = [
     size INTEGER NOT NULL,
     created_at TEXT NOT NULL
   )`,
+
+  // AI 助手会话（/api/chat）。context 存发起页注入的客户端上下文 JSON（当前页/选中条目）
+  `CREATE TABLE IF NOT EXISTS chat_sessions (
+    id TEXT PRIMARY KEY,
+    title TEXT NOT NULL DEFAULT '',
+    context TEXT,
+    created_at TEXT NOT NULL,
+    updated_at TEXT NOT NULL
+  )`,
+
+  // 会话消息。role=tool 的消息由 assistant 的 tool_calls 触发，
+  // tool_call_id / name 对应 OpenAI 工具调用协议；content 统一存文本。
+  `CREATE TABLE IF NOT EXISTS chat_messages (
+    id TEXT PRIMARY KEY,
+    session_id TEXT NOT NULL,
+    role TEXT NOT NULL CHECK (role IN ('user', 'assistant', 'tool')),
+    content TEXT NOT NULL DEFAULT '',
+    tool_calls TEXT,
+    tool_call_id TEXT,
+    name TEXT,
+    created_at TEXT NOT NULL
+  )`,
+  `CREATE INDEX IF NOT EXISTS chat_messages_session_idx ON chat_messages(session_id, created_at)`,
 ];
 
 export type EntryRow = {
@@ -121,5 +144,24 @@ export type FileRow = {
   ext: string;
   mime_type: string;
   size: number;
+  created_at: string;
+};
+
+export type ChatSessionRow = {
+  id: string;
+  title: string;
+  context: string | null;
+  created_at: string;
+  updated_at: string;
+};
+
+export type ChatMessageRow = {
+  id: string;
+  session_id: string;
+  role: "user" | "assistant" | "tool";
+  content: string;
+  tool_calls: string | null;
+  tool_call_id: string | null;
+  name: string | null;
   created_at: string;
 };

@@ -50,9 +50,21 @@ sudo chown "$(id -un):$(id -gn)" "$DEST/bear-home-$STAMP.db"
 sudo tar -czf "$DEST/files-$STAMP.tar.gz" -C "$DATA" files
 sudo chown "$(id -un):$(id -gn)" "$DEST/files-$STAMP.tar.gz"
 
-# 3) 滚动保留最近 KEEP 份
+# 3) Hermes 的记忆与技能目录（启用 hermes profile 后才存在；没有则跳过）
+HERMES_DATA="${HERMES_DATA:-$HOME/bear-home-server/hermes-data}"
+if [ -d "$HERMES_DATA" ]; then
+  # agent 可能在写文件：GNU tar 会报 file changed 并以非零码退出——产物保留但告警
+  if sudo tar -czf "$DEST/hermes-$STAMP.tar.gz" -C "$HERMES_DATA" .; then
+    sudo chown "$(id -un):$(id -gn)" "$DEST/hermes-$STAMP.tar.gz"
+  else
+    echo "警告：hermes-data 打包期间文件有变动（agent 运行中），产物可能不完整"
+  fi
+fi
+
+# 4) 滚动保留最近 KEEP 份
 ls -1t "$DEST"/bear-home-*.db 2>/dev/null | tail -n +$((KEEP + 1)) | xargs -r rm -f || true
 ls -1t "$DEST"/files-*.tar.gz 2>/dev/null | tail -n +$((KEEP + 1)) | xargs -r rm -f || true
+ls -1t "$DEST"/hermes-*.tar.gz 2>/dev/null | tail -n +$((KEEP + 1)) | xargs -r rm -f || true
 
 echo "备份完成 → $DEST（保留 $KEEP 份）"
 ls -lht "$DEST" | head -5

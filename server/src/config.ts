@@ -24,10 +24,23 @@ function required(name: string): string {
 
 const dataDir = path.resolve(process.env.DATA_DIR ?? "./data");
 
-export const config = {
-  port: Number(process.env.PORT ?? 8787),
-  token: required("BEAR_HOME_TOKEN"),
-  dataDir,
-  filesDir: path.join(dataDir, "files"),
-  maxUploadBytes: 50 * 1024 * 1024,
-};
+export const config = (() => {
+  // AI 助手（/api/chat）：OpenAI 兼容端点，默认智谱。未配 AI_API_KEY 时
+  // 聊天路由返回 503，其余功能不受影响。
+  const toolRounds = Number(process.env.AI_MAX_TOOL_ROUNDS ?? 6);
+  const ai = {
+    apiKey: process.env.AI_API_KEY ?? "",
+    apiBase: process.env.AI_API_BASE ?? "https://open.bigmodel.cn/api/paas/v4",
+    model: process.env.AI_CHAT_MODEL ?? "glm-4-flash",
+    maxToolRounds:
+      Number.isFinite(toolRounds) && toolRounds >= 1 ? Math.floor(toolRounds) : 6,
+  };
+  return {
+    port: Number(process.env.PORT ?? 8787),
+    token: required("BEAR_HOME_TOKEN"),
+    dataDir,
+    filesDir: path.join(dataDir, "files"),
+    maxUploadBytes: 50 * 1024 * 1024,
+    ai,
+  };
+})();

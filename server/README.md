@@ -10,6 +10,7 @@
 | `/api/uploads` | 图片/文件上传（multipart），内容落盘 `DATA_DIR/files/`，元数据入库 |
 | `/files/:id.ext` | 文件读取，免鉴权（UUID 不可枚举即凭证），长缓存 |
 | `/api/links` | 第三方链接（小红书等）收藏；`status` 字段即处理队列：`pending → processing → done/failed` |
+| `/api/chat` | AI 助手（装修记录探讨）：OpenAI 兼容端点（默认智谱）+ 内部工具循环 + 会话持久化；配 `AI_API_KEY` 即启用，未配返回 503 |
 | `/mcp` | MCP Server（Streamable HTTP，无状态模式），把上述能力暴露为工具给 Agent |
 
 鉴权：除 `/api/health`、`/`、`/files/*` 外全部要求 `Authorization: Bearer <BEAR_HOME_TOKEN>`。
@@ -35,23 +36,36 @@ curl -s -X POST localhost:8787/api/links -H "Authorization: Bearer $TOKEN" \
   -H "Content-Type: application/json" -d '{"url":"https://www.xiaohongshu.com/explore/xxx"}'
 ```
 
+## AI 助手（/api/chat）
+
+`.env` 配 `AI_API_KEY`（智谱等 OpenAI 兼容端点的 Key）即启用。本地没有 Key 时用假 LLM 联调：
+
+```sh
+node scripts/mock-llm.mjs 9393            # 假 LLM（含工具调用剧本）
+AI_API_KEY=mock AI_API_BASE=http://localhost:9393/v1 npm run dev
+curl -N -X POST localhost:8787/api/chat/stream -H "Authorization: Bearer $TOKEN" \
+  -H "Content-Type: application/json" \
+  -d '{"message":"帮我把这个记下来：橱柜铰链选百隆","context":{"page":"record"}}'
+```
+
+接口契约、工具面与 UI 接入点见 `.task-docs/08-ai-assistant.md`。
+
 ## MCP（给 Hermes / 其他 Agent 接入）
 
 Streamable HTTP 端点 `http://<host>:8787/mcp`，请求头带 `Authorization: Bearer <token>`。
 工具清单：`list_entries` / `search_entries` / `get_entry` / `create_entry` /
 `list_links` / `get_link` / `save_link` / `update_link`。
 
-Hermes 侧配置示例（MCP server 类型，remote HTTP）：
+Hermes 容器部署（compose `profiles: ["hermes"]`，默认不启动）与配置见
+[deploy/hermes/README.md](./deploy/hermes/README.md)；MCP 配置写法：
 
-```json
-{
-  "mcpServers": {
-    "bear-home": {
-      "url": "http://server:8787/mcp",
-      "headers": { "Authorization": "Bearer <token>" }
-    }
-  }
-}
+```yaml
+# ~/.hermes/config.yaml
+mcp_servers:
+  bear-home:
+    url: "http://server:8787/mcp"
+    headers:
+      Authorization: "Bearer ${BEAR_HOME_TOKEN}"
 ```
 
 链接处理约定（Agent 的标准流程）：

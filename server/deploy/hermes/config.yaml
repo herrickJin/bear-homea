@@ -1,0 +1,29 @@
+# Hermes Agent 配置（部署时只读挂载为容器内 /root/.hermes/config.yaml）
+#
+# 密钥一律放 ~/.hermes/.env（容器内），不进 git、不写在本文件：
+#   OPENAI_API_KEY=<智谱 Key>   —— OpenAI 兼容端点用该变量鉴权
+#   HERMES_TIMEZONE=Asia/Shanghai
+# 首次部署与验证流程：deploy/hermes/README.md
+#
+# 模型选择：首次向导（hermes setup）里选 OpenAI 兼容/自定义端点，指向智谱：
+#   base_url: https://open.bigmodel.cn/api/paas/v4
+#   model:    glm-4-flash（免费档，支持工具调用；可换 glm-4.6 等更强的）
+# 向导之后可用 `hermes model` 交互调整。国内服务器只有智谱可达（OpenAI 不可达）。
+
+# 熊熊之家的数据面：server 暴露的 MCP（compose 内网服务名 server，端口 8787）
+mcp_servers:
+  bear-home:
+    url: "http://server:8787/mcp"
+    headers:
+      Authorization: "Bearer ${BEAR_HOME_TOKEN}"
+    tools:
+      # 8 个工具全开；要收紧就改 include 列表（include 优先于 exclude）
+      include:
+        - list_entries
+        - search_entries
+        - get_entry
+        - create_entry
+        - list_links
+        - get_link
+        - save_link
+        - update_link

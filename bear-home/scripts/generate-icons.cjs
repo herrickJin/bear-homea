@@ -17,6 +17,7 @@ const names = [
   "LayoutGrid",
   "Plus",
   "Search",
+  "Send",
   "Settings2",
   "Sparkles",
   "Wallet",

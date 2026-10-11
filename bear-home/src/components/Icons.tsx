@@ -35,6 +35,9 @@ import Pluswhite from "../assets/icons/Plus-white.png";
 import Searchgreen from "../assets/icons/Search-green.png";
 import Searchmuted from "../assets/icons/Search-muted.png";
 import Searchwhite from "../assets/icons/Search-white.png";
+import Sendgreen from "../assets/icons/Send-green.png";
+import Sendmuted from "../assets/icons/Send-muted.png";
+import Sendwhite from "../assets/icons/Send-white.png";
 import Settings2green from "../assets/icons/Settings2-green.png";
 import Settings2muted from "../assets/icons/Settings2-muted.png";
 import Settings2white from "../assets/icons/Settings2-white.png";
@@ -279,6 +282,18 @@ export function Search({ size = 20, tone = "green" }: IconProps) {
     muted: Searchmuted,
     white: Searchwhite,
   };
+  return (
+    <Image
+      className="ui-icon"
+      src={sources[tone]}
+      style={{ width: `${size}px`, height: `${size}px` }}
+      mode="aspectFit"
+      ariaHidden
+    />
+  );
+}
+export function Send({ size = 20, tone = "green" }: IconProps) {
+  const sources = { green: Sendgreen, muted: Sendmuted, white: Sendwhite };
   return (
     <Image
       className="ui-icon"

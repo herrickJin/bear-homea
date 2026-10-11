@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import Taro from "@tarojs/taro";
 import { Button, Image, Text, Textarea, View } from "@tarojs/components";
-import { Plus, X } from "./Icons";
+import { Plus, Send, X } from "./Icons";
 import * as inspiration from "../services/inspiration";
 import type { Category, InspirationLink } from "../services/inspiration";
 import {
@@ -32,7 +32,7 @@ export default function LinkDetailSheet({
   const [draftNote, setDraftNote] = useState("");
   const [addingTag, setAddingTag] = useState(false);
   const [noteDraft, setNoteDraft] = useState("");
-  // 宽屏 sheet 定高 contain（aspectFit）；窄屏/小程序自然高度（widthFix，
+  // 宽屏图区 cover 填满不露黑边；窄屏/小程序自然高度（widthFix，
   // H5 的 aspectFit 内层 img 是绝对定位，容器 height:auto 会塌成 0）
   const [isWide, setIsWide] = useState(process.env.TARO_ENV !== "h5");
 
@@ -140,11 +140,11 @@ export default function LinkDetailSheet({
         </Button>
         {shot && (
           <View className="ui-div detail-media">
-            <Image
-              className="detail-shot"
-              src={shot}
-              mode={isWide ? "aspectFit" : "widthFix"}
-            />
+              <Image
+                className="detail-shot"
+                src={shot}
+                mode={isWide ? "aspectFill" : "widthFix"}
+              />
           </View>
         )}
         <View className="ui-div detail-body">
@@ -283,11 +283,12 @@ export default function LinkDetailSheet({
               />
               <Button
                 ariaRole="button"
+                ariaLabel="发送备注"
                 className={`ui-button ${`primary note-send${noteDraft.trim() ? "" : " disabled"}`}`}
                 disabled={!noteDraft.trim()}
                 onClick={addNote}
               >
-                发送
+                <Send size={15} tone="white" />
               </Button>
             </View>
           </View>

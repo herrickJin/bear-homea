@@ -27,7 +27,7 @@
     margin-bottom: 0;
   }
   .insp-toolbar .search-bar {
-    width: 300px;
+    width: 280px;
     flex-shrink: 0;
     margin-bottom: 0;
   }
@@ -106,7 +106,7 @@
   background: var(--c-bg-deep);
   border: 1px solid var(--c-line);
   border-radius: var(--r-sm);
-  padding: var(--sp-2) var(--sp-3);
+  padding: var(--sp-1) var(--sp-3);
   margin-bottom: var(--sp-4);
   transition:
     border-color var(--dur-fast) var(--ease-out),
@@ -123,7 +123,7 @@
   min-width: 0;
   display: flex;
   align-items: center;
-  height: 32px;
+  height: 24px;
   /* iOS Safari：聚焦时字号 <16px 会自动放大页面，必须 ≥16px */
   font-size: var(--fs-md);
   color: var(--c-ink);
@@ -277,21 +277,27 @@
   }
 }
 
-/* 纯想法（无链接无图）：白底 hairline 文字块，与图块同一中性问题 */
+/* 纯想法（无链接无图）：白底 hairline「展签板」——与图片图块同比例，网格节奏一致 */
 .link-card.card-idea {
   background: var(--c-surface);
   border: 1px solid var(--c-line);
   border-radius: var(--r-md);
   padding: var(--sp-4);
+  aspect-ratio: 4 / 3;
 }
 
 .link-card.card-idea .link-body {
   padding: 0;
   gap: var(--sp-2);
+  flex: 1;
 }
 
 .link-card.card-idea .link-note {
   font-size: var(--fs-base);
+}
+
+.link-card.card-idea .link-meta {
+  margin-top: auto;
 }
 
 /* ===== 详情页 ===== */

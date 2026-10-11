@@ -38,11 +38,11 @@
   }
 }
 
-/* ===== 空间分页签：文字页签，选中 = 苔绿 + 下划线 ===== */
+/* ===== 空间分页签：小红书式胶囊，选中 = 浅苔底 ===== */
 
 .cat-tabs {
   display: flex;
-  gap: var(--sp-4);
+  gap: var(--sp-2);
   overflow-x: auto;
   margin-bottom: var(--sp-3);
   -webkit-overflow-scrolling: touch;
@@ -52,17 +52,19 @@
   flex-shrink: 0;
   background: transparent;
   border: 0;
-  border-bottom: 2px solid transparent;
   color: var(--c-mute);
-  border-radius: 0;
-  padding: var(--sp-2) 2px;
+  border-radius: var(--r-pill);
+  padding: var(--sp-1) var(--sp-3);
   font-size: var(--fs-base);
-  min-height: 44px;
+  min-height: 36px;
+  transition:
+    background-color var(--dur-fast) var(--ease-out),
+    color var(--dur-fast) var(--ease-out);
 }
 
 .ui-button.cat-tab.active {
-  border-bottom-color: var(--c-primary);
-  color: var(--c-primary);
+  background: var(--c-primary-soft);
+  color: var(--c-primary-deep);
 }
 
 @media (hover: hover) {
@@ -70,7 +72,7 @@
     color: var(--c-ink);
   }
   .ui-button.cat-tab.active:hover {
-    color: var(--c-primary);
+    color: var(--c-primary-deep);
   }
 }
 
@@ -182,15 +184,22 @@
   }
 }
 
-/* 封面：3:4 竖版 */
+/* 封面：自然比例（小红书式不裁切，瀑布流靠图高错落）；井底色兜底加载期 */
 .link-shot {
+  display: block;
   width: 100%;
-  aspect-ratio: 3 / 4;
+  min-height: 96px;
   height: auto;
+  background: var(--c-bg-deep);
   border-radius: var(--r-md);
   overflow: hidden;
   outline: var(--img-outline);
   outline-offset: -1px;
+}
+
+/* 无图占位：固定 3:4 形状，避免占位块坍成一条 */
+.shot-mock {
+  aspect-ratio: 3 / 4;
 }
 
 /* 无图占位：中性井底色块 */

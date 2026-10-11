@@ -41,7 +41,7 @@ export default function LinkCard({
         <Image
           className="link-shot"
           src={link.shotPath ?? link.coverUrl ?? ""}
-          mode="aspectFill"
+          mode="widthFix"
         />
       ) : link.shotTint ? (
         <View className={`ui-div ${`link-shot shot-mock shot-${link.shotTint}`}`}>

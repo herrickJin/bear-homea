@@ -187,6 +187,23 @@ export async function addNote(
   };
 }
 
+/** 删除单条方案（服务端连带清备注） */
+export async function deleteLink(id: string): Promise<void> {
+  if (!hasApi) return mock.deleteLink(id);
+  await apiRequest(`/api/links/${id}`, { method: "DELETE" });
+}
+
+/** 删除单条备注 */
+export async function deleteNote(
+  linkId: string,
+  noteId: string,
+): Promise<void> {
+  if (!hasApi) return mock.deleteNote(linkId, noteId);
+  await apiRequest(`/api/links/${linkId}/notes/${noteId}`, {
+    method: "DELETE",
+  });
+}
+
 export async function updateLink(
   id: string,
   patch: { note?: string | null; categoryIds?: string[] },

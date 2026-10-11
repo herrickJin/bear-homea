@@ -219,6 +219,10 @@ export default function Page() {
               prev.map((l) => (l.id === next.id ? next : l)),
             )
           }
+          onDeleted={(id) => {
+            setLinks((prev) => prev.filter((l) => l.id !== id));
+            setActiveLink(null);
+          }}
         />
       )}
       <SaveSheet

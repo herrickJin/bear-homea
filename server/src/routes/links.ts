@@ -238,8 +238,20 @@ links.post("/:id/notes", async (c) => {
   return c.json(note, 201);
 });
 
+links.delete("/:id/notes/:noteId", (c) => {
+  const { id, noteId } = c.req.param();
+  if (!getById(id)) return c.json({ error: "方案不存在" }, 404);
+  const info = db
+    .prepare(`DELETE FROM link_notes WHERE id = ? AND link_id = ?`)
+    .run(noteId, id);
+  if (!info.changes) return c.json({ error: "备注不存在" }, 404);
+  return c.json({ ok: true });
+});
+
 links.delete("/:id", (c) => {
-  const info = db.prepare(`DELETE FROM links WHERE id = ?`).run(c.req.param("id"));
-  if (!info.changes) return c.json({ error: "方案不存在" }, 404);
+  const id = c.req.param("id");
+  if (!getById(id)) return c.json({ error: "方案不存在" }, 404);
+  db.prepare(`DELETE FROM link_notes WHERE link_id = ?`).run(id);
+  db.prepare(`DELETE FROM links WHERE id = ?`).run(id);
   return c.json({ ok: true });
 });

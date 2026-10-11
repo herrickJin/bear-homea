@@ -17,6 +17,8 @@ interface LinkDetailSheetProps {
   onClose: () => void;
   /** 详情内编辑（要点/标签）后回传列表，保持两侧同步 */
   onChange: (link: InspirationLink) => void;
+  /** 方案被删除后通知外层（移出列表并关闭弹层） */
+  onDeleted: (id: string) => void;
 }
 
 /** 方案详情：小红书笔记详情式覆盖层。原地渲染在列表页上，不走路由。
@@ -26,6 +28,7 @@ export default function LinkDetailSheet({
   categories,
   onClose,
   onChange,
+  onDeleted,
 }: LinkDetailSheetProps) {
   const [link, setLink] = useState(initial);
   const [editing, setEditing] = useState(false);
@@ -126,6 +129,37 @@ export default function LinkDetailSheet({
     );
   }
 
+  function confirmDelete() {
+    Taro.showModal({
+      title: "删除这条方案？",
+      content: "删除后不可恢复",
+      confirmText: "删除",
+      confirmColor: "#cf7f63",
+      success: async (res) => {
+        if (!res.confirm) return;
+        try {
+          await inspiration.deleteLink(current.id);
+          Taro.showToast({ title: "已删除", icon: "none" });
+          onDeleted(current.id);
+        } catch {
+          Taro.showToast({ title: "没删成，请稍后再试", icon: "none" });
+        }
+      },
+    });
+  }
+
+  async function removeNote(noteId: string) {
+    try {
+      await inspiration.deleteNote(current.id, noteId);
+      apply({
+        ...current,
+        notes: (current.notes ?? []).filter((n) => n.id !== noteId),
+      });
+    } catch {
+      Taro.showToast({ title: "没删成，请稍后再试", icon: "none" });
+    }
+  }
+
   return (
     <View className="ui-div detail-overlay">
       <View className="detail-backdrop" onClick={onClose} />
@@ -203,10 +237,7 @@ export default function LinkDetailSheet({
                 </View>
               </View>
             ) : (
-              <View className="ui-a detail-note-row" onClick={startEdit}>
-                <View className="ui-h3 detail-note">{title}</View>
-                <Text className="ui-span detail-edit-hint">编辑</Text>
-              </View>
+              <View className="ui-h3 detail-note">{title}</View>
             )}
 
             {current.summary && (
@@ -246,7 +277,25 @@ export default function LinkDetailSheet({
               )}
             </View>
 
-            <Text className="detail-date">{displayDate(current.date)}</Text>
+            <View className="ui-div detail-date-row">
+              <Text className="detail-date">{displayDate(current.date)}</Text>
+              {!editing && (
+                <View className="ui-div detail-actions">
+                  <Text
+                    className="ui-span detail-edit-hint"
+                    onClick={startEdit}
+                  >
+                    编辑
+                  </Text>
+                  <Text
+                    className="ui-span detail-delete-hint"
+                    onClick={confirmDelete}
+                  >
+                    删除
+                  </Text>
+                </View>
+              )}
+            </View>
 
             <View className="detail-divider" />
 
@@ -260,6 +309,17 @@ export default function LinkDetailSheet({
                 <View className="ui-div note-item" key={n.id}>
                   <View className="ui-p note-body">{n.body}</View>
                   <Text className="ui-time note-date">{n.date}</Text>
+                  <Button
+                    ariaRole="button"
+                    ariaLabel="删除备注"
+                    className="ui-button note-del"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      removeNote(n.id);
+                    }}
+                  >
+                    <X size={11} tone="muted" />
+                  </Button>
                 </View>
               ))}
               {(link.notes ?? []).length === 0 && (

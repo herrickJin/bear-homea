@@ -527,7 +527,27 @@
   flex-shrink: 0;
   font-size: var(--fs-xs);
   color: var(--c-primary);
-  margin-top: 4px;
+}
+
+/* 标题行操作组：编辑（苔绿）+ 删除（陶橘警示） */
+.detail-actions {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-3);
+  flex-shrink: 0;
+}
+
+.detail-delete-hint {
+  flex-shrink: 0;
+  font-size: var(--fs-xs);
+  color: var(--c-clay);
+}
+
+@media (hover: hover) {
+  .detail-delete-hint:hover {
+    color: var(--c-clay);
+    opacity: 0.75;
+  }
 }
 
 @media (hover: hover) {
@@ -595,12 +615,19 @@
   margin: 0 0 var(--sp-4);
 }
 
-/* 日期：正文区末尾灰色小字（XHS 日期位） */
+/* 日期行：左日期，右「编辑 / 删除」操作组（XHS 日期 + … 同款位置） */
+.detail-date-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--sp-3);
+  margin: var(--sp-4) 0;
+}
+
 .detail-date {
-  display: block;
   font-size: var(--fs-xs);
   color: var(--c-faint);
-  margin: var(--sp-4) 0;
+  min-width: 0;
 }
 
 /* 打开原文：小苔绿圆角钮（XHS 关注键位）；H5 直跳，小程序复制链接 */
@@ -620,10 +647,35 @@
 }
 
 .note-item {
+  position: relative;
   background: var(--c-bg-deep);
   border-radius: var(--r-sm);
   padding: var(--sp-3);
+  padding-right: 32px; /* 右上删除钮位 */
   margin-bottom: var(--sp-2);
+}
+
+/* 备注删除：右上角小 X，常驻（弱化灰） */
+.ui-button.note-del {
+  position: absolute;
+  top: 6px;
+  right: 6px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 22px;
+  min-width: 22px;
+  height: 22px;
+  min-height: 0;
+  padding: 0;
+  border-radius: var(--r-xs);
+  background: transparent;
+}
+
+@media (hover: hover) {
+  .ui-button.note-del:hover {
+    background: var(--c-bg);
+  }
 }
 
 .note-body {

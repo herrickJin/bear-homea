@@ -77,6 +77,7 @@ export default function Page() {
         categories={categories}
         onClose={goBack}
         onChange={setLink}
+        onDeleted={goBack}
       />
     </Screen>
   );

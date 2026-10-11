@@ -243,6 +243,19 @@ export function updateLink(
   return { ...updated, categoryIds: [...updated.categoryIds] };
 }
 
+export function deleteLink(id: string): void {
+  links = links.filter((l) => l.id !== id);
+}
+
+/** 删除单条备注（时间线） */
+export function deleteNote(linkId: string, noteId: string): void {
+  links = links.map((l) =>
+    l.id === linkId
+      ? { ...l, notes: (l.notes ?? []).filter((n) => n.id !== noteId) }
+      : l,
+  );
+}
+
 export function addCategory(name: string): Category {
   const category: Category = {
     id: `cat-${Date.now()}`,

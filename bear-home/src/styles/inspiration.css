@@ -964,11 +964,11 @@
 
 /* ===== 响应式 ===== */
 
-/* 桌面三列瀑布流；详情居中窄栏 */
+/* 桌面四列瀑布流；详情居中窄栏 */
 @media (min-width: 1100px) {
   .link-list {
-    column-count: 3;
-    column-gap: var(--sp-5);
+    column-count: 4;
+    column-gap: var(--sp-4);
   }
   .detail-wrap {
     max-width: 760px;

@@ -78,3 +78,24 @@ health / 401 鉴权 / entries CRUD / 上传+读取 / 链接保存-去重-队列-
 6. 调试备忘：公网自测时 `grep TARO_APP_API_TOKEN .env` 会同时命中注释行、token 混入
    换行 → 请求头非法 → Go 400（不进 Caddy 访问日志，极具迷惑性）；务必
    `grep '^TARO_APP_API_TOKEN='`。
+
+## ✅ v0.3.0 前端上线（2026-10-12 凌晨）
+
+线上地址 **http://119.27.191.90**（同一地址：/ 是网页，/api /files /mcp 是后端）。
+
+- **git**：当前节点三连提交（笔记卡来源行+品牌标 / server 静态托管+备份脚本入库 /
+  release 文档）后打 tag **v0.3.0**（a052026）
+- **构建**：`bear-home` 的 `npm run build:h5` → `dist/h5`（1.2M，hash 路由、publicPath=/，
+  API 地址与 token 构建时注入，已验证落在 chunk/143.js / chunk/740.js）
+- **托管**：不装 nginx——服务器已有 Caddy，直接扩展：`./web` bind mount 进 caddy 容器
+  （`/srv/web`），`/api/*`、`/files/*`、`/mcp*` 反代 server:8787，其余路径静态 + SPA 兜底；
+  `/static/*` 文件名带 hash 长缓存一年 immutable，index.html 不缓存
+- **流程**：rsync `dist/h5/` → `~/bear-home-server/web/`（--delete 保持一致）+ 同步
+  Caddyfile/compose → `sudo docker compose up -d` 重建 caddy
+- **验证**：index 200（标题正确）、app.js 200、api/health 与 api/categories 200；
+  无头 Chrome 走公网实测：首页渲染 ✓、笔记页渲染出 8 个分类页签（数据来自线上 API）✓、
+  空态「剪贴簿还空着」✓（不再走 mock）
+- **后续发版**：改完前端 → build:h5 → `rsync -a --delete bear-home/dist/h5/ ubuntu@119.27.191.90:~/bear-home-server/web/` 即可；
+  改后端 → rsync server/ + `sudo docker compose up -d --build`（先跑备份脚本）
+- 注意：API token 打进了前端 JS 包（SPA 常态），泄露面=拿到包的人；自用可接受，
+  如泄露按 01 章流程轮换 .env 并重建前端

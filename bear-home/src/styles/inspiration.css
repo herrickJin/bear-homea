@@ -223,6 +223,17 @@
   aspect-ratio: 3 / 4;
 }
 
+/* 小红书式 hover：图微放大（不裁切容器，靠内层 img 缩放） */
+.link-shot img {
+  transition: transform var(--dur-base) var(--ease-out);
+}
+
+@media (hover: hover) {
+  .link-card:hover .link-shot img {
+    transform: scale(1.03);
+  }
+}
+
 /* 无图占位：中性井底色块 */
 .shot-mock {
   display: flex;
@@ -343,69 +354,115 @@
   }
 }
 
-/* ===== 详情页 ===== */
+/* ===== 详情页：小红书笔记详情式覆盖层 =====
+   桌面 = 暗背景 + 居中大圆角 sheet（左图右文，点背景/ESC 关闭）；
+   手机 = 全屏页（上图下文）。sheet 用设计系统唯一保留的 --shadow-sheet，
+   背板此处用半透明墨（XHS 弹层式透出列表）——覆盖层场景例外于纯色墨规则 */
 
-.detail-back {
-  display: inline-flex;
+.detail-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: var(--z-modal);
+  display: flex;
   align-items: center;
-  gap: 6px;
-  font-size: var(--fs-sm);
-  color: var(--c-mute);
-  margin-bottom: var(--sp-4);
-  min-height: 38px;
-  padding: 0 var(--sp-2);
-  border-radius: var(--r-sm);
+  justify-content: center;
+  padding: var(--sp-6);
+  background: rgba(31, 36, 33, 0.48);
+  animation: detail-in var(--dur-base) var(--ease-out);
 }
 
-@media (hover: hover) {
-  .detail-back:hover {
-    color: var(--c-primary);
+@keyframes detail-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
   }
 }
 
-.detail-hero {
-  position: relative;
-  margin-bottom: var(--sp-4);
-}
-
-.detail-hero .detail-shot {
-  margin-bottom: 0;
-}
-
-/* 悬浮原文胶囊：白底 + hairline，讨论时随手可点 */
-.detail-hero-link {
+/* 点背景关闭（桌面） */
+.detail-backdrop {
   position: absolute;
+  inset: 0;
+}
+
+.detail-sheet {
+  position: relative;
+  display: flex;
+  width: min(1060px, 100%);
+  max-height: min(86vh, 800px);
+  background: var(--c-surface);
+  border-radius: var(--r-xl);
+  overflow: hidden;
+  box-shadow: var(--shadow-sheet);
+  animation: detail-sheet-in var(--dur-base) var(--ease-out);
+}
+
+/* 无图方案：窄栏纯文 sheet */
+.detail-sheet.no-media {
+  width: min(680px, 100%);
+}
+
+@keyframes detail-sheet-in {
+  from {
+    transform: translateY(14px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+/* 关闭钮：桌面右上白圆 hairline；手机移到左上悬浮（见底部媒体查询） */
+.ui-button.detail-close {
+  position: absolute;
+  top: var(--sp-3);
   right: var(--sp-3);
-  bottom: var(--sp-3);
+  z-index: 2;
   display: inline-flex;
   align-items: center;
-  gap: 4px;
+  justify-content: center;
+  width: 34px;
+  min-width: 34px;
+  height: 34px;
+  min-height: 0;
+  padding: 0;
+  border-radius: 50%;
   background: var(--c-surface);
-  border: 1px solid var(--c-line-strong);
+  border: 1px solid var(--c-line);
   color: var(--c-ink);
-  font-size: var(--fs-xs);
-  padding: 6px var(--sp-3);
-  border-radius: var(--r-pill);
-  text-decoration: none;
-  min-height: 32px;
 }
 
 @media (hover: hover) {
-  .detail-hero-link:hover {
+  .ui-button.detail-close:hover {
     color: var(--c-primary);
     border-color: var(--c-primary-mid);
   }
 }
 
-.detail-shot {
+/* 图区：墨底衬整图（XHS 图区深色、contain 不裁切） */
+.detail-media {
+  width: 54%;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--c-ink);
+}
+
+.detail-media .detail-shot {
   width: 100%;
-  aspect-ratio: 3 / 2;
-  height: auto;
-  border-radius: var(--r-md);
-  overflow: hidden;
-  margin-bottom: var(--sp-4);
-  outline: var(--img-outline);
-  outline-offset: -1px;
+  height: 100%;
+  object-fit: contain;
+}
+
+/* 文区：滚动列（XHS 右栏：标题 → 正文 → 标签 → 作者行 → 评论） */
+.detail-body {
+  flex: 1;
+  min-width: 0;
+  overflow-y: auto;
+  padding: var(--sp-6);
 }
 
 .detail-note-row {
@@ -433,6 +490,12 @@
   margin-top: 4px;
 }
 
+@media (hover: hover) {
+  .detail-note-row:hover .detail-edit-hint {
+    color: var(--c-primary-deep);
+  }
+}
+
 .detail-edit {
   margin-bottom: var(--sp-3);
 }
@@ -445,8 +508,16 @@
   margin-top: var(--sp-3);
 }
 
+/* 正文摘要：平铺文字（XHS 正文位，不再垫井底块） */
+.detail-summary {
+  font-size: var(--fs-sm);
+  color: var(--c-ink-2);
+  line-height: var(--lh-loose);
+  margin-bottom: var(--sp-4);
+}
+
 .detail-tags {
-  margin-bottom: var(--sp-3);
+  margin-bottom: var(--sp-4);
 }
 
 .ui-button.tag-removable {
@@ -462,21 +533,41 @@
   }
 }
 
-.detail-meta {
-  font: var(--fs-2xs)/var(--lh-base) var(--font-mono);
-  color: var(--c-faint);
+/* 分割线：XHS 标签区与来源行之间 */
+.detail-divider {
+  height: 1px;
+  background: var(--c-line);
+  margin: 0 0 var(--sp-4);
+}
+
+/* 来源行：来源 · 日期 · 状态 左，打开原文钮右（XHS 关注键位） */
+.detail-meta-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--sp-3);
   margin-bottom: var(--sp-5);
 }
 
-/* 摘要：井底引文块 */
-.detail-summary {
-  font-size: var(--fs-sm);
-  color: var(--c-ink-2);
-  line-height: var(--lh-loose);
-  background: var(--c-bg-deep);
-  border-radius: var(--r-sm);
-  padding: var(--sp-3) var(--sp-4);
-  margin-bottom: var(--sp-4);
+.detail-meta {
+  font-size: var(--fs-xs);
+  color: var(--c-mute);
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* 打开原文：小苔绿圆角钮；H5 直跳，小程序复制链接 */
+.ui-button.detail-open-btn {
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  min-height: 30px;
+  padding: 0 var(--sp-3);
+  font-size: var(--fs-xs);
+  border-radius: var(--r-pill);
+  text-decoration: none;
 }
 
 .detail-notes {
@@ -546,11 +637,6 @@
   font: inherit;
   color: inherit;
   text-align: left;
-}
-
-.detail-open {
-  text-decoration: none;
-  width: 100%;
 }
 
 /* ===== 弹层（收藏 / 分类管理） ===== */
@@ -994,15 +1080,11 @@
 
 /* ===== 响应式 ===== */
 
-/* 桌面四列瀑布流；详情居中窄栏 */
+/* 桌面四列瀑布流 */
 @media (min-width: 1100px) {
   .link-list {
     column-count: 4;
     column-gap: var(--sp-4);
-  }
-  .detail-wrap {
-    max-width: 760px;
-    margin: 0 auto;
   }
 }
 
@@ -1014,11 +1096,54 @@
   }
 }
 
+/* 手机：详情 sheet 升为全屏页（上图下文），关闭钮悬浮左上 */
 @media (max-width: 700px) {
   .sheet {
     padding: var(--sp-5);
   }
-  .detail-shot {
-    aspect-ratio: 4 / 3;
+  .detail-overlay {
+    padding: 0;
+    align-items: stretch;
+  }
+  .detail-sheet {
+    flex-direction: column;
+    width: 100%;
+    max-height: none;
+    height: 100%;
+    border-radius: 0;
+    overflow-y: auto;
+    box-shadow: none;
+    animation: none;
+  }
+  .detail-sheet.no-media {
+    width: 100%;
+  }
+  .ui-button.detail-close {
+    position: fixed;
+    top: 12px;
+    left: 12px;
+    right: auto;
+    background: rgba(255, 255, 255, 0.92);
+  }
+  .detail-media {
+    width: 100%;
+  }
+  /* Taro H5 Image 是双层结构：手机端改自然高度，须连内层 img 一起放开 */
+  .detail-media .detail-shot {
+    display: block;
+    width: 100%;
+    height: auto;
+  }
+  .detail-media .detail-shot img,
+  .detail-media .detail-shot > * {
+    display: block;
+    width: 100%;
+    height: auto;
+    max-height: 62vh;
+    object-fit: contain;
+  }
+  .detail-body {
+    overflow: visible;
+    padding: var(--sp-5);
   }
 }

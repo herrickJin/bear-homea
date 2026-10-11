@@ -519,9 +519,8 @@
   font-weight: var(--fw-display);
   line-height: var(--lh-tight);
   color: var(--c-ink);
-  flex: 1;
   overflow-wrap: anywhere;
-  margin-bottom: var(--sp-4);
+  margin-bottom: var(--sp-5);
 }
 
 .detail-edit-hint {
@@ -579,9 +578,12 @@
 }
 
 /* 详情标签：统一胶囊规格，标签之间留足间距 */
+/* 详情标签：flex + wrap，胶囊之间 16px（此前无 display:flex，gap 一直没生效） */
 .detail-tags {
-  gap: var(--sp-3);
-  margin-bottom: var(--sp-4);
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--sp-4);
+  margin-bottom: var(--sp-5);
 }
 
 .detail-tags .ui-button.tag-chip,

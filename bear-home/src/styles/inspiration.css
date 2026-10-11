@@ -389,8 +389,8 @@
 .detail-sheet {
   position: relative;
   display: flex;
-  width: min(1060px, 100%);
-  max-height: min(86vh, 800px);
+  width: min(1180px, 94vw);
+  height: min(92vh, 920px);
   background: var(--c-surface);
   border-radius: var(--r-xl);
   overflow: hidden;
@@ -398,9 +398,11 @@
   animation: detail-sheet-in var(--dur-base) var(--ease-out);
 }
 
-/* 无图方案：窄栏纯文 sheet */
+/* 无图方案：窄栏、高度随内容（避免大片留白） */
 .detail-sheet.no-media {
   width: min(680px, 100%);
+  height: auto;
+  max-height: min(86vh, 800px);
 }
 
 @keyframes detail-sheet-in {
@@ -414,18 +416,18 @@
   }
 }
 
-/* 关闭钮：桌面右上白圆 hairline；手机移到左上悬浮（见底部媒体查询） */
+/* 关闭钮：视口左上角（弹窗外，压在暗背景上）；手机端同位更贴边 */
 .ui-button.detail-close {
-  position: absolute;
-  top: var(--sp-3);
-  right: var(--sp-3);
-  z-index: 2;
+  position: fixed;
+  top: 20px;
+  left: 20px;
+  z-index: 5;
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 34px;
-  min-width: 34px;
-  height: 34px;
+  width: 36px;
+  min-width: 36px;
+  height: 36px;
   min-height: 0;
   padding: 0;
   border-radius: 50%;
@@ -443,7 +445,7 @@
 
 /* 图区：墨底衬整图（XHS 图区深色、contain 不裁切） */
 .detail-media {
-  width: 54%;
+  width: 57%;
   flex-shrink: 0;
   display: flex;
   align-items: center;
@@ -457,12 +459,39 @@
   object-fit: contain;
 }
 
-/* 文区：滚动列（XHS 右栏：标题 → 正文 → 标签 → 作者行 → 评论） */
+/* 文区：上下两段——上面滚动（作者行→正文→备注），下面固定输入条（XHS 评论位） */
 .detail-body {
   flex: 1;
   min-width: 0;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.detail-scroll {
+  flex: 1;
+  min-height: 0;
   overflow-y: auto;
-  padding: var(--sp-6);
+  padding: var(--sp-5) var(--sp-6) var(--sp-4);
+}
+
+/* 作者行（XHS 顶部）：来源占昵称位，打开原文占关注位 */
+.detail-author-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--sp-3);
+  margin-bottom: var(--sp-4);
+}
+
+.detail-author {
+  font-size: var(--fs-base);
+  font-weight: var(--fw-medium);
+  color: var(--c-ink);
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .detail-note-row {
@@ -533,39 +562,29 @@
   }
 }
 
-/* 分割线：XHS 标签区与来源行之间 */
+/* 分割线：XHS 日期与评论区之间 */
 .detail-divider {
   height: 1px;
   background: var(--c-line);
   margin: 0 0 var(--sp-4);
 }
 
-/* 来源行：来源 · 日期 · 状态 左，打开原文钮右（XHS 关注键位） */
-.detail-meta-row {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: var(--sp-3);
-  margin-bottom: var(--sp-5);
-}
-
-.detail-meta {
+/* 日期：正文区末尾灰色小字（XHS 日期位） */
+.detail-date {
+  display: block;
   font-size: var(--fs-xs);
-  color: var(--c-mute);
-  min-width: 0;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
+  color: var(--c-faint);
+  margin: var(--sp-4) 0;
 }
 
-/* 打开原文：小苔绿圆角钮；H5 直跳，小程序复制链接 */
+/* 打开原文：小苔绿圆角钮（XHS 关注键位）；H5 直跳，小程序复制链接 */
 .ui-button.detail-open-btn {
   flex-shrink: 0;
   display: inline-flex;
   align-items: center;
-  min-height: 30px;
-  padding: 0 var(--sp-3);
-  font-size: var(--fs-xs);
+  min-height: 32px;
+  padding: 0 var(--sp-4);
+  font-size: var(--fs-sm);
   border-radius: var(--r-pill);
   text-decoration: none;
 }
@@ -599,44 +618,52 @@
   color: var(--c-faint);
 }
 
+/* 底部输入条：固定在文区底部（XHS 评论输入位），无边框浅灰大圆角框 */
 .note-add {
+  flex-shrink: 0;
   display: flex;
-  gap: var(--sp-2);
+  gap: var(--sp-3);
   align-items: flex-end;
-  margin-top: var(--sp-3);
+  padding: var(--sp-3) var(--sp-6) var(--sp-4);
+  background: var(--c-surface);
+  border-top: 1px solid var(--c-line);
 }
 
 .note-input {
   flex: 1;
   min-width: 0;
-  min-height: 40px;
+  min-height: 44px;
+  max-height: 132px;
   display: flex;
   align-items: center;
-  border: 1px solid var(--c-line);
+  border: 0;
   background: var(--c-bg-deep);
-  border-radius: var(--r-sm);
+  border-radius: var(--r-lg);
   padding: var(--sp-2) var(--sp-3);
-  font-size: var(--fs-md);
+  font-size: var(--fs-sm);
   color: var(--c-ink);
-  transition:
-    border-color var(--dur-fast) var(--ease-out),
-    background-color var(--dur-fast) var(--ease-out);
 }
 
-.note-input:focus-within {
-  background: var(--c-surface);
-  border-color: var(--c-primary-mid);
+/* 发送：苔绿胶囊（XHS 发送键位），无输入时灰禁用 */
+.ui-button.note-send {
+  flex-shrink: 0;
+  min-height: 36px;
+  padding: 0 var(--sp-4);
+  border-radius: var(--r-pill);
+  font-size: var(--fs-sm);
 }
 
-/* 内层原生 textarea 继承字号（≥16px 防 iOS 缩放），高度自适应 */
+/* 内层原生 textarea 继承字号（≥16px 防 iOS 缩放），高度自适应；去掉拖拽角标 */
 .note-input > * {
   width: 100%;
+  height: 100%;
   border: 0;
   outline: none;
   background: transparent;
   font: inherit;
   color: inherit;
   text-align: left;
+  resize: none;
 }
 
 /* ===== 弹层（收藏 / 分类管理） ===== */
@@ -1119,11 +1146,8 @@
     width: 100%;
   }
   .ui-button.detail-close {
-    position: fixed;
     top: 12px;
     left: 12px;
-    right: auto;
-    background: rgba(255, 255, 255, 0.92);
   }
   .detail-media {
     width: 100%;
@@ -1144,6 +1168,16 @@
   }
   .detail-body {
     overflow: visible;
+  }
+  .detail-scroll {
+    overflow: visible;
     padding: var(--sp-5);
+  }
+  /* 整页滚动时输入条贴底悬浮 */
+  .note-add {
+    position: sticky;
+    bottom: 0;
+    z-index: 2;
+    padding: var(--sp-3) var(--sp-5) var(--sp-4);
   }
 }

@@ -148,139 +148,146 @@ export default function LinkDetailSheet({
           </View>
         )}
         <View className="ui-div detail-body">
-          {editing ? (
-            <View className="ui-div detail-edit">
-              <Textarea
-                className="field-textarea"
-                value={draftNote}
-                placeholder="记一句要点，方便以后找"
-                placeholderClass="search-placeholder"
-                maxlength={200}
-                onInput={(e) => setDraftNote(e.detail.value)}
-              />
-              <View className="ui-div detail-edit-actions">
-                <Button
-                  ariaRole="button"
-                  className="ui-button field-action"
-                  onClick={() => setEditing(false)}
-                >
-                  取消
-                </Button>
-                <Button
-                  ariaRole="button"
-                  className="ui-button primary"
-                  onClick={saveNote}
-                >
-                  保存
-                </Button>
+          <View className="ui-div detail-scroll">
+            <View className="ui-div detail-author-row">
+              <Text className="detail-author">
+                {sourceLabel(current.source)}
+                {status ? ` · ${status}` : ""}
+              </Text>
+              {current.url &&
+                (process.env.TARO_ENV === "h5" ? (
+                  <a
+                    className="ui-button primary detail-open-btn"
+                    href={current.url}
+                    target="_blank"
+                    rel="noreferrer"
+                  >
+                    打开原文 ↗
+                  </a>
+                ) : (
+                  <Button
+                    ariaRole="button"
+                    className="ui-button primary detail-open-btn"
+                    onClick={copyLink}
+                  >
+                    打开原文 ↗
+                  </Button>
+                ))}
+            </View>
+
+            {editing ? (
+              <View className="ui-div detail-edit">
+                <Textarea
+                  className="field-textarea"
+                  value={draftNote}
+                  placeholder="记一句要点，方便以后找"
+                  placeholderClass="search-placeholder"
+                  maxlength={200}
+                  onInput={(e) => setDraftNote(e.detail.value)}
+                />
+                <View className="ui-div detail-edit-actions">
+                  <Button
+                    ariaRole="button"
+                    className="ui-button field-action"
+                    onClick={() => setEditing(false)}
+                  >
+                    取消
+                  </Button>
+                  <Button
+                    ariaRole="button"
+                    className="ui-button primary"
+                    onClick={saveNote}
+                  >
+                    保存
+                  </Button>
+                </View>
               </View>
-            </View>
-          ) : (
-            <View className="ui-a detail-note-row" onClick={startEdit}>
-              <View className="ui-h3 detail-note">{title}</View>
-              <Text className="ui-span detail-edit-hint">编辑</Text>
-            </View>
-          )}
+            ) : (
+              <View className="ui-a detail-note-row" onClick={startEdit}>
+                <View className="ui-h3 detail-note">{title}</View>
+                <Text className="ui-span detail-edit-hint">编辑</Text>
+              </View>
+            )}
 
-          {current.summary && (
-            <View className="ui-p detail-summary">{current.summary}</View>
-          )}
+            {current.summary && (
+              <View className="ui-p detail-summary">{current.summary}</View>
+            )}
 
-          <View className="ui-div detail-tags">
-            {tags.map((t) => (
-              <Button
-                ariaRole="button"
-                key={t.id}
-                className="ui-button tag-chip tag-removable"
-                onClick={() => toggleTag(t.id)}
-              >
-                {t.name} <X size={11} tone="green" />
-              </Button>
-            ))}
-            {addingTag ? (
-              available.map((c) => (
+            <View className="ui-div detail-tags">
+              {tags.map((t) => (
                 <Button
                   ariaRole="button"
-                  key={c.id}
-                  className="ui-button chip"
-                  onClick={() => toggleTag(c.id)}
+                  key={t.id}
+                  className="ui-button tag-chip tag-removable"
+                  onClick={() => toggleTag(t.id)}
                 >
-                  <Plus size={11} tone="green" /> {c.name}
+                  {t.name} <X size={11} tone="green" />
                 </Button>
-              ))
-            ) : (
-              <Button
-                ariaRole="button"
-                className="ui-button chip chip-add"
-                onClick={() => setAddingTag(true)}
-              >
-                <Plus size={11} tone="green" /> 添加
-              </Button>
-            )}
-          </View>
-
-          <View className="detail-divider" />
-
-          <View className="ui-div detail-meta-row">
-            <Text className="detail-meta">
-              {sourceLabel(current.source)} · {displayDate(current.date)}
-              {status ? ` · ${status}` : ""}
-            </Text>
-            {current.url &&
-              (process.env.TARO_ENV === "h5" ? (
-                <a
-                  className="ui-button primary detail-open-btn"
-                  href={current.url}
-                  target="_blank"
-                  rel="noreferrer"
-                >
-                  打开原文 ↗
-                </a>
+              ))}
+              {addingTag ? (
+                available.map((c) => (
+                  <Button
+                    ariaRole="button"
+                    key={c.id}
+                    className="ui-button chip"
+                    onClick={() => toggleTag(c.id)}
+                  >
+                    <Plus size={11} tone="green" /> {c.name}
+                  </Button>
+                ))
               ) : (
                 <Button
                   ariaRole="button"
-                  className="ui-button primary detail-open-btn"
-                  onClick={copyLink}
+                  className="ui-button chip chip-add"
+                  onClick={() => setAddingTag(true)}
                 >
-                  打开原文 ↗
+                  <Plus size={11} tone="green" /> 添加
                 </Button>
+              )}
+            </View>
+
+            <Text className="detail-date">{displayDate(current.date)}</Text>
+
+            <View className="detail-divider" />
+
+            <View className="ui-div detail-notes">
+              <View className="ui-div section-heading">
+                <Text className="ui-h2">
+                  共 {(link.notes ?? []).length} 条备注
+                </Text>
+              </View>
+              {(link.notes ?? []).map((n) => (
+                <View className="ui-div note-item" key={n.id}>
+                  <View className="ui-p note-body">{n.body}</View>
+                  <Text className="ui-time note-date">{n.date}</Text>
+                </View>
               ))}
+              {(link.notes ?? []).length === 0 && (
+                <View className="ui-p note-empty">
+                  和设计师聊完，把结论记在这里。
+                </View>
+              )}
+            </View>
           </View>
 
-          <View className="ui-div detail-notes">
-            <View className="ui-div section-heading">
-              <Text className="ui-h2">讨论与备注</Text>
-            </View>
-            {(link.notes ?? []).map((n) => (
-              <View className="ui-div note-item" key={n.id}>
-                <View className="ui-p note-body">{n.body}</View>
-                <Text className="ui-time note-date">{n.date}</Text>
-              </View>
-            ))}
-            {(link.notes ?? []).length === 0 && (
-              <View className="ui-p note-empty">
-                和设计师聊完，把结论记在这里。
-              </View>
-            )}
-            <View className="ui-div note-add">
-              <Textarea
-                className="note-input"
-                value={noteDraft}
-                placeholder="补充一条备注…"
-                placeholderClass="search-placeholder"
-                maxlength={500}
-                autoHeight
-                onInput={(e) => setNoteDraft(e.detail.value)}
-              />
-              <Button
-                ariaRole="button"
-                className={`ui-button ${`primary${noteDraft.trim() ? "" : " disabled"}`}`}
-                disabled={!noteDraft.trim()}
-                onClick={addNote}
-              >
-                添加
-              </Button>
-            </View>
+          <View className="ui-div note-add">
+            <Textarea
+              className="note-input"
+              value={noteDraft}
+              placeholder="补充一条备注…"
+              placeholderClass="search-placeholder"
+              maxlength={500}
+              autoHeight
+              onInput={(e) => setNoteDraft(e.detail.value)}
+            />
+            <Button
+              ariaRole="button"
+              className={`ui-button ${`primary note-send${noteDraft.trim() ? "" : " disabled"}`}`}
+              disabled={!noteDraft.trim()}
+              onClick={addNote}
+            >
+              发送
+            </Button>
           </View>
         </View>
       </View>

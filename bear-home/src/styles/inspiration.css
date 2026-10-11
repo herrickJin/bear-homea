@@ -1,7 +1,8 @@
 /*
- * 方案库（剪贴簿）· 功能样式 3.0「样板画廊」
+ * 方案库（剪贴簿）· 功能样式 3.2「样板画廊 · 瀑布流」
  * 全部消费 tokens.css，禁止裸色值。
- * 3.0 关键词：画廊图块（图片通栏置顶）、文字页签、hairline 分隔、零阴影。
+ * 3.2 关键词：小红书式瀑布流（3:4 竖版封面、图下图题、来源头像行、
+ * 蜜色语录卡）、文字页签、hairline 分隔、零阴影。
  */
 
 .intro-line {
@@ -155,21 +156,20 @@
   color: var(--c-faint);
 }
 
-/* ===== 画廊图块 ===== */
+/* ===== 瀑布流（小红书式）===== */
 
-/* 图块网格：手机双列，≥700 两列加大间距，≥1100 三列。
-   默认 stretch：同行卡片等高——图片卡定高，想法卡拉满为完整展签板 */
+/* CSS 多列瀑布流：卡片按内容自然高度垂落，break-inside 防截断 */
 .link-list {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: var(--sp-5) var(--sp-3);
+  column-count: 2;
+  column-gap: var(--sp-3);
 }
 
-/* 有图图块：图片通栏置顶，无框无底，文字挂在图下 */
 .link-card {
-  display: flex;
-  flex-direction: column;
+  break-inside: avoid;
+  -webkit-column-break-inside: avoid;
+  display: block;
   min-width: 0;
+  margin-bottom: var(--sp-5);
 }
 
 .link-card:active {
@@ -182,9 +182,10 @@
   }
 }
 
+/* 封面：3:4 竖版 */
 .link-shot {
   width: 100%;
-  aspect-ratio: 4 / 3;
+  aspect-ratio: 3 / 4;
   height: auto;
   border-radius: var(--r-md);
   overflow: hidden;
@@ -207,15 +208,10 @@
   background: var(--c-bg-deep);
 }
 
-.link-body {
-  display: flex;
-  flex-direction: column;
-  gap: var(--sp-1);
-  padding: var(--sp-2) 2px 0;
-}
-
+/* 图下标题（小红书式图题） */
 .link-note {
-  font-size: var(--fs-sm);
+  margin-top: var(--sp-2);
+  font-size: var(--fs-base);
   font-weight: var(--fw-medium);
   line-height: var(--lh-tight);
   color: var(--c-ink);
@@ -227,10 +223,49 @@
   transition: color var(--dur-fast) var(--ease-out);
 }
 
+/* 纯想法：蜜色语录卡（小红书文字卡的对应物） */
+.idea-quote {
+  aspect-ratio: 3 / 4;
+  background: var(--c-honey-mist);
+  border-radius: var(--r-md);
+  padding: var(--sp-4);
+  display: flex;
+  flex-direction: column;
+}
+
+.idea-mark {
+  font-family: var(--font-serif);
+  font-size: 40px;
+  line-height: 1;
+  color: var(--c-honey);
+}
+
+.idea-text {
+  margin-top: var(--sp-3);
+  font-size: var(--fs-md);
+  font-weight: var(--fw-medium);
+  line-height: 1.6;
+  color: var(--c-ink);
+  display: -webkit-box;
+  -webkit-line-clamp: 6;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  overflow-wrap: anywhere;
+}
+
+.idea-dash {
+  margin-top: auto;
+  width: 24px;
+  height: 3px;
+  border-radius: var(--r-pill);
+  background: var(--c-honey);
+}
+
 .link-tags {
   display: flex;
   flex-wrap: wrap;
   gap: var(--sp-1);
+  margin-top: var(--sp-2);
 }
 
 /* 标签：浅苔底小胶囊 */
@@ -251,12 +286,12 @@
   align-items: center;
   justify-content: space-between;
   gap: var(--sp-2);
-  margin-top: 2px;
+  margin-top: var(--sp-2);
 }
 
 .link-meta .ui-time {
-  font: var(--fs-2xs) var(--font-mono);
-  color: var(--c-faint);
+  font: var(--fs-xs) var(--font-sans);
+  color: var(--c-mute);
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -276,31 +311,6 @@
   .ui-button.link-open:hover {
     color: var(--c-primary-deep);
   }
-}
-
-/* 纯想法（无链接无图）：白底 hairline「展签板」——同行内与图片卡等高（stretch），
-   纯想法行的兜底高度 180px；文字组垂直居中、meta 沉底 */
-.link-card.card-idea {
-  background: var(--c-surface);
-  border: 1px solid var(--c-line);
-  border-radius: var(--r-md);
-  padding: var(--sp-4);
-  min-height: 180px;
-}
-
-.link-card.card-idea .link-body {
-  padding: 0;
-  gap: var(--sp-2);
-  flex: 1;
-}
-
-.link-card.card-idea .link-note {
-  font-size: var(--fs-base);
-  margin-top: auto;
-}
-
-.link-card.card-idea .link-meta {
-  margin-top: auto;
 }
 
 /* ===== 详情页 ===== */
@@ -954,14 +964,11 @@
 
 /* ===== 响应式 ===== */
 
-/* 桌面三列画廊；详情居中窄栏 */
+/* 桌面三列瀑布流；详情居中窄栏 */
 @media (min-width: 1100px) {
   .link-list {
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-    gap: var(--sp-6) var(--sp-4);
-  }
-  .link-note {
-    font-size: var(--fs-base);
+    column-count: 3;
+    column-gap: var(--sp-5);
   }
   .detail-wrap {
     max-width: 760px;
@@ -972,18 +979,12 @@
 /* 平板两列放宽间距 */
 @media (min-width: 700px) and (max-width: 1099px) {
   .link-list {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: var(--sp-6) var(--sp-5);
-  }
-  .link-note {
-    font-size: var(--fs-base);
+    column-count: 2;
+    column-gap: var(--sp-5);
   }
 }
 
 @media (max-width: 700px) {
-  .link-list {
-    gap: var(--sp-4) var(--sp-3);
-  }
   .sheet {
     padding: var(--sp-5);
   }

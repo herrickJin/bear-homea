@@ -481,6 +481,7 @@
   flex: 1;
   min-height: 0;
   overflow-y: auto;
+  overflow-x: hidden;
   padding: var(--sp-5) var(--sp-6) var(--sp-4);
 }
 
@@ -519,6 +520,7 @@
   line-height: var(--lh-tight);
   color: var(--c-ink);
   flex: 1;
+  overflow-wrap: anywhere;
 }
 
 .detail-edit-hint {
@@ -552,6 +554,7 @@
   color: var(--c-ink-2);
   line-height: var(--lh-loose);
   margin-bottom: var(--sp-4);
+  overflow-wrap: anywhere;
 }
 
 /* 详情标签：统一胶囊规格（此前 tag-chip 与 chip 大小混排、间距过挤） */
@@ -627,6 +630,9 @@
   font-size: var(--fs-sm);
   color: var(--c-ink);
   line-height: var(--lh-base);
+  /* 长数字/字母串强制折行，否则撑破备注块并顶出横向滚动 */
+  overflow-wrap: anywhere;
+  word-break: break-word;
 }
 
 .note-date {

@@ -520,7 +520,6 @@
   line-height: var(--lh-tight);
   color: var(--c-ink);
   overflow-wrap: anywhere;
-  margin-bottom: var(--sp-5);
 }
 
 .detail-edit-hint {
@@ -573,16 +572,16 @@
   font-size: var(--fs-sm);
   color: var(--c-ink-2);
   line-height: var(--lh-loose);
-  margin-bottom: var(--sp-5);
   overflow-wrap: anywhere;
 }
 
 /* 详情标签：统一胶囊规格，标签之间留足间距 */
-/* 详情标签：flex + wrap，胶囊之间 16px（此前无 display:flex，gap 一直没生效） */
+/* 详情标签：与正文/标题的间隔由本容器 margin-top 控制；胶囊间紧凑 sp-1 */
 .detail-tags {
   display: flex;
   flex-wrap: wrap;
-  gap: var(--sp-4);
+  gap: var(--sp-1);
+  margin-top: var(--sp-5);
   margin-bottom: var(--sp-5);
 }
 

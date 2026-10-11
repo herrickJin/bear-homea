@@ -10,7 +10,8 @@ interface CategoryTabsProps {
   /** 每个分类的方案数（分页签小计） */
   counts?: Record<string, number>;
   onSelect: (id: string | null) => void;
-  onManage: () => void;
+  /** 不传则不渲染「＋管理」（如台账页品类无管理） */
+  onManage?: () => void;
 }
 
 /**
@@ -148,13 +149,15 @@ export default function CategoryTabs({
             </Button>
           );
         })}
-        <Button
-          ariaRole="button"
-          className="ui-button cat-manage"
-          onClick={onManage}
-        >
-          <Text className="ui-span">＋ 管理</Text>
-        </Button>
+        {onManage && (
+          <Button
+            ariaRole="button"
+            className="ui-button cat-manage"
+            onClick={onManage}
+          >
+            <Text className="ui-span">＋ 管理</Text>
+          </Button>
+        )}
       </View>
       {overflowing && (
         <Button

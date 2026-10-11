@@ -12,6 +12,7 @@
 | 04 | 方案库（小红书收藏 · 剪贴簿） | 📋 方案定稿（2026-10-10）· 待开工 | [04-links-page.md](./04-links-page.md) |
 | 05 | 前端功能剥离与骨架重置 | ✅ 完成（2026-10-10） | [05-skeleton-reset.md](./05-skeleton-reset.md) |
 | 06 | 整体风格与设计 Token | ✅ 完成（2026-10-10） | [06-style-tokens.md](./06-style-tokens.md) |
+| 07 | 记录页（选购台账） | 🚧 S1 页面完成（2026-10-12）· S2 服务端待立项 | [07-record-page.md](./07-record-page.md) |
 
 状态标记：✅ 完成 · 🚧 进行中 · 📋 待开始 / 规划中 · ⛔ 受阻
 

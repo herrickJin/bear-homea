@@ -8,6 +8,7 @@
 
 @import "./styles/tokens.css";
 @import "./styles/inspiration.css";
+@import "./styles/record.css";
 
 page {
   background: var(--c-bg);

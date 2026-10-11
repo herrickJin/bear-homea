@@ -3,7 +3,7 @@ export default defineAppConfig({
     "pages/home/index",
     "pages/inspiration/index",
     "pages/inspiration-detail/index",
-    "pages/diary/index",
+    "pages/record/index",
     "pages/budget/index",
     "pages/profile/index",
   ],

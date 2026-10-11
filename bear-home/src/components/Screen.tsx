@@ -18,12 +18,12 @@ import Bear from "./Bear";
  * 页面内容通过 children 传入；不传则显示「功能重设计中」空态。
  */
 
-export type Page = "home" | "inspiration" | "diary" | "budget" | "profile";
+export type Page = "home" | "inspiration" | "record" | "budget" | "profile";
 
 const navigation = [
   { id: "home", label: "小家", icon: Home },
   { id: "inspiration", label: "笔记", icon: Bookmark },
-  { id: "diary", label: "记录", icon: BookOpen },
+  { id: "record", label: "记录", icon: BookOpen },
   { id: "budget", label: "预算", icon: Wallet },
   { id: "profile", label: "我的", icon: LayoutGrid },
 ] as const;
@@ -31,7 +31,7 @@ const navigation = [
 const pageCopy: Record<Page, { eyebrow: string; title: string }> = {
   home: { eyebrow: "一点点，住进理想生活", title: "小家" },
   inspiration: { eyebrow: "我们家的样子", title: "笔记库" },
-  diary: { eyebrow: "把装修的日常留成回忆", title: "装修记录" },
+  record: { eyebrow: "货比三家，买得不冤", title: "选购台账" },
   budget: { eyebrow: "每一笔花费都在变成家", title: "预算" },
   profile: { eyebrow: "关于这个小家", title: "我的" },
 };

@@ -1,0 +1,349 @@
+/*
+ * 选购台账（记录页）· 功能样式
+ * 全部消费 tokens.css，禁止裸色值。
+ * 关键词：品类分节的线性台账（桌面限宽 760）、mono 价格、状态点四色、
+ * 一级切换 = 分段轨、品类 chips 复用笔记库 cat-tab。
+ */
+
+/* 一级切换（家电/材料）：分段轨。静默 = 轨底灰字，选中 = 苔绿实底白字 */
+.kind-switch {
+  display: flex;
+  gap: 3px;
+  background: var(--c-bg-deep);
+  border-radius: var(--r-sm);
+  padding: 3px;
+  margin-bottom: var(--sp-3);
+}
+
+.ui-button.kind-seg {
+  flex: 1;
+  min-height: 34px;
+  border-radius: var(--r-xs);
+  color: var(--c-mute);
+  font-size: var(--fs-sm);
+}
+
+.ui-button.kind-seg.active {
+  background: var(--c-primary);
+  color: var(--c-on-primary);
+  font-weight: var(--fw-medium);
+}
+
+@media (hover: hover) {
+  .ui-button.kind-seg:hover {
+    color: var(--c-ink);
+  }
+  .ui-button.kind-seg.active:hover {
+    background: var(--c-primary-deep);
+    color: var(--c-on-primary);
+  }
+}
+
+/* 桌面：切换不必通栏 */
+@media (min-width: 701px) {
+  .kind-switch {
+    width: 280px;
+  }
+}
+
+/* 台账主体：线性文档，桌面限宽居中 */
+.rec-list {
+  max-width: 760px;
+  margin: 0 auto;
+}
+
+@media (min-width: 900px) {
+  .rec-toolbar {
+    margin-bottom: var(--sp-6);
+  }
+}
+
+/* 汇总行：条数 / 已买（mono）+ 排序切换 */
+.rec-summary {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--sp-3);
+  margin-bottom: var(--sp-3);
+}
+
+.rec-summary .ui-time {
+  font: var(--fs-xs) var(--font-mono);
+  color: var(--c-faint);
+}
+
+.ui-button.rec-sort {
+  flex-shrink: 0;
+  color: var(--c-primary);
+  font-size: var(--fs-xs);
+  min-height: 28px;
+  padding: 0 var(--sp-2);
+  border-radius: var(--r-xs);
+}
+
+@media (hover: hover) {
+  .ui-button.rec-sort:hover {
+    color: var(--c-primary-deep);
+  }
+}
+
+/* 品类分节：组头 = 品类名 + mono 小结，hairline 压底 */
+.rec-section {
+  margin-bottom: var(--sp-6);
+}
+
+.rec-section-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--sp-3);
+  padding-bottom: var(--sp-2);
+  border-bottom: 1px solid var(--c-line);
+  margin-bottom: var(--sp-3);
+}
+
+.rec-section-name {
+  font-size: var(--fs-sm);
+  color: var(--c-ink);
+}
+
+.rec-section-meta {
+  font: var(--fs-xs) var(--font-mono);
+  color: var(--c-faint);
+  white-space: nowrap;
+}
+
+/* ===== 台账卡片：白面 + hairline，零阴影 ===== */
+
+.ledger-card {
+  display: block;
+  background: var(--c-surface);
+  border: 1px solid var(--c-line);
+  border-radius: var(--r-md);
+  padding: var(--sp-3) var(--sp-4);
+  margin-bottom: var(--sp-2);
+}
+
+.ledger-card:active {
+  opacity: 0.85;
+}
+
+.rec-card-main {
+  display: flex;
+  align-items: baseline;
+  gap: var(--sp-3);
+}
+
+.rec-card-name {
+  flex: 1;
+  min-width: 0;
+  font-size: var(--fs-base);
+  line-height: var(--lh-tight);
+  color: var(--c-ink);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  overflow-wrap: anywhere;
+  transition: color var(--dur-fast) var(--ease-out);
+}
+
+@media (hover: hover) {
+  .ledger-card:hover .rec-card-name {
+    color: var(--c-primary);
+  }
+}
+
+/* 价格：mono 大字右对齐——台账的图纸记忆点 */
+.rec-card-price {
+  flex-shrink: 0;
+  font: var(--fw-medium) var(--fs-md) var(--font-mono);
+  color: var(--c-ink);
+}
+
+.rec-card-meta {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-2);
+  margin-top: var(--sp-2);
+}
+
+.rec-card-meta .ui-time {
+  font: var(--fs-xs) var(--font-mono);
+  color: var(--c-mute);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* 状态点：只上点与状态字，不铺卡面（点用背景色，字用文字色） */
+.rec-status-dot {
+  flex-shrink: 0;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+}
+
+.rec-status-text {
+  flex-shrink: 0;
+  font-size: var(--fs-2xs);
+}
+
+.rec-status-dot.st-looking {
+  background: var(--c-faint);
+}
+
+.rec-status-text.st-looking {
+  color: var(--c-faint);
+}
+
+.rec-status-dot.st-shortlist {
+  background: var(--c-primary);
+}
+
+.rec-status-text.st-shortlist {
+  color: var(--c-primary);
+}
+
+.rec-status-dot.st-bought {
+  background: var(--c-success);
+}
+
+.rec-status-text.st-bought {
+  color: var(--c-success);
+}
+
+.rec-status-dot.st-dropped {
+  background: var(--c-danger);
+}
+
+.rec-status-text.st-dropped {
+  color: var(--c-danger);
+}
+
+/* 放弃：名称划掉（台账里「排除项」的阅读直觉） */
+.ledger-card.st-dropped .rec-card-name {
+  color: var(--c-faint);
+  text-decoration: line-through;
+  text-decoration-color: var(--c-line-strong);
+}
+
+.rec-card-note {
+  margin-top: var(--sp-1);
+  font-size: var(--fs-sm);
+  line-height: var(--lh-base);
+  color: var(--c-mute);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  overflow-wrap: anywhere;
+}
+
+/* ===== 记一笔弹层补量 ===== */
+
+/* 价格输入的 ¥ 记号：mono 弱标注 */
+.rec-price-mark {
+  flex-shrink: 0;
+  font: var(--fs-md) var(--font-mono);
+  color: var(--c-faint);
+  margin-right: var(--sp-1);
+}
+
+/* ===== 详情弹层 ===== */
+
+.rec-detail-top .rec-detail-kind {
+  font-size: var(--fs-xs);
+  color: var(--c-mute);
+  letter-spacing: 1px;
+}
+
+/* 名称：serif 展签（详情标题语言同笔记库） */
+.rec-detail-name {
+  font-family: var(--font-serif);
+  font-size: var(--fs-lg);
+  font-weight: var(--fw-display);
+  letter-spacing: var(--ls-title);
+  line-height: var(--lh-tight);
+  color: var(--c-ink);
+  margin-top: var(--sp-1);
+  overflow-wrap: anywhere;
+}
+
+.rec-detail-price {
+  margin-top: var(--sp-1);
+  font: var(--fw-medium) var(--fs-xl) var(--font-mono);
+  color: var(--c-ink);
+}
+
+.rec-detail-noprice {
+  display: block;
+  margin-top: var(--sp-2);
+  font-size: var(--fs-sm);
+  color: var(--c-faint);
+}
+
+.rec-status-row {
+  margin-top: var(--sp-4);
+}
+
+.rec-info {
+  margin-top: var(--sp-4);
+  border-top: 1px solid var(--c-line);
+}
+
+.rec-info-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--sp-3);
+  padding: var(--sp-2) 0;
+  border-bottom: 1px solid var(--c-line);
+}
+
+.rec-info-label {
+  flex-shrink: 0;
+  font-size: var(--fs-sm);
+  color: var(--c-faint);
+}
+
+.rec-info-value {
+  font-size: var(--fs-sm);
+  color: var(--c-ink-2);
+  text-align: right;
+  overflow-wrap: anywhere;
+}
+
+.rec-detail-note {
+  margin-top: var(--sp-4);
+  background: var(--c-bg-deep);
+  border-radius: var(--r-sm);
+  padding: var(--sp-3);
+  font-size: var(--fs-sm);
+  line-height: var(--lh-base);
+  color: var(--c-ink-2);
+  overflow-wrap: anywhere;
+}
+
+.rec-detail-actions {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: var(--sp-5);
+}
+
+/* ===== 手机：切换/搜索/品类整体吸顶（同笔记 insp-toolbar 模式）===== */
+
+@media (max-width: 700px) {
+  .rec-toolbar {
+    position: sticky;
+    top: calc(56px + env(safe-area-inset-top));
+    z-index: 5;
+    background: var(--c-bg);
+    padding: var(--sp-2) 0;
+    box-shadow: 0 1px 0 var(--c-line);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .rec-card-name {
+    transition: none;
+  }
+}

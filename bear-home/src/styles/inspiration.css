@@ -1285,9 +1285,10 @@
     top: 8px;
     left: 8px;
   }
+  /* 桌面 no-media 规则是右上（特异性更高），此处必须显式压回左上 */
   .detail-sheet.no-media .ui-button.detail-close {
-    left: auto;
-    right: 8px;
+    left: 8px;
+    right: auto;
   }
   .detail-scroll .detail-author-row {
     display: none;

@@ -1,7 +1,7 @@
 {
   "name": "bear-home",
   "private": true,
-  "version": "0.2.0",
+  "version": "0.3.0",
   "scripts": {
     "dev": "npm run dev:h5",
     "dev:h5": "taro build --type h5 --watch",

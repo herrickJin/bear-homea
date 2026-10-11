@@ -39,4 +39,42 @@ health / 401 鉴权 / entries CRUD / 上传+读取 / 链接保存-去重-队列-
 - ⚠️ 登录密码曾出现在会话记录中，建议用户 `passwd` 轮换（SSH key 免密已可用，密码仅作备用）
 - 有备案域名后：`.env` 加 `BEAR_HOME_DOMAIN=域名` → `docker compose up -d`，Caddy 自动 HTTPS（小程序正式版硬性要求）
 - Token 如泄露可改 `.env` 后 `docker compose up -d` 轮换（前端配置在 `bear-home/.env` 的 `TARO_APP_API_TOKEN`，需同步；该文件不入 git）
-- 数据备份：建议后续加 litestream 或 cron rsync `data/` 目录
+- ~~数据备份：建议后续加 litestream 或 cron rsync `data/` 目录~~ → ✅ 已落地（2026-10-12，见下）
+
+## 数据备份（2026-10-12 落地）
+
+`server/scripts/backup.sh`（服务器上 `~/bear-home-server/scripts/backup.sh`）：
+
+- **SQLite 快照走容器内 `better-sqlite3 .backup()`**（一致性在线快照，自动并含 WAL 数据）——
+  本项目 WAL 常驻（曾出现主库 4KB / WAL 144KB），**直接 cp 主库文件会丢大部分数据**，禁止用 cp 备份
+- 上传文件（`data/files/`，截图+封面转存）一并 tar 打包——库内 `shot_url`/`cover_url` 指向这些文件，须与库同份
+- 产物落在 `~/bear-home-backups/`（data/ 之外，防误删连坐），滚动保留 14 份，快照经 `quick_check` 校验
+- 定时：服务器 crontab 每日 03:02 自动执行，日志 `~/bear-home-backup.log`
+- **升级/重建容器前必须手动先跑一次**：`~/bear-home-server/scripts/backup.sh`
+- 恢复步骤见脚本头部注释（停 server → 换 .db 并删 wal/shm → 解包 files → chown root → 起容器）
+- ⚠️ 尚无异地副本：单机单盘仍是最后风险，建议 Mac 每日 `scp -r` 拉取 `~/bear-home-backups/`，或配腾讯 COS
+
+## 线上版本滞后提醒（2026-10-12 检查）
+
+线上容器为 2026-10-10 12:22 构建（commit c951fc4 时期）：`/api/categories` 与 `/api/links/:id/notes`
+均 404，库中无 `categories`/`link_notes` 表——**笔记库前端（分类管理/归类/备注时间线）在线上不可用**。
+代码层（05d2fac）已完整适配前端；重新部署前先跑一次备份脚本，部署后迁移幂等自动补表、bind mount 数据不丢。
+线上现存数据：entries 1 条、files 1 个、links 0 条。
+
+## ✅ 已重新部署（2026-10-12 凌晨）
+
+按上述流程执行完毕，线上已是最新代码（含 categories/notes/OG 抓取/备份脚本）：
+
+1. 部署前备份 ✅（`~/bear-home-backups/bear-home-20261012-032807.db`）
+2. `rsync`（排除 node_modules/dist/data/.env）→ `sudo docker compose up -d --build` ✅
+3. 验证 ✅：health 200；`/api/categories` 404→200（8 个分类种子由迁移自动创建）；
+   `/api/links` 200；公网（Mac 走 Clash）与服务器本机双端点实测一致
+4. **前端配置同步**（`bear-home/.env`，不入 git）：`TARO_APP_API_BASE` 从局域网
+   `192.168.1.43:8787` 切到公网 `http://119.27.191.90`；`TARO_APP_API_TOKEN` 从本地
+   开发 token（`bh-local-…`）换成服务器 `.env` 的真实值。**dev server 需重启才生效**
+   （Taro 构建时注入环境变量，watch 不会热读 .env）。
+5. 数据澄清：dev 界面里的笔记此前一直是 mock 兜底（本机 server/data 仅 4KB、线上 links
+   为空），无真实数据需迁移，笔记库自线上干净起步。
+6. 调试备忘：公网自测时 `grep TARO_APP_API_TOKEN .env` 会同时命中注释行、token 混入
+   换行 → 请求头非法 → Go 400（不进 Caddy 访问日志，极具迷惑性）；务必
+   `grep '^TARO_APP_API_TOKEN='`。

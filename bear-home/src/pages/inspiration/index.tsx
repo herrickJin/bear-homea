@@ -177,7 +177,7 @@ export default function Page() {
           </View>
           <View className="ui-p">
             {links.length === 0
-              ? "小红书里点「分享 → 复制链接」，回来点右上角「添加想法」。"
+              ? "小红书里点「分享 → 复制链接」，回来点右下角的 + 按钮。"
               : "换个分类，或清空搜索看看。"}
           </View>
         </View>
@@ -186,18 +186,7 @@ export default function Page() {
   }
 
   return (
-    <Screen
-      page="inspiration"
-      action={
-        <Button
-          ariaRole="button"
-          className="ui-button primary"
-          onClick={() => setSaveOpen(true)}
-        >
-          <Plus size={16} tone="white" /> 添加想法
-        </Button>
-      }
-    >
+    <Screen page="inspiration">
       <View className="ui-div insp-toolbar">
         <CategoryTabs
           categories={categories}
@@ -209,6 +198,14 @@ export default function Page() {
         <SearchBar value={query} onChange={setQuery} />
       </View>
       {renderBody()}
+      <Button
+        ariaRole="button"
+        ariaLabel="添加想法"
+        className="ui-button primary fab"
+        onClick={() => setSaveOpen(true)}
+      >
+        <Plus size={24} tone="white" />
+      </Button>
       <SaveSheet
         open={saveOpen}
         categories={categories}

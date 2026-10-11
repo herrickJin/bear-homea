@@ -158,6 +158,27 @@
   color: var(--c-faint);
 }
 
+/* ===== 添加想法：右下角圆形悬浮钮（小红书发布键的对应物）=====
+   仍走零阴影平面规则：纯苔绿圆 + 白加号；手机端抬高避开底导 */
+.ui-button.fab {
+  position: fixed;
+  right: 21px;
+  bottom: 24px;
+  z-index: var(--z-nav);
+  width: 56px;
+  min-width: 56px;
+  height: 56px;
+  min-height: 0;
+  padding: 0;
+  border-radius: 50%;
+}
+
+@media (max-width: 700px) {
+  .ui-button.fab {
+    bottom: calc(76px + env(safe-area-inset-bottom));
+  }
+}
+
 /* ===== 瀑布流（小红书式）===== */
 
 /* CSS 多列瀑布流：卡片按内容自然高度垂落，break-inside 防截断 */

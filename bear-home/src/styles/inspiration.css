@@ -225,7 +225,7 @@
 
 /* 纯想法：蜜色语录卡（小红书文字卡的对应物）——高度随内容收缩，不撑满比例 */
 .idea-quote {
-  min-height: 180px;
+  min-height: 220px;
   background: var(--c-honey-mist);
   border-radius: var(--r-md);
   padding: var(--sp-4);
@@ -235,13 +235,13 @@
 
 .idea-mark {
   font-family: var(--font-serif);
-  font-size: 32px;
+  font-size: 24px;
   line-height: 1;
   color: var(--c-honey);
 }
 
 .idea-text {
-  margin-top: var(--sp-3);
+  margin-top: var(--sp-2);
   font-size: var(--fs-md);
   font-weight: var(--fw-medium);
   line-height: 1.6;

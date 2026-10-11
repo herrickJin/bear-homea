@@ -1,4 +1,4 @@
-import { Button, Image, Text, View } from "@tarojs/components";
+import { Image, Text, View } from "@tarojs/components";
 import type { Category, InspirationLink } from "../data/mockInspiration";
 import { Bookmark } from "./Icons";
 import {
@@ -12,14 +12,12 @@ interface LinkCardProps {
   link: InspirationLink;
   categories: Category[];
   onOpen: (link: InspirationLink) => void;
-  onCopy: (link: InspirationLink) => void;
 }
 
 export default function LinkCard({
   link,
   categories,
   onOpen,
-  onCopy,
 }: LinkCardProps) {
   const tags = categories.filter((c) => link.categoryIds.includes(c.id));
   const status = statusLabel(link.status);
@@ -63,18 +61,6 @@ export default function LinkCard({
           {sourceLabel(link.source)} · {displayDate(link.date)}
           {status ? ` · ${status}` : ""}
         </Text>
-        {link.url && (
-          <Button
-            ariaRole="button"
-            className="ui-button link-open"
-            onClick={(e) => {
-              e.stopPropagation();
-              onCopy(link);
-            }}
-          >
-            打开 ↗
-          </Button>
-        )}
       </View>
     </View>
   );

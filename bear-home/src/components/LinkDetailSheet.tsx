@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import Taro from "@tarojs/taro";
 import { Button, Image, Text, Textarea, View } from "@tarojs/components";
-import { Plus, Send, X } from "./Icons";
+import { ArrowUp, Plus, X } from "./Icons";
 import * as inspiration from "../services/inspiration";
 import type { Category, InspirationLink } from "../services/inspiration";
 import {
@@ -132,7 +132,7 @@ export default function LinkDetailSheet({
 
   function confirmDelete() {
     Taro.showModal({
-      title: "删除这条方案？",
+      title: "删除这条笔记？",
       content: "删除后不可恢复",
       confirmText: "删除",
       confirmColor: "#cf7f63",
@@ -371,11 +371,11 @@ export default function LinkDetailSheet({
               <Button
                 ariaRole="button"
                 ariaLabel="发送备注"
-                className={`ui-button ${`primary note-send${noteDraft.trim() ? "" : " disabled"}`}`}
+                className={`ui-button ${`note-send${noteDraft.trim() ? "" : " disabled"}`}`}
                 disabled={!noteDraft.trim()}
                 onClick={addNote}
               >
-                <Send size={15} tone="white" />
+                <ArrowUp size={15} tone="white" />
               </Button>
             </View>
           </View>

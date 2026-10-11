@@ -55,14 +55,14 @@ export default function Page() {
         <View className="ui-section panel">
           <View className="ui-div empty">
             <Bear />
-            <View className="ui-h3">没有找到这条方案</View>
-            <View className="ui-p">它可能已经被删掉了，回方案库看看。</View>
+            <View className="ui-h3">没有找到这条笔记</View>
+            <View className="ui-p">它可能已经被删掉了，回笔记库看看。</View>
             <Button
               ariaRole="button"
               className="ui-button primary"
               onClick={goBack}
             >
-              返回方案库
+              返回笔记库
             </Button>
           </View>
         </View>

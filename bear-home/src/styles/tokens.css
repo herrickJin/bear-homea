@@ -26,7 +26,8 @@ page,
   --c-primary-mid: #6a9484; /* 主色中间调（聚焦描边） */
   --c-primary-soft: #edf3ee; /* 标签浅底 */
   --c-on-primary: #ffffff; /* 主色上的文字 */
-  --c-clay: #cf7f63; /* 陶橘 · 焦点环、标题句点等小面积强调 */
+  --c-clay: #cf7f63; /* 陶橘 · 焦点环、标题句点、添加悬浮钮等小面积强调 */
+  --c-clay-deep: #b96a4f; /* 陶橘按压 / hover */
   --c-honey: #f4dc85; /* 蜂蜜黄 · 胶带标签、想法便签、摘录条 */
   --c-honey-mist: #fdf8e5; /* 蜜雾 · 想法卡便签底 */
   --c-honey-ink: #57491f; /* 胶带文字（蜂蜜上 ≈6.5:1） */
@@ -103,7 +104,7 @@ page,
   --z-toast: 40;
 
   /* ===== 外壳布局 ===== */
-  --layout-sidebar: 244px;
+  --layout-sidebar: 210px;
   --layout-sidebar-md: 190px;
   --layout-sidebar-sm: 150px;
   --layout-content-max: 1220px;

@@ -232,7 +232,7 @@ page {
 }
 
 .sidebar-label {
-  margin: 56px var(--sp-1) var(--sp-2);
+  margin: 30px var(--sp-1) var(--sp-2);
   color: var(--c-faint);
   font-size: var(--fs-xs);
   letter-spacing: var(--ls-label);
@@ -307,6 +307,14 @@ page {
   gap: var(--sp-4);
   border-bottom: 1px solid var(--c-line);
   background: var(--bar-bg);
+}
+
+/* 桌面端不渲染顶栏：侧栏已有品牌与导航，面包屑 + 头像无信息量；
+   手机端（≤700）保留品牌栏，小程序端顶栏承担胶囊安全区 */
+@media (min-width: 701px) {
+  .topbar {
+    display: none;
+  }
 }
 
 .topbar .primary,

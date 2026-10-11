@@ -39,15 +39,6 @@ export default function SaveSheet({
     setText("");
     setCategoryIds([]);
     setShotPath(null);
-    (async () => {
-      try {
-        const clip = await Taro.getClipboardData();
-        const value = (clip?.data ?? "").trim();
-        if (value) setText(value);
-      } catch {
-        /* 读不到就手动粘贴 */
-      }
-    })();
     return () => {
       if (closeTimer.current) clearTimeout(closeTimer.current);
     };
@@ -184,7 +175,7 @@ export default function SaveSheet({
             <Button
               ariaRole="button"
               key={c.id}
-              className={`ui-button ${`chip${categoryIds.includes(c.id) ? " selected" : ""}`}`}
+              className={`ui-button ${`cat-tab${categoryIds.includes(c.id) ? " active" : ""}`}`}
               onClick={() => toggleCategory(c.id)}
             >
               {c.name}

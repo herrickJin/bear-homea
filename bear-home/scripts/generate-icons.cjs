@@ -8,6 +8,7 @@ const names = [
   "ArrowDownRight",
   "ArrowLeft",
   "ArrowRight",
+  "ArrowUp",
   "BookOpen",
   "Bookmark",
   "Check",

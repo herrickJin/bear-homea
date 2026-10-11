@@ -331,7 +331,7 @@ export function sourceLabel(source: string): string {
 
 /** 卡片/详情标题：备注 > 标题 > 待整理占位（不裸露 URL） */
 export function displayTitle(link: InspirationLink): string {
-  return link.note ?? link.title ?? "待整理的方案";
+  return link.note ?? link.title ?? "待整理的笔记";
 }
 
 /** 规范地址：去 query/hash（分享链接的 xsec_token 每次不同，用于判重） */

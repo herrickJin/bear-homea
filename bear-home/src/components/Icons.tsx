@@ -8,6 +8,9 @@ import ArrowLeftwhite from "../assets/icons/ArrowLeft-white.png";
 import ArrowRightgreen from "../assets/icons/ArrowRight-green.png";
 import ArrowRightmuted from "../assets/icons/ArrowRight-muted.png";
 import ArrowRightwhite from "../assets/icons/ArrowRight-white.png";
+import ArrowUpgreen from "../assets/icons/ArrowUp-green.png";
+import ArrowUpmuted from "../assets/icons/ArrowUp-muted.png";
+import ArrowUpwhite from "../assets/icons/ArrowUp-white.png";
 import BookOpengreen from "../assets/icons/BookOpen-green.png";
 import BookOpenmuted from "../assets/icons/BookOpen-muted.png";
 import BookOpenwhite from "../assets/icons/BookOpen-white.png";
@@ -78,6 +81,18 @@ export function ArrowRight({ size = 20, tone = "green" }: IconProps) {
     muted: ArrowRightmuted,
     white: ArrowRightwhite,
   };
+  return (
+    <Image
+      className="ui-icon"
+      src={sources[tone]}
+      style={{ width: `${size}px`, height: `${size}px` }}
+      mode="aspectFit"
+      ariaHidden
+    />
+  );
+}
+export function ArrowUp({ size = 20, tone = "green" }: IconProps) {
+  const sources = { green: ArrowUpgreen, muted: ArrowUpmuted, white: ArrowUpwhite };
   return (
     <Image
       className="ui-icon"

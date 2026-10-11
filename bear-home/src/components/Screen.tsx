@@ -22,7 +22,7 @@ export type Page = "home" | "inspiration" | "diary" | "budget" | "profile";
 
 const navigation = [
   { id: "home", label: "小家", icon: Home },
-  { id: "inspiration", label: "方案", icon: Bookmark },
+  { id: "inspiration", label: "笔记", icon: Bookmark },
   { id: "diary", label: "记录", icon: BookOpen },
   { id: "budget", label: "预算", icon: Wallet },
   { id: "profile", label: "我的", icon: LayoutGrid },
@@ -30,7 +30,7 @@ const navigation = [
 
 const pageCopy: Record<Page, { eyebrow: string; title: string }> = {
   home: { eyebrow: "一点点，住进理想生活", title: "小家" },
-  inspiration: { eyebrow: "我们家的样子", title: "方案库" },
+  inspiration: { eyebrow: "我们家的样子", title: "笔记库" },
   diary: { eyebrow: "把装修的日常留成回忆", title: "装修记录" },
   budget: { eyebrow: "每一笔花费都在变成家", title: "预算" },
   profile: { eyebrow: "关于这个小家", title: "我的" },

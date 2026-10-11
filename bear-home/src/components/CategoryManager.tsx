@@ -32,7 +32,7 @@ export default function CategoryManager({
   function confirmDelete(id: string, name: string) {
     Taro.showModal({
       title: `删除「${name}」`,
-      content: "方案本身保留，只是不再带这个分类。",
+      content: "笔记本身保留，只是不再带这个分类。",
       confirmColor: "#356d5b",
     }).then((res) => {
       if (res.confirm) onDelete(id);

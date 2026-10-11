@@ -72,7 +72,7 @@ export default function Page() {
       setActiveId(null);
       setQuery("");
       Taro.vibrateShort({ type: "light" }).catch(() => {});
-      Taro.showToast({ title: "收进方案库", icon: "success" });
+      Taro.showToast({ title: "收进笔记库", icon: "success" });
     } catch {
       Taro.showToast({ title: "网络不佳，没能保存，请稍后再试", icon: "none" });
     }
@@ -121,13 +121,6 @@ export default function Page() {
     setActiveLink(link);
   }
 
-  function copyLink(link: InspirationLink) {
-    if (!link.url) return;
-    Taro.setClipboardData({ data: link.url }).then(() =>
-      Taro.showToast({ title: "链接已复制，去小红书打开", icon: "none" }),
-    );
-  }
-
   function renderBody() {
     if (loading) {
       return (
@@ -165,7 +158,6 @@ export default function Page() {
               link={link}
               categories={categories}
               onOpen={openDetail}
-              onCopy={copyLink}
             />
           ))}
         </View>
@@ -176,7 +168,7 @@ export default function Page() {
         <View className="ui-div empty">
           <Bear />
           <View className="ui-h3">
-            {links.length === 0 ? "剪贴簿还空着" : "这个筛选下没有方案"}
+            {links.length === 0 ? "剪贴簿还空着" : "这个筛选下没有笔记"}
           </View>
           <View className="ui-p">
             {links.length === 0
@@ -190,7 +182,9 @@ export default function Page() {
 
   return (
     <Screen page="inspiration">
+      {/* XHS 式：搜索独立一行置顶，分类标签行在其下（3.2 四次校准） */}
       <View className="ui-div insp-toolbar">
+        <SearchBar value={query} onChange={setQuery} />
         <CategoryTabs
           categories={categories}
           activeId={activeId}
@@ -198,16 +192,15 @@ export default function Page() {
           onSelect={setActiveId}
           onManage={() => setManageOpen(true)}
         />
-        <SearchBar value={query} onChange={setQuery} />
       </View>
       {renderBody()}
       <Button
         ariaRole="button"
         ariaLabel="添加想法"
-        className="ui-button primary fab"
+        className="ui-button fab"
         onClick={() => setSaveOpen(true)}
       >
-        <Plus size={24} tone="white" />
+        <Plus size={20} tone="white" />
       </Button>
       {activeLink && (
         <LinkDetailSheet

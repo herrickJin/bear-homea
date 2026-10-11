@@ -416,11 +416,12 @@
   }
 }
 
-/* 关闭钮：视口左上角（弹窗外，压在暗背景上）；手机端同位更贴边 */
+/* 关闭钮：有图 = 图区左上角半透明白圆（XHS app 同位，避开右栏「打开原文」）；
+   无图想法卡 = 右上角白圆 hairline（左上是作者行文字） */
 .ui-button.detail-close {
-  position: fixed;
-  top: 20px;
-  left: 20px;
+  position: absolute;
+  top: var(--sp-4);
+  left: var(--sp-4);
   z-index: 5;
   display: inline-flex;
   align-items: center;
@@ -431,9 +432,16 @@
   min-height: 0;
   padding: 0;
   border-radius: 50%;
+  background: rgba(255, 255, 255, 0.92);
+  border: 0;
+  color: var(--c-ink);
+}
+
+.detail-sheet.no-media .ui-button.detail-close {
+  left: auto;
+  right: var(--sp-4);
   background: var(--c-surface);
   border: 1px solid var(--c-line);
-  color: var(--c-ink);
 }
 
 @media (hover: hover) {
@@ -1170,9 +1178,14 @@
   .detail-sheet.no-media {
     width: 100%;
   }
-  .ui-button.detail-close {
+  /* 全屏页：关闭钮贴边更紧；无图时同样右上 */
+  .detail-sheet .ui-button.detail-close {
     top: 12px;
     left: 12px;
+  }
+  .detail-sheet.no-media .ui-button.detail-close {
+    left: auto;
+    right: 12px;
   }
   .detail-media {
     width: 100%;

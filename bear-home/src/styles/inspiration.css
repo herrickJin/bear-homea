@@ -485,7 +485,11 @@
   padding: var(--sp-5) var(--sp-6) var(--sp-4);
 }
 
-/* 作者行（XHS 顶部）：来源占昵称位，打开原文占关注位 */
+/* 作者行（桌面）：来源占昵称位，打开原文占关注位；手机端由 detail-topbar 替代 */
+.detail-topbar {
+  display: none;
+}
+
 .detail-author-row {
   display: flex;
   align-items: center;
@@ -1248,21 +1252,39 @@
   }
   .detail-media {
     width: 100%;
+    /* XHS 手机端：墨底衬原图 contain 居中（完整不裁切），高度定档 */
+    height: min(56vh, 520px);
   }
-  /* Taro H5 Image 是双层结构：手机端改自然高度，须连内层 img 一起放开 */
   .detail-media .detail-shot {
     display: block;
     width: 100%;
-    height: auto;
+    height: 100%;
   }
   .detail-media .detail-shot img,
   .detail-media .detail-shot > * {
     display: block;
     width: 100%;
-    height: auto;
-    max-height: 62vh;
-    /* cover 填满不露黑边（与桌面 cover 策略一致） */
-    object-fit: cover;
+    height: 100%;
+    object-fit: contain;
+  }
+  /* 顶部作者栏：XHS 式置顶 sticky（来源 + 打开原文），scroll 内作者行隐藏 */
+  .detail-topbar {
+    display: flex;
+    align-items: center;
+    gap: var(--sp-2);
+    position: sticky;
+    top: 0;
+    z-index: 3;
+    flex-shrink: 0;
+    padding: 8px 12px 8px 56px; /* 左侧让位给悬浮关闭钮 */
+    background: var(--c-surface);
+    border-bottom: 1px solid var(--c-line);
+  }
+  .detail-scroll .detail-author-row {
+    display: none;
+  }
+  .detail-topbar .detail-open-btn {
+    margin-left: auto;
   }
   .detail-body {
     overflow: visible;

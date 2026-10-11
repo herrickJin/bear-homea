@@ -173,7 +173,33 @@ export default function LinkDetailSheet({
         >
           <X size={15} tone="muted" />
         </Button>
-        {shot && (
+          {/* 手机端顶部作者栏（sticky；桌面隐藏，作者行在 scroll 内） */}
+          <View className="ui-div detail-topbar">
+            <Text className="detail-author">
+              {sourceLabel(current.source)}
+              {status ? ` · ${status}` : ""}
+            </Text>
+            {current.url &&
+              (process.env.TARO_ENV === "h5" ? (
+                <a
+                  className="ui-button primary detail-open-btn"
+                  href={current.url}
+                  target="_blank"
+                  rel="noreferrer"
+                >
+                  打开原文 ↗
+                </a>
+              ) : (
+                <Button
+                  ariaRole="button"
+                  className="ui-button primary detail-open-btn"
+                  onClick={copyLink}
+                >
+                  打开原文 ↗
+                </Button>
+              ))}
+          </View>
+          {shot && (
           <View className="ui-div detail-media">
               <Image
                 className="detail-shot"

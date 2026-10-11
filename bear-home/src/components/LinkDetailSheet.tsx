@@ -69,7 +69,8 @@ export default function LinkDetailSheet({
 
   useEffect(() => {
     if (process.env.TARO_ENV !== "h5") return;
-    const update = () => setIsWide(window.innerWidth > 700);
+    // 断点与 CSS 详情全屏断点（1099）一致：全屏页用自然高度图
+    const update = () => setIsWide(window.innerWidth > 1099);
     update();
     window.addEventListener("resize", update);
     return () => window.removeEventListener("resize", update);

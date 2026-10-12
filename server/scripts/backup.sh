@@ -7,6 +7,10 @@
 #                            直接 cp 主库文件会丢掉大部分数据，切勿用 cp 备份。
 #   files-<时间戳>.tar.gz    上传文件（用户截图 + 封面转存，即 data/files/）。
 #                            库里的 shot_url/cover_url 指向这些文件，必须与库同备份。
+#   hermes-<时间戳>.tar.gz   Hermes 数据（配置/记忆/技能/会话库/仓库源码）。
+#                            排除可再生大目录（installs/node_modules/npm·构建缓存/lsp，
+#                            约 2.6GB——镜像 init 可重建、npm install 可重装），
+#                            体积从全量 ~950MB 降到 ~130MB，部署前自动备份不再拖 3 分钟。
 #
 # 恢复步骤：
 #   cd ~/bear-home-server && docker compose stop server
@@ -15,6 +19,8 @@
 #   tar -xzf ~/bear-home-backups/files-<stamp>.tar.gz -C data/
 #   sudo chown -R root:root data/   # 容器以 root 写入 data/
 #   docker compose start server
+#   # Hermes 数据恢复（容器内路径 /opt/data）：
+#   # tar -xzf ~/bear-home-backups/hermes-<stamp>.tar.gz -C ~/bear-home-server/hermes-data/
 #
 # 升级/重建容器前务必手动先跑一次：./backup.sh
 set -euo pipefail
@@ -53,8 +59,22 @@ sudo chown "$(id -un):$(id -gn)" "$DEST/files-$STAMP.tar.gz"
 # 3) Hermes 的记忆与技能目录（启用 hermes profile 后才存在；没有则跳过）
 HERMES_DATA="${HERMES_DATA:-$HOME/bear-home-server/hermes-data}"
 if [ -d "$HERMES_DATA" ]; then
+  # 排除可再生大目录（GNU tar --exclude 默认任意层级匹配，已实测）：
+  #   installs 1.5G 工具链（镜像 init 可重建）· node_modules 810M（npm i 可重装）
+  #   .npm/.cache/cache ~350M 构建缓存 · lsp 56M 语言服务 · models_dev_cache.json
+  #   *.sock 运行时套接字（顺带消掉大部分 file changed 告警）
+  # 要保住的：config/SOUL/memories/skills/cron/vault/auth/会话库/各 profile .env/仓库源码
   # agent 可能在写文件：GNU tar 会报 file changed 并以非零码退出——产物保留但告警
-  if sudo tar -czf "$DEST/hermes-$STAMP.tar.gz" -C "$HERMES_DATA" .; then
+  if sudo tar -czf "$DEST/hermes-$STAMP.tar.gz" \
+    --exclude=installs \
+    --exclude=node_modules \
+    --exclude=.npm \
+    --exclude=.cache \
+    --exclude=cache \
+    --exclude=lsp \
+    --exclude=models_dev_cache.json \
+    --exclude='*.sock' \
+    -C "$HERMES_DATA" .; then
     sudo chown "$(id -un):$(id -gn)" "$DEST/hermes-$STAMP.tar.gz"
   else
     echo "警告：hermes-data 打包期间文件有变动（agent 运行中），产物可能不完整"

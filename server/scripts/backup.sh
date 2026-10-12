@@ -90,9 +90,9 @@ if [ -f "$DEST/hermes-$STAMP.tar.gz" ]; then
     ./profiles/coder/.env ./profiles/coder/SOUL.md \
     ./profiles/coder/bear-homea/.git/HEAD \
     ./profiles/coder/bear-homea/server/src/index.ts; do
-    printf '%s\n' "$LIST" | grep -qxF "$p" || missing="$missing $p"
+    grep -qxF "$p" <<<"$LIST" || missing="$missing $p"
   done
-  if printf '%s\n' "$LIST" | grep -qE '(^|/)(installs|node_modules)(/|$)'; then
+  if grep -qE '(^|/)(installs|node_modules)(/|$)' <<<"$LIST"; then
     echo "备份自检失败：产物混入可再生大目录（排除规则失效）" >&2
     exit 1
   fi
@@ -100,7 +100,7 @@ if [ -f "$DEST/hermes-$STAMP.tar.gz" ]; then
     echo "备份自检失败：缺少关键资产:$missing" >&2
     exit 1
   fi
-  echo "hermes 备份自检通过（关键资产齐全、大目录已排除，条目 $(printf '%s' "$LIST" | wc -l)）"
+  echo "hermes 备份自检通过（关键资产齐全、大目录已排除，条目 $(printf '%s\n' "$LIST" | wc -l)）"
 fi
 
 # 5) 滚动保留最近 KEEP 份

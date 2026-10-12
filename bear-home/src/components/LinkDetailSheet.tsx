@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import Taro from "@tarojs/taro";
 import { Button, Image, Text, Textarea, View } from "@tarojs/components";
 import { ArrowUp, Plus, X } from "./Icons";
+import useSheetMotion from "../hooks/useSheetMotion";
 import * as inspiration from "../services/inspiration";
 import type { Category, InspirationLink } from "../services/inspiration";
 import {
@@ -31,6 +32,7 @@ export default function LinkDetailSheet({
   onChange,
   onDeleted,
 }: LinkDetailSheetProps) {
+  const { entered, requestClose } = useSheetMotion(true, onClose);
   const [link, setLink] = useState(initial);
   const [editing, setEditing] = useState(false);
   const [draftNote, setDraftNote] = useState("");
@@ -57,16 +59,6 @@ export default function LinkDetailSheet({
       alive = false;
     };
   }, [initial.id]);
-
-  // ESC 关闭（编译期裁剪，小程序不受影响）
-  useEffect(() => {
-    if (process.env.TARO_ENV !== "h5") return;
-    const onKey = (e: KeyboardEvent) => {
-      if (e.key === "Escape") onClose();
-    };
-    window.addEventListener("keydown", onKey);
-    return () => window.removeEventListener("keydown", onKey);
-  }, [onClose]);
 
   useEffect(() => {
     if (process.env.TARO_ENV !== "h5") return;
@@ -163,14 +155,14 @@ export default function LinkDetailSheet({
   }
 
   return (
-    <View className="ui-div detail-overlay">
-      <View className="detail-backdrop" onClick={onClose} />
+    <View className={`ui-div detail-overlay${entered ? " is-entered" : ""}`}>
+      <View className="detail-backdrop" onClick={requestClose} />
       <View className={`ui-div detail-sheet${shot ? "" : " no-media"}`}>
         <Button
           ariaRole="button"
           ariaLabel="关闭"
           className="ui-button detail-close"
-          onClick={onClose}
+          onClick={requestClose}
         >
           <X size={15} tone="muted" />
         </Button>

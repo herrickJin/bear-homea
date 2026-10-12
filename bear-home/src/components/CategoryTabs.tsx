@@ -31,6 +31,9 @@ export default function CategoryTabs({
   const [expanded, setExpanded] = useState(false);
   const expandedRef = useRef(false);
   // 上一段未完动画的收尾（快速连点时不留内联高度卡死布局）
+  const frameRef = useRef<number | null>(null);
+  const fromRef = useRef<number | null>(null);
+  const fallbackRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const settleRef = useRef<(() => void) | null>(null);
 
   useLayoutEffect(() => {
@@ -66,60 +69,61 @@ export default function CategoryTabs({
     if (!row || typeof ResizeObserver === "undefined") return;
     const ro = new ResizeObserver(measure);
     ro.observe(row);
-    return () => ro.disconnect();
+    return () => {
+      ro.disconnect();
+      if (frameRef.current !== null) cancelAnimationFrame(frameRef.current);
+      settleRef.current?.();
+    };
   }, [categories, measure]);
 
-  function toggle() {
+  useLayoutEffect(() => {
     const row = rowRef.current;
-    if (!row) return;
-    settleRef.current?.();
-    settleRef.current = null;
-    const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const from = fromRef.current;
+    if (!row || from === null) return;
+    fromRef.current = null;
+    // Measure after React has committed the wrapping class, with no fixed height.
+    row.style.transition = "none";
+    row.style.height = "auto";
+    const to = row.getBoundingClientRect().height;
+    row.style.height = `${from}px`;
+    void row.offsetHeight;
     const settle = () => {
+      if (fallbackRef.current) clearTimeout(fallbackRef.current);
       row.style.height = "";
       row.style.transition = "";
       row.removeEventListener("transitionend", onEnd);
       settleRef.current = null;
     };
-    function onEnd(e: TransitionEvent) {
-      if (e.propertyName === "height") settle();
+    function onEnd(event: TransitionEvent) {
+      if (event.target === row && event.propertyName === "height") settle();
     }
     settleRef.current = settle;
-    if (reduced) {
-      setExpanded(!expandedRef.current);
-      settleRef.current = null;
+    if (Math.abs(to - from) < 1) {
+      settle();
       return;
     }
-    const duration = "height var(--dur-base) var(--ease-out)";
-    if (!expandedRef.current) {
-      const from = row.offsetHeight;
-      setExpanded(true);
-      requestAnimationFrame(() => {
-        const to = row.scrollHeight;
-        if (to - from < 2) {
-          settleRef.current?.();
-          return;
-        }
-        row.style.transition = duration;
-        row.style.height = `${from}px`;
-        void row.offsetHeight; // 锁起点后再挂过渡，避免首帧跳变
-        row.style.height = `${to}px`;
-        row.addEventListener("transitionend", onEnd);
-      });
-    } else {
-      row.style.height = `${row.offsetHeight}px`;
-      void row.offsetHeight;
-      setExpanded(false);
-      requestAnimationFrame(() => {
-        const kids = Array.from(row.children) as HTMLElement[];
-        const single = kids.length
-          ? Math.max(...kids.map((el) => el.offsetHeight))
-          : row.offsetHeight;
-        row.style.transition = duration;
-        row.style.height = `${single}px`;
-        row.addEventListener("transitionend", onEnd);
-      });
+    frameRef.current = requestAnimationFrame(() => {
+      row.style.transition = "height var(--dur-base) var(--ease-out)";
+      row.style.height = `${to}px`;
+      row.addEventListener("transitionend", onEnd);
+      fallbackRef.current = setTimeout(settle, 280);
+    });
+  }, [expanded]);
+
+  function toggle() {
+    const row = rowRef.current;
+    if (!row) return;
+    const from = row.getBoundingClientRect().height;
+    if (frameRef.current !== null) cancelAnimationFrame(frameRef.current);
+    settleRef.current?.();
+    const next = !expandedRef.current;
+    expandedRef.current = next;
+    if (!window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      row.style.transition = "none";
+      row.style.height = `${from}px`;
+      fromRef.current = from;
     }
+    setExpanded(next);
   }
 
   return (

@@ -499,16 +499,7 @@
   justify-content: center;
   padding: var(--sp-6);
   background: rgba(31, 36, 33, 0.48);
-  animation: detail-in var(--dur-base) var(--ease-out);
-}
 
-@keyframes detail-in {
-  from {
-    opacity: 0;
-  }
-  to {
-    opacity: 1;
-  }
 }
 
 /* 点背景关闭（桌面） */
@@ -526,7 +517,7 @@
   border-radius: var(--r-xl);
   overflow: hidden;
   box-shadow: var(--shadow-sheet);
-  animation: detail-sheet-in var(--dur-base) var(--ease-out);
+
 }
 
 /* 无图方案：窄栏、高度随内容（避免大片留白） */
@@ -534,17 +525,6 @@
   width: min(680px, 100%);
   height: auto;
   max-height: min(86vh, 800px);
-}
-
-@keyframes detail-sheet-in {
-  from {
-    transform: translateY(14px);
-    opacity: 0;
-  }
-  to {
-    transform: translateY(0);
-    opacity: 1;
-  }
 }
 
 /* 关闭钮：有图 = 图区左上角半透明白圆（XHS app 同位，避开右栏「打开原文」）；
@@ -1132,64 +1112,6 @@
   margin-top: var(--sp-6);
 }
 
-/* 收藏弹层：淡入 + 轻位移，进出同路径 */
-.save-sheet {
-  width: 420px;
-  animation: sheet-pop var(--dur-base) var(--ease-out);
-}
-
-.save-backdrop {
-  animation: sheet-fade-in var(--dur-fast) var(--ease-out);
-}
-
-.save-backdrop.closing {
-  animation: sheet-fade-out var(--dur-fast) var(--ease-out) forwards;
-}
-
-.save-sheet.closing {
-  animation: sheet-dim var(--dur-fast) var(--ease-out) forwards;
-}
-
-@keyframes sheet-fade-in {
-  from {
-    opacity: 0;
-  }
-  to {
-    opacity: 1;
-  }
-}
-
-@keyframes sheet-fade-out {
-  from {
-    opacity: 1;
-  }
-  to {
-    opacity: 0;
-  }
-}
-
-@keyframes sheet-pop {
-  from {
-    transform: translateY(8px);
-    opacity: 0;
-  }
-  to {
-    transform: none;
-    opacity: 1;
-  }
-}
-
-@keyframes sheet-dim {
-  from {
-    transform: none;
-    opacity: 1;
-  }
-  to {
-    transform: translateY(4px);
-    opacity: 0;
-  }
-}
-
 /* 手机：搜索 + 标签行整体吸顶（XHS app 搜索页同构） */
 @media (max-width: 700px) {
   .insp-toolbar {
@@ -1203,25 +1125,58 @@
   }
 }
 
+/* All note sheets share an interruptible entry/exit transition. */
+.detail-overlay,
+.note-backdrop,
+.manage-backdrop {
+  background: transparent;
+}
+.detail-backdrop,
+.note-backdrop::before,
+.manage-backdrop::before {
+  position: absolute;
+  inset: 0;
+  background: rgba(38, 38, 38, 0.44);
+  opacity: 0;
+  transition: opacity var(--dur-base) var(--ease-out);
+}
+.note-backdrop::before,
+.manage-backdrop::before { content: ""; }
+.detail-overlay .detail-sheet,
+.note-backdrop .sheet,
+.manage-backdrop .sheet {
+  position: relative;
+  opacity: 0;
+  transform: translateY(8px) scale(0.97);
+  transition: transform var(--dur-base) var(--ease-out), opacity var(--dur-base) var(--ease-out);
+}
+.detail-overlay:not(.is-entered),
+.note-backdrop:not(.is-entered),
+.manage-backdrop:not(.is-entered) { pointer-events: none; }
+.is-entered .detail-backdrop,
+.note-backdrop.is-entered::before,
+.manage-backdrop.is-entered::before { opacity: 1; }
+.detail-overlay.is-entered .detail-sheet,
+.note-backdrop.is-entered .sheet,
+.manage-backdrop.is-entered .sheet {
+  opacity: 1;
+  transform: none;
+}
+.note-save-sheet { width: 420px; }
 @media (max-width: 700px) {
-  .save-backdrop {
-    align-items: flex-end;
-    padding: 0;
-  }
-  .save-backdrop .save-sheet {
+  .note-backdrop, .manage-backdrop { align-items: flex-end; padding: 0; }
+  .note-backdrop .sheet, .manage-backdrop .sheet {
     width: 100%;
     max-width: 100%;
-    border-radius: var(--r-xl) var(--r-xl) 0 0;
     max-height: calc(100dvh - 48px);
+    border-radius: var(--r-xl) var(--r-xl) 0 0;
     padding-bottom: calc(var(--sp-6) + env(safe-area-inset-bottom));
-    animation-duration: 320ms;
+    transform: translateY(100%);
+    opacity: 1;
+    transition-timing-function: var(--ease-drawer, var(--ease-out));
   }
-  .save-sheet.closing {
-    animation-name: sheet-sink;
-    animation-duration: var(--dur-base);
-  }
-  /* 小抓手 */
-  .save-sheet::before {
+  .note-backdrop.is-entered .sheet, .manage-backdrop.is-entered .sheet { transform: none; }
+  .note-save-sheet::before, .manage-backdrop .sheet::before {
     content: "";
     display: block;
     width: 36px;
@@ -1229,43 +1184,6 @@
     border-radius: var(--r-pill);
     background: var(--c-line-strong);
     margin: -8px auto var(--sp-3);
-  }
-}
-
-@keyframes sheet-sink {
-  from {
-    transform: none;
-  }
-  to {
-    transform: translateY(100%);
-  }
-}
-
-@media (max-width: 700px) {
-  .save-sheet {
-    animation-name: sheet-rise;
-  }
-}
-
-@keyframes sheet-rise {
-  from {
-    transform: translateY(100%);
-  }
-  to {
-    transform: none;
-  }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .save-backdrop,
-  .save-sheet,
-  .save-sheet.closing,
-  .save-backdrop.closing {
-    animation: sheet-fade-in var(--dur-fast) ease;
-  }
-  .save-backdrop.closing,
-  .save-sheet.closing {
-    animation-name: sheet-fade-out;
   }
 }
 
@@ -1462,5 +1380,186 @@
 @media (max-width: 700px) {
   .sheet {
     padding: var(--sp-5);
+  }
+}
+
+/* Notes interaction palette: one action color, quiet content. */
+.page-inspiration .eyebrow {
+  background: none;
+  box-shadow: none;
+  transform: none;
+  padding: 0;
+  color: var(--c-mute);
+}
+.page-inspiration .heading-dot { display: none; }
+.page-inspiration .cat-tab.active { background: var(--c-ink); }
+.page-inspiration .cat-tab.active:hover { background: var(--c-ink-2); }
+.page-inspiration .cat-tab {
+  transition: transform var(--dur-fast) var(--ease-out), background-color var(--dur-fast) ease, color var(--dur-fast) ease;
+}
+.page-inspiration .cat-expand {
+  transition: transform var(--dur-fast) var(--ease-out), opacity var(--dur-fast) ease, visibility var(--dur-fast) ease;
+}
+.page-inspiration .fab, .page-inspiration .note-send { background: var(--c-primary); }
+.page-inspiration .fab:active, .page-inspiration .note-send:active { background: var(--c-primary-deep); }
+@media (hover: hover) and (pointer: fine) {
+  .page-inspiration .fab:hover, .page-inspiration .note-send:hover { background: var(--c-primary-deep); }
+}
+.page-inspiration .idea-quote, .page-inspiration .tag-chip {
+  background: var(--c-bg-deep);
+  color: var(--c-ink-2);
+}
+.page-inspiration .idea-mark { color: var(--c-faint); }
+.page-inspiration .idea-dash { background: var(--c-line-strong); }
+.page-inspiration .detail-note { font-family: var(--font-sans); font-weight: var(--fw-medium); }
+.page-inspiration .link-card:active { opacity: 1; }
+.page-inspiration .link-shot, .page-inspiration .idea-quote {
+  transition: transform var(--dur-fast) var(--ease-out), opacity var(--dur-fast) ease;
+}
+.page-inspiration .link-card:active .link-shot,
+.page-inspiration .link-card:active .idea-quote { transform: scale(0.98); opacity: 0.92; }
+@media (max-width: 1099px) {
+  .detail-overlay .detail-sheet { transform: translateY(16px); }
+  .detail-overlay.is-entered .detail-sheet { transform: none; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .detail-overlay .detail-sheet, .note-backdrop .sheet, .manage-backdrop .sheet,
+  .detail-backdrop, .note-backdrop::before, .manage-backdrop::before {
+    transition: none;
+    transform: none;
+  }
+  .page-inspiration .link-shot, .page-inspiration .idea-quote,
+  .page-inspiration .link-shot img { transition: none; transform: none !important; }
+}
+
+.page-inspiration .ui-button:active { transition-duration: 100ms; }
+.page-inspiration .ui-button.disabled:active { transform: none; }
+@media (prefers-reduced-motion: reduce) {
+  .note-backdrop:not(.is-entered) .sheet,
+  .manage-backdrop:not(.is-entered) .sheet { opacity: 0; }
+}
+
+/* Existing ledger sheets retain their previous motion classes. */
+/* 收藏弹层：淡入 + 轻位移，进出同路径 */
+.save-sheet {
+  width: 420px;
+  animation: sheet-pop var(--dur-base) var(--ease-out);
+}
+
+.save-backdrop {
+  animation: sheet-fade-in var(--dur-fast) var(--ease-out);
+}
+
+.save-backdrop.closing {
+  animation: sheet-fade-out var(--dur-fast) var(--ease-out) forwards;
+}
+
+.save-sheet.closing {
+  animation: sheet-dim var(--dur-fast) var(--ease-out) forwards;
+}
+
+@keyframes sheet-fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes sheet-fade-out {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
+
+@keyframes sheet-pop {
+  from {
+    transform: translateY(8px);
+    opacity: 0;
+  }
+  to {
+    transform: none;
+    opacity: 1;
+  }
+}
+
+@keyframes sheet-dim {
+  from {
+    transform: none;
+    opacity: 1;
+  }
+  to {
+    transform: translateY(4px);
+    opacity: 0;
+  }
+}
+
+@media (max-width: 700px) {
+  .save-backdrop {
+    align-items: flex-end;
+    padding: 0;
+  }
+  .save-backdrop .save-sheet {
+    width: 100%;
+    max-width: 100%;
+    border-radius: var(--r-xl) var(--r-xl) 0 0;
+    max-height: calc(100dvh - 48px);
+    padding-bottom: calc(var(--sp-6) + env(safe-area-inset-bottom));
+    animation-duration: 320ms;
+  }
+  .save-sheet.closing {
+    animation-name: sheet-sink;
+    animation-duration: var(--dur-base);
+  }
+  /* 小抓手 */
+  .save-sheet::before {
+    content: "";
+    display: block;
+    width: 36px;
+    height: 4px;
+    border-radius: var(--r-pill);
+    background: var(--c-line-strong);
+    margin: -8px auto var(--sp-3);
+  }
+}
+
+@keyframes sheet-sink {
+  from {
+    transform: none;
+  }
+  to {
+    transform: translateY(100%);
+  }
+}
+
+@media (max-width: 700px) {
+  .save-sheet {
+    animation-name: sheet-rise;
+  }
+}
+
+@keyframes sheet-rise {
+  from {
+    transform: translateY(100%);
+  }
+  to {
+    transform: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .save-backdrop,
+  .save-sheet,
+  .save-sheet.closing,
+  .save-backdrop.closing {
+    animation: sheet-fade-in var(--dur-fast) ease;
+  }
+  .save-backdrop.closing,
+  .save-sheet.closing {
+    animation-name: sheet-fade-out;
   }
 }

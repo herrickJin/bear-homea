@@ -3,6 +3,7 @@ import Taro from "@tarojs/taro";
 import { Button, Input, Text, View } from "@tarojs/components";
 import type { Category } from "../data/mockInspiration";
 import { X } from "./Icons";
+import useSheetMotion from "../hooks/useSheetMotion";
 
 interface CategoryManagerProps {
   open: boolean;
@@ -27,7 +28,8 @@ export default function CategoryManager({
   const [editingName, setEditingName] = useState("");
   const [newName, setNewName] = useState("");
 
-  if (!open) return null;
+  const { visible, entered, requestClose } = useSheetMotion(open, onClose);
+  if (!visible) return null;
 
   function confirmDelete(id: string, name: string) {
     Taro.showModal({
@@ -54,11 +56,11 @@ export default function CategoryManager({
   }
 
   return (
-    <View className="ui-div sheet-backdrop" onClick={onClose}>
+    <View className={`ui-div sheet-backdrop manage-backdrop${entered ? " is-entered" : ""}`} onClick={requestClose}>
       <View className="ui-div sheet" onClick={(e) => e.stopPropagation()}>
         <View className="ui-div section-heading">
           <Text className="ui-h2">管理分类</Text>
-          <Button ariaRole="button" className="ui-button" onClick={onClose}>
+          <Button ariaRole="button" className="ui-button" onClick={requestClose}>
             <X size={18} tone="muted" />
           </Button>
         </View>

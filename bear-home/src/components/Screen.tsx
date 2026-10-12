@@ -96,7 +96,7 @@ export default function Screen({
 
   return (
     <View
-      className={`ui-div ${`app-shell ${isWeapp ? "is-weapp" : "is-h5"}`}`}
+      className={`ui-div ${`app-shell page-${page} ${isWeapp ? "is-weapp" : "is-h5"}`}`}
       style={headerStyle}
     >
       <View className="ui-aside sidebar">

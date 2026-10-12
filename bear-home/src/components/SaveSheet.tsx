@@ -1,9 +1,10 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import Taro from "@tarojs/taro";
 import { Button, Image, Text, Textarea, View } from "@tarojs/components";
 import type { Category, SaveDraft } from "../data/mockInspiration";
 import { parseShareText } from "../data/mockInspiration";
 import { X } from "./Icons";
+import useSheetMotion from "../hooks/useSheetMotion";
 
 /**
  * 收藏弹层「对家的想法」（v5）
@@ -19,7 +20,7 @@ interface SaveSheetProps {
   onSave: (draft: SaveDraft) => void;
 }
 
-const CLOSE_MS = 260;
+
 
 export default function SaveSheet({
   open,
@@ -30,32 +31,17 @@ export default function SaveSheet({
   const [text, setText] = useState("");
   const [categoryIds, setCategoryIds] = useState<string[]>([]);
   const [shotPath, setShotPath] = useState<string | null>(null);
-  const [closing, setClosing] = useState(false);
-  const closeTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const { visible, entered, requestClose } = useSheetMotion(open, onClose);
 
   useEffect(() => {
     if (!open) return;
-    setClosing(false);
     setText("");
     setCategoryIds([]);
     setShotPath(null);
-    return () => {
-      if (closeTimer.current) clearTimeout(closeTimer.current);
-    };
   }, [open]);
 
-  if (!open) return null;
-
+  if (!visible) return null;
   const parsed = parseShareText(text);
-
-  function requestClose() {
-    if (closing) return;
-    setClosing(true);
-    closeTimer.current = setTimeout(() => {
-      setClosing(false);
-      onClose();
-    }, CLOSE_MS);
-  }
 
   function toggleCategory(id: string) {
     setCategoryIds((prev) =>
@@ -103,11 +89,11 @@ export default function SaveSheet({
 
   return (
     <View
-      className={`ui-div ${`sheet-backdrop save-backdrop${closing ? " closing" : ""}`}`}
+      className={`ui-div ${`sheet-backdrop note-backdrop${entered ? " is-entered" : ""}`}`}
       onClick={requestClose}
     >
       <View
-        className={`ui-div ${`sheet save-sheet${closing ? " closing" : ""}`}`}
+        className={`ui-div ${`sheet note-save-sheet`}`}
         onClick={(e) => e.stopPropagation()}
       >
         <View className="ui-div section-heading">

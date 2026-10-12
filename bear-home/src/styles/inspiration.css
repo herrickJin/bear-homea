@@ -1375,7 +1375,10 @@
   .detail-sheet {
     flex-direction: column;
     border-radius: 0;
-    overflow-y: auto;
+    /* 内滚模型：sheet 自身不滚（桌面同款），滚动交给 .detail-scroll。
+       此前整页滚会把 absolute 的关闭钮一起带走（topbar/输入条却 sticky），
+       且 iOS 整页滚有橡皮筋，关窗手势易误触回退 */
+    overflow: hidden;
     box-shadow: none;
     animation: none;
   }
@@ -1418,8 +1421,9 @@
     display: flex;
     align-items: center;
     gap: var(--sp-2);
-    position: sticky;
-    top: 0;
+    /* 内滚模型下 topbar 是 flex 常驻首行，非 sticky 也能钉住；保留 z-index
+       压住下方滚动内容的层叠 */
+    position: relative;
     z-index: 3;
     flex-shrink: 0;
     height: 52px;
@@ -1443,17 +1447,19 @@
     margin-left: auto;
   }
   .detail-body {
-    overflow: visible;
+    /* 内滚模型：正文区不截断滚动（滚动在 .detail-scroll），min-height 保住
+       输入条贴底；此前 visible 是为整页滚放行，现已不需要 */
+    min-height: 0;
+    overflow: hidden;
   }
   .detail-scroll {
-    overflow: visible;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch; /* iOS 惯性滚动 */
     padding: var(--sp-5);
   }
-  /* 整页滚动时输入条贴底悬浮 */
+  /* 内滚模型：输入条回到桌面同款常驻贴底（非整页滚的 sticky 悬浮） */
   .note-add {
-    position: sticky;
-    bottom: 0;
-    z-index: 2;
+    flex-shrink: 0;
     padding: var(--sp-3) var(--sp-5) var(--sp-4);
   }
 }

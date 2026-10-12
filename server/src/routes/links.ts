@@ -3,7 +3,11 @@ import type { Context } from "hono";
 import { randomUUID } from "node:crypto";
 import { db, now } from "../db/index.js";
 import type { CategoryRow, LinkNoteRow, LinkRow } from "../db/schema.js";
-import { queueCoverStore, queueScrape } from "../services/scrape.js";
+import {
+  friendlySource,
+  queueCoverStore,
+  queueScrape,
+} from "../services/scrape.js";
 
 export const links = new Hono();
 
@@ -101,7 +105,7 @@ links.post("/", async (c) => {
       category_ids: JSON.stringify(categoryIds),
       shot_url: shotUrl,
       cover_url: null,
-      source,
+      source: friendlySource(source),
       status: "pending",
       error: null,
       created_at: now(),

@@ -5,7 +5,7 @@ import { randomUUID } from "node:crypto";
 import { z } from "zod";
 import { db, now, today } from "../db/index.js";
 import type { EntryRow, LinkRow } from "../db/schema.js";
-import { queueCoverStore, queueScrape } from "../services/scrape.js";
+import { friendlySource, queueCoverStore, queueScrape } from "../services/scrape.js";
 
 const text = (data: unknown) => ({
   content: [{ type: "text" as const, text: JSON.stringify(data, null, 2) }],
@@ -200,7 +200,7 @@ function buildServer(): McpServer {
         note: null,
         category_ids: "[]",
         shot_url: null,
-        source: hostname,
+        source: friendlySource(hostname),
         status: "pending",
         error: null,
         created_at: ts,

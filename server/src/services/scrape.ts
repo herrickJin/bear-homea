@@ -13,6 +13,28 @@ import { saveBuffer } from "./files.js";
 const MOBILE_UA =
   "Mozilla/5.0 (iPhone; CPU iPhone OS 17_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.0 Mobile/15E148 Safari/604.1";
 
+/** 主机名 → 展示用来源名。分享短链与其正式域归到同一名下
+ *  （微信甩出来的多是 xhslink.cn 短链，展示成「xhslink.cn」没有信息量）。 */
+const SOURCE_NAMES: [RegExp, string][] = [
+  [/(^|\.)xhslink\.cn$|(^|\.)xiaohongshu\.com$/, "小红书"],
+  [/(^|\.)baike\.baidu\.com$/, "百度百科"],
+  [/(^|\.)xiaobanbang\.com$/, "住小帮"],
+  [/(^|\.)cctv\.(com|cn)$/, "央视网"],
+  [/(^|\.)zhihu\.com$/, "知乎"],
+  [/(^|\.)bilibili\.com$/, "B站"],
+  [/(^|\.)douyin\.com$/, "抖音"],
+  [/(^|\.)jd\.com$/, "京东"],
+  [/(^|\.)tmall\.com$|(^|\.)taobao\.com$/, "淘宝"],
+  [/(^|\.)baidu\.com$/, "百度"],
+];
+
+/** 未知域名退回去掉 www. 的主机名本身。 */
+export function friendlySource(hostname: string): string {
+  const host = hostname.toLowerCase().replace(/^www\./, "");
+  for (const [re, name] of SOURCE_NAMES) if (re.test(host)) return name;
+  return host;
+}
+
 /** 私网/环回/链路本地地址一律拒绝，防 SSRF。 */
 function isPublicIp(ip: string): boolean {
   if (isIP(ip) === 4) {
@@ -267,15 +289,18 @@ async function scrapeLink(id: string): Promise<void> {
     if (!guard || guard.status !== "pending") return;
 
     const cover = guard.cover_url || fetchedCover || null;
+    // 来源名以重定向后的正式域为准（xhslink.cn 短链 → 小红书）
+    const source = friendlySource(new URL(res.url).hostname);
     db.prepare(
       `UPDATE links SET
-         title = ?, summary = ?, cover_url = ?,
+         title = ?, summary = ?, cover_url = ?, source = ?,
          status = 'done', error = NULL, updated_at = ?
        WHERE id = ?`,
     ).run(
       guard.title || (row.title ?? ogTitleUsable ?? jsonTitleClean) || null,
       guard.summary || clean(ogDesc, 500) || null,
       cover,
+      source,
       now(),
       id,
     );

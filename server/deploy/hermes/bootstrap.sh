@@ -25,8 +25,9 @@ else
   fi
 fi
 
-# 1) 模型块（与 Mac 本地已验证配置同构）
-hrun config set model.default glm-5.3 >/dev/null
+# 1) 模型块（OpenAI 兼容端点 + 智谱；默认 glm-5.3-flash，可用 HERMES_MODEL 覆盖）
+MODEL="${HERMES_MODEL:-glm-5.3-flash}"
+hrun config set model.default "$MODEL" >/dev/null
 hrun config set model.provider zai >/dev/null
 hrun config set model.base_url https://open.bigmodel.cn/api/coding/paas/v4 >/dev/null 2>&1 || true
 echo "[$P] ✓ 模型：$(hrun config get model | tr '\n' ' ')"

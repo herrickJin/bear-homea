@@ -14,6 +14,8 @@
 | 06 | 整体风格与设计 Token | ✅ 完成（2026-10-10） | [06-style-tokens.md](./06-style-tokens.md) |
 | 07 | 记录页（选购台账） | 🚧 S1 页面完成（2026-10-12）· S2 服务端待立项 | [07-record-page.md](./07-record-page.md) |
 | 08 | AI 助手（装修记录探讨） | ✅ 后端上线（2026-10-12）· UI 待开工 | [08-ai-assistant.md](./08-ai-assistant.md) |
+| 09 | 笔记 × Web 联动（Hermes 技能层） | ✅ 完成（2026-10-12）· C/D 方向待做 | [09-note-web-linkage.md](./09-note-web-linkage.md) |
+| 10 | 开发-部署链路（coder 容器直发生产） | ✅ 完成并验证（2026-10-12）· push 待凭据 | [10-dev-deploy-channel.md](./10-dev-deploy-channel.md) |
 
 状态标记：✅ 完成 · 🚧 进行中 · 📋 待开始 / 规划中 · ⛔ 受阻
 
@@ -34,6 +36,7 @@ bear-home (Taro 小程序/H5)  ──HTTP + Bearer Token──▶  server/ (Hono
 - 数据库：SQLite 单文件，在服务器 `~/bear-home-server/data/`，备份即拷目录
 - MCP 端点：`http://119.27.191.90/mcp`（8 个工具，已公网验证）
 - AI 通道：server `/api/chat`（App 内实时，已上线）+ Hermes 容器（异步常驻，已上线）
+- 部署通道：coder 容器内 `scripts/deploy.sh server|web` 直发生产（SSH forced command，自动备份，见 10）
 
 ## 关键决策记录
 
@@ -42,3 +45,6 @@ bear-home (Taro 小程序/H5)  ──HTTP + Bearer Token──▶  server/ (Hono
 - **数据源唯一化**：服务器是记录的唯一数据源，前端本地存储仅作离线缓存兜底
 - **前端功能剥离（05）**：原前端功能多为 demo 写死数据，2026-10-10 全部移除只留跨端骨架；02 的前端接入层随之删除，待正式 PRD 后重建（后端与 02 的服务端部分仍然有效）
 - **无备案域名过渡方案**：先走 `http://IP:80` 纯 HTTP + Token；有备案域名后改一行配置自动升级 HTTPS
+- **开发-部署一体化（10）**：coder 本就驻留在生产服务器的 Hermes 容器里，用 SSH forced
+  command 通道让容器内改完一条命令直发（密钥仅能触发固定部署脚本，不能开 shell），
+  不经 GitHub 中转——push 只为备份/协作，不是部署前置

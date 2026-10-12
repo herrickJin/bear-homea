@@ -1,5 +1,7 @@
-#!/usr/bin/env bash
+#!/bin/sh
 # bear-home 数据备份 —— 在部署服务器（ubuntu 用户）上运行。
+# 注意：本脚本必须保持 POSIX sh 兼容（部署 hook 以 `sh` 调它，Ubuntu 的 sh=dash：
+# 无 <<< here-string、无 $'...'；shebang 在被 `sh file` 调用时不生效，调用方说了算）。
 #
 # 产出（~/bear-home-backups/，在 data/ 之外，防误删连坐）：
 #   bear-home-<时间戳>.db    SQLite 一致性快照。经容器内 better-sqlite3 .backup()
@@ -86,13 +88,23 @@ fi
 if [ -f "$DEST/hermes-$STAMP.tar.gz" ]; then
   LIST="$(tar -tzf "$DEST/hermes-$STAMP.tar.gz")" || { echo "备份自检失败：tar 无法列举（产物损坏）" >&2; exit 1; }
   missing=""
+  # POSIX 换行变量（dash 无 $'\n' 语法）：haystack 用换行护航做整行相等匹配
+  NL='
+'
+  haystack="${NL}${LIST}${NL}"
   for p in ./config.yaml ./SOUL.md ./state.db ./auth.json ./cron/ \
     ./profiles/coder/.env ./profiles/coder/SOUL.md \
     ./profiles/coder/bear-homea/.git/HEAD \
     ./profiles/coder/bear-homea/server/src/index.ts; do
-    grep -qxF "$p" <<<"$LIST" || missing="$missing $p"
+    # POSIX：hook 以 sh(dash) 调本脚本——不支持 <<<，且管道+grep -q 有 SIGPIPE 假阴性。
+    # 纯 shell case 匹配（换行护航保证整行相等），零子进程零管道，两种解释器下确定性一致。
+    case "$haystack" in
+      *"$NL$p$NL"*) ;;
+      *) missing="$missing $p" ;;
+    esac
   done
-  if grep -qE '(^|/)(installs|node_modules)(/|$)' <<<"$LIST"; then
+  # awk 全量读完才退出（grep -q 早退会在 pipefail 下产生不确定 rc）
+  if printf '%s\n' "$LIST" | awk '/(^|\/)(installs|node_modules)(\/|$)/{f=1} END{exit !f}'; then
     echo "备份自检失败：产物混入可再生大目录（排除规则失效）" >&2
     exit 1
   fi

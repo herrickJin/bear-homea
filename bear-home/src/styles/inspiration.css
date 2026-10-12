@@ -1372,13 +1372,15 @@
     padding: 0;
     align-items: stretch;
   }
+  /* 整页滚模型：sheet 自身就是滚动容器——图区算内容的一部分，手指落在图上同样能滑。
+     只有顶部作者栏 sticky 钉住（关闭钮见下改 fixed，输入条 sticky 贴底）。
+     overscroll-behavior 切断链式滚动，滑到头也不带动背后的列表页 */
   .detail-sheet {
     flex-direction: column;
     border-radius: 0;
-    /* 内滚模型：sheet 自身不滚（桌面同款），滚动交给 .detail-scroll。
-       此前整页滚会把 absolute 的关闭钮一起带走（topbar/输入条却 sticky），
-       且 iOS 整页滚有橡皮筋，关窗手势易误触回退 */
-    overflow: hidden;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    -webkit-overflow-scrolling: touch;
     box-shadow: none;
     animation: none;
   }
@@ -1389,41 +1391,40 @@
     height: 100%;
     max-height: none;
   }
-  /* 全屏页：关闭钮贴边更紧；无图时同样右上 */
-  .detail-sheet .ui-button.detail-close {
-    top: 12px;
-    left: 12px;
-  }
+  /* 关闭钮：整页滚下 absolute 会被内容一起带走（804dd47 内滚模型回退即为此），
+     故改 fixed 钉在视口左上。overlay 本身已是 fixed 全屏，视觉位置与原先一致 */
+  .detail-sheet .ui-button.detail-close,
   .detail-sheet.no-media .ui-button.detail-close {
-    left: auto;
-    right: 12px;
+    position: fixed;
+    top: 8px;
+    left: 8px;
+    right: auto;
   }
+  /* 图区：自然比例铺满宽度（widthFix），随内容一起滚；
+     不再定档 56vh + contain，那会把图做成「固定图窗」 */
   .detail-media {
     width: 100%;
-    /* XHS 手机端：墨底衬原图 contain 居中（完整不裁切），高度定档 */
-    height: min(56vh, 520px);
+    height: auto;
   }
   .detail-media .detail-shot {
     display: block;
     width: 100%;
-    height: 100%;
+    height: auto;
   }
   .detail-media .detail-shot img,
   .detail-media .detail-shot > * {
     display: block;
     width: 100%;
-    height: 100%;
-    object-fit: contain;
+    height: auto;
   }
-  /* 顶部作者栏：XHS 式置顶 sticky（来源 + 打开原文），scroll 内作者行隐藏。
+  /* 顶部作者栏：全屏页里唯一固定件——sticky 钉在滚动容器顶部。
      固定高 52 = 关闭钮 36 + 上下 8，悬浮关闭钮与行严格垂直居中 */
   .detail-topbar {
     display: flex;
     align-items: center;
     gap: var(--sp-2);
-    /* 内滚模型下 topbar 是 flex 常驻首行，非 sticky 也能钉住；保留 z-index
-       压住下方滚动内容的层叠 */
-    position: relative;
+    position: sticky;
+    top: 0;
     z-index: 3;
     flex-shrink: 0;
     height: 52px;
@@ -1431,36 +1432,37 @@
     background: var(--c-surface);
     border-bottom: 1px solid var(--c-line);
   }
-  .detail-sheet .ui-button.detail-close {
-    top: 8px;
-    left: 8px;
-  }
-  /* 桌面 no-media 规则是右上（特异性更高），此处必须显式压回左上 */
-  .detail-sheet.no-media .ui-button.detail-close {
-    left: 8px;
-    right: auto;
-  }
   .detail-scroll .detail-author-row {
     display: none;
   }
   .detail-topbar .detail-open-btn {
     margin-left: auto;
   }
+  /* 正文区：高度随内容（滚动在 sheet 上），不再自己截断 */
   .detail-body {
-    /* 内滚模型：正文区不截断滚动（滚动在 .detail-scroll），min-height 保住
-       输入条贴底；此前 visible 是为整页滚放行，现已不需要 */
+    flex: none;
     min-height: 0;
-    overflow: hidden;
+    overflow: visible;
+  }
+  /* 无图想法卡内容短：兜底撑满一屏，让输入条落到底部而不是浮在半空 */
+  .detail-sheet.no-media .detail-body {
+    min-height: calc(100% - 52px);
   }
   .detail-scroll {
-    overflow-y: auto;
-    -webkit-overflow-scrolling: touch; /* iOS 惯性滚动 */
+    overflow: visible;
     padding: var(--sp-5);
   }
-  /* 内滚模型：输入条回到桌面同款常驻贴底（非整页滚的 sticky 悬浮） */
+  /* 输入条：sticky 贴底——内容长时钉在屏幕底（XHS 评论位），滚到底自然归位 */
   .note-add {
+    position: sticky;
+    bottom: 0;
+    z-index: 2;
     flex-shrink: 0;
     padding: var(--sp-3) var(--sp-5) var(--sp-4);
+  }
+  /* 兜底撑高时把输入条压到底（有图时 body 高即内容高，auto margin 为零不影响） */
+  .detail-body .note-add {
+    margin-top: auto;
   }
 }
 

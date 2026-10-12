@@ -15,10 +15,17 @@ HOST="ubuntu@172.18.0.1"
 
 what="${1:-}"
 
+# 权限链防重置：Hermes 的 profile 操作可能把 profiles/coder 收回 700，
+# 宿主机就进不来了。每次部署前幂等放开（穿透不列目 + 仓库树可读）。
+chmod o+x /opt/data /opt/data/profiles /opt/data/profiles/coder 2>/dev/null || true
+chmod -R o+rX "$REPO" 2>/dev/null || true
+
 # 前端部署：产物必须在容器内先构建（宿主机 hook 只做 rsync）
 if [ "$what" = "web" ]; then
   echo "==> 构建 H5 产物..."
   (cd "$REPO/bear-home" && npm run build:h5)
+  # 新生成的 dist 目录对宿主机必须可读
+  chmod -R o+rX "$REPO/bear-home/dist" 2>/dev/null || true
   echo "==> 构建完成，触发宿主机同步..."
 fi
 

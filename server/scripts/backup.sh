@@ -81,7 +81,29 @@ if [ -d "$HERMES_DATA" ]; then
   fi
 fi
 
-# 4) 滚动保留最近 KEEP 份
+# 4) hermes 产物自检：关键资产必须在、可再生大目录必须不在。
+#    自检不过 = 备份不可信 → 非零退出 → deploy-hook 联动中止部署（宁可不发版也不带病跑）。
+if [ -f "$DEST/hermes-$STAMP.tar.gz" ]; then
+  LIST="$(tar -tzf "$DEST/hermes-$STAMP.tar.gz")" || { echo "备份自检失败：tar 无法列举（产物损坏）" >&2; exit 1; }
+  missing=""
+  for p in ./config.yaml ./SOUL.md ./state.db ./auth.json ./cron/ \
+    ./profiles/coder/.env ./profiles/coder/SOUL.md \
+    ./profiles/coder/bear-homea/.git/HEAD \
+    ./profiles/coder/bear-homea/server/src/index.ts; do
+    printf '%s\n' "$LIST" | grep -qxF "$p" || missing="$missing $p"
+  done
+  if printf '%s\n' "$LIST" | grep -qE '(^|/)(installs|node_modules)(/|$)'; then
+    echo "备份自检失败：产物混入可再生大目录（排除规则失效）" >&2
+    exit 1
+  fi
+  if [ -n "$missing" ]; then
+    echo "备份自检失败：缺少关键资产:$missing" >&2
+    exit 1
+  fi
+  echo "hermes 备份自检通过（关键资产齐全、大目录已排除，条目 $(printf '%s' "$LIST" | wc -l)）"
+fi
+
+# 5) 滚动保留最近 KEEP 份
 ls -1t "$DEST"/bear-home-*.db 2>/dev/null | tail -n +$((KEEP + 1)) | xargs -r rm -f || true
 ls -1t "$DEST"/files-*.tar.gz 2>/dev/null | tail -n +$((KEEP + 1)) | xargs -r rm -f || true
 ls -1t "$DEST"/hermes-*.tar.gz 2>/dev/null | tail -n +$((KEEP + 1)) | xargs -r rm -f || true

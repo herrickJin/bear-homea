@@ -13,6 +13,15 @@ REPO="$(cd "$(dirname "$0")/.." && pwd)"
 KEY="/opt/data/profiles/coder/home/.ssh/bear_deploy"
 HOST="ubuntu@172.18.0.1"
 
+# 并发锁：同 profile 可能有多个会话同时部署（实测发生过），flock 串行化防 rsync/compose 互踩。
+# 锁文件路径固定（不跟仓库走），任一会话持锁期间其他会话直接退出并提示。
+LOCK=/tmp/bear-deploy.lock
+exec 9>"$LOCK"
+if ! flock -n 9; then
+  echo "另一个部署进程正在运行（其他会话），本次退出。稍后重试。" >&2
+  exit 1
+fi
+
 what="${1:-}"
 
 # 权限链防重置：Hermes 的 profile 操作可能把 profiles/coder 收回 700，

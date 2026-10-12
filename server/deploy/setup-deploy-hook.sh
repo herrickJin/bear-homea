@@ -11,6 +11,14 @@
 #   3. 打印验证方法
 set -euo pipefail
 
+# 防 sudo 误用：sudo bash 会把 $HOME 切成 /root，路径全错。
+# 本脚本只写 ubuntu 用户自己的文件（~/deploy-hook.sh、~/.ssh/authorized_keys），无需 root。
+if [ "$(id -u)" = "0" ]; then
+  echo "错误：请勿用 sudo 运行（\$HOME 会变成 /root 导致路径全错）。" >&2
+  echo "直接运行：bash ~/bear-home-server/hermes-data/profiles/coder/bear-homea/server/deploy/setup-deploy-hook.sh" >&2
+  exit 1
+fi
+
 REPO="$HOME/bear-home-server/hermes-data/profiles/coder/bear-homea"
 HOOK="$HOME/deploy-hook.sh"
 AUTH_KEYS="$HOME/.ssh/authorized_keys"

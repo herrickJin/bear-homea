@@ -61,8 +61,14 @@ bootstrap.sh 新增技能部署步骤（deploy/hermes/skills/ → 各 profile ho
 - **无封面无兜底根因**：MCP `save_link` 原本只入库不触发抓取，web_extract 拿不到图就空着。
   → 修复：`save_link` 也触发 `queueScrape`（og 元信息垫底+封面转存）；抓取 worker 加
   `status=pending` 守卫，Hermes 认领/写回后服务端不再覆盖（摘要保护实测通过）。
-- 边角：转存失败保留外链兜底；`content` 全文字段前端详情弹层暂不渲染（产品决策待定）；
-  `POST /:id/reset` 会把 Hermes 摘要重置为 og 摘要，存量慎用。
+- 落库形态：写回通道只排队列作业（传 id），转存 worker 从库现读——请求输入不直达
+  下载，结构断 SSRF/路径穿越污点路（Mimosa 门禁要求，与抓取 worker 同隔离模式）。
+  转存异步：`update_link` 刚返回时 cover 还是外链，几秒内 worker 换成 `/files/` 内链；
+  转存失败保留外链兜底。scrapeLink 改为转存先行+守卫快照+只补空字段，与 Hermes/
+  转存 worker 并发零互相覆盖（竞态实测：并发 PATCH 的摘要与封面均保留）。
+- 语义变化：抓取兜底变「只补空字段」后，`POST /:id/reset` 不再把 Hermes 摘要重置为
+  og 摘要（只填空），存量数据可放心重抓；`content` 全文字段前端详情弹层暂不渲染
+  （产品决策待定）。
 - 存量修复结果：7 条中 5 条补齐内链封面（webp/jpeg 全部 200），2 条（两篇淋浴房文章）
   页面本身无 og 图、保持无封面；7 条 Hermes 摘要全部完好。
 

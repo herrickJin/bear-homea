@@ -17,7 +17,7 @@ export type {
   LinkStatus,
   SaveDraft,
 } from "../data/mockInspiration";
-export { displayDate, displayTitle, parseShareText, sourceLabel, statusLabel } from "../data/mockInspiration";
+export { displayDate, displayDateTime, displayTitle, parseShareText, sourceLabel, statusLabel } from "../data/mockInspiration";
 
 const hasApi = Boolean(API_BASE_URL);
 
@@ -74,6 +74,7 @@ function mapLink(row: LinkRow): InspirationLink {
     source: row.source ?? "",
     status: row.status,
     date: row.created_at.slice(0, 10),
+    createdAt: row.created_at,
   };
 }
 

@@ -73,7 +73,8 @@ bootstrap.sh 新增技能部署步骤（deploy/hermes/skills/ → 各 profile ho
   → 新增 `friendlySource()`：域名→来源名映射（小红书/xhslink、百度百科、住小帮、
   央视网、知乎、B站、抖音、京东、淘宝、百度；未知域退回去掉 www. 的主机名），
   三条写入路径接入（links POST / MCP save_link / 抓取重定向后按终态域刷新），
-  存量直接回填。
+  存量直接回填。前端配套：`isXiaohongshu` 兼容中文「小红书」（品牌 icon 恢复）；
+  详情时间改为精确到分钟（`createdAt` 全时间戳透传 + 本地时区 `2026.10.12 14:01`）。
 - 存量修复结果：7 条中 5 条补齐内链封面（webp/jpeg 全部 200），2 条（两篇淋浴房文章）
   页面本身无 og 图、保持无封面；7 条 Hermes 摘要全部完好。
 

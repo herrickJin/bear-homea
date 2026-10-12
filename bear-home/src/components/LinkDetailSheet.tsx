@@ -6,6 +6,7 @@ import * as inspiration from "../services/inspiration";
 import type { Category, InspirationLink } from "../services/inspiration";
 import {
   displayDate,
+  displayDateTime,
   displayTitle,
   sourceLabel,
   statusLabel,
@@ -305,7 +306,11 @@ export default function LinkDetailSheet({
             </View>
 
             <View className="ui-div detail-date-row">
-              <Text className="detail-date">{displayDate(current.date)}</Text>
+              <Text className="detail-date">
+                {current.createdAt
+                  ? displayDateTime(current.createdAt)
+                  : displayDate(current.date, true)}
+              </Text>
               {!editing && (
                 <View className="ui-div detail-actions">
                   <Text

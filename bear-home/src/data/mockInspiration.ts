@@ -41,6 +41,8 @@ export interface InspirationLink {
   source: string;
   status: LinkStatus;
   date: string;
+  /** 完整时间戳（ISO），详情里展示到分钟；mock 数据没有则退回 date */
+  createdAt?: string;
 }
 
 export interface SaveDraft {
@@ -327,14 +329,24 @@ export function statusLabel(status: LinkStatus): string | null {
   return map[status];
 }
 
-/** 是否小红书来源（卡片显示官方品牌标） */
+/** 是否小红书来源（卡片显示官方品牌标）；兼容旧数据域名与服务端中文名 */
 export function isXiaohongshu(source: string): boolean {
-  return source.includes("xiaohongshu");
+  return source.includes("xiaohongshu") || source.includes("小红书");
 }
 
-/** 来源展示名：小红书用中文名，其余用域名 */
+/** 来源展示名：小红书用中文名，其余原样（服务端已做友好来源名） */
 export function sourceLabel(source: string): string {
   return isXiaohongshu(source) ? "小红书" : source;
+}
+
+/** 时间展示：本地时区「2026.10.12 14:01」；解析失败退回日期形态 */
+export function displayDateTime(iso: string): string {
+  const d = new Date(iso);
+  if (Number.isNaN(d.getTime())) return iso.slice(0, 10).replace(/-/g, ".");
+  const pad = (n: number) => String(n).padStart(2, "0");
+  return `${d.getFullYear()}.${pad(d.getMonth() + 1)}.${pad(d.getDate())} ${pad(
+    d.getHours(),
+  )}:${pad(d.getMinutes())}`;
 }
 
 /** 卡片/详情标题：备注 > 标题 > 待整理占位（不裸露 URL） */

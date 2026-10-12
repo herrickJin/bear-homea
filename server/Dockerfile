@@ -19,7 +19,10 @@ ENV NODE_ENV=production
 WORKDIR /app
 COPY package.json package-lock.json ./
 ENV NPM_CONFIG_REGISTRY=https://registry.npmmirror.com
-RUN npm ci --omit=dev
+# --ignore-scripts：better-sqlite3@13 自带 prebuilds/ 预编译产物（node-gyp-build 运行时加载），
+# 无需编译；不加此开关 npm 会因 binding.gyp 的存在自动触发 node-gyp rebuild，
+# 而 runtime stage 没有 python3，构建必挂（本机侥幸能过是因为容器里恰有 python3）。
+RUN npm ci --omit=dev --ignore-scripts
 COPY --from=build /app/dist ./dist
 
 ENV PORT=8787

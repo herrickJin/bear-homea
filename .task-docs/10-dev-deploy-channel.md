@@ -52,8 +52,9 @@
 | rsync `Permission denied` | `hermes-data/` 700 且 profiles/coder 被 profile 操作重置 | 权限链幂等放开（进 deploy.sh） |
 | Docker 构建 node-gyp 找不到 Python | better-sqlite3@13 带 `binding.gyp`，npm 见之自动 node-gyp，runtime stage 无 python3 | runtime `npm ci --omit=dev --ignore-scripts`（v13 自带 prebuilds） |
 | 本地跑通 ≠ Docker 能过 | 本机容器恰有 python3 | 改依赖必真跑一次 `deploy.sh server` |
-| 备份自检假阴性 | `printf "$LIST" \| grep -q` 在 pipefail 下 grep 提前命中退出 → printf 收 SIGPIPE(141) → `\|\|` 误报「缺失」，命中越靠前越易中招 | 改 here-string：`grep -qxF "$p" <<<"$LIST"`（实测全通过） |
+| 备份自检假阴性 | `printf "$LIST" \| grep -q` 在 pipefail 下 grep 提前命中退出 → printf 收 SIGPIPE(141) → `\|\|` 误报「缺失」，命中越靠前越易中招 | ~~改 here-string~~（bash 下有效，随后被 dash 推翻——见下一行，最终 POSIX case） |
 | 部署死锁（修复送不进去） | 有 bug 的 backup.sh 随部署 rsync 进 $PROD，而 hook 先备份后 rsync → 备份必失败 → 中止 → 永远 rsync 不到 | hook 备份改走 `$REPO/server/scripts/backup.sh` 最新版（信任模型相同——$PROD 版源头本就是它）；**教训：部署流程自身的脚本变更，先想清「变更如何到达执行点」** |
+| here-string 语法错（redirection unexpected） | hook 以 `sh`（Ubuntu=dash）调 backup.sh，`<<<` 是 bash 专属；**shebang 在被 `sh file` 调用时不生效，调用方说了算** | 被 hook 调的脚本必须纯 POSIX：here-string→case+换行护航（零管道根除 SIGPIPE）、污染检查→awk 全量读；shebang 改 /bin/sh 防误导 |
 
 ## 4. 验证记录（2026-10-12 全通过）
 

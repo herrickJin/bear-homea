@@ -1,14 +1,17 @@
-# Hermes Agent 配置（部署时只读挂载为容器内 /root/.hermes/config.yaml）
+# ⚠️ 本文件是「参考配置」，不再挂载进容器（2026-10-12 实测定稿）：
+# 此镜像 HERMES_HOME=/opt/data 且自管 config.yaml，挂载覆盖会与 init 冲突。
+# 实际注入走 deploy/hermes/bootstrap.sh（模型块走 hermes config set，MCP 块按下面的
+# 语法追加进 /opt/data/config.yaml）。改配置 = 改 bootstrap.sh 后重跑。
 #
-# 密钥一律放 ~/.hermes/.env（容器内），不进 git、不写在本文件：
-#   OPENAI_API_KEY=<智谱 Key>   —— OpenAI 兼容端点用该变量鉴权
-#   HERMES_TIMEZONE=Asia/Shanghai
-# 首次部署与验证流程：deploy/hermes/README.md
-#
-# 模型选择：首次向导（hermes setup）里选 OpenAI 兼容/自定义端点，指向智谱：
-#   base_url: https://open.bigmodel.cn/api/paas/v4
-#   model:    glm-4-flash（免费档，支持工具调用；可换 glm-4.6 等更强的）
-# 向导之后可用 `hermes model` 交互调整。国内服务器只有智谱可达（OpenAI 不可达）。
+# 模型块与用户 Mac 本地已验证的 Hermes 配置同构（provider zai / glm-5.3 / coding 端点）；
+# 服务器与本地各自独立，互不影响。密钥在 hermes-data/.env（ZAI_API_KEY），不进 git。
+
+model:
+  default: glm-5.3
+  provider: zai
+  base_url: https://open.bigmodel.cn/api/coding/paas/v4
+
+_config_version: 50
 
 # 熊熊之家的数据面：server 暴露的 MCP（compose 内网服务名 server，端口 8787）
 mcp_servers:

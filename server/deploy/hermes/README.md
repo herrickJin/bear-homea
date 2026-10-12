@@ -3,96 +3,94 @@
 把 Nous Research 的开源自托管智能体 [Hermes Agent](https://github.com/nousresearch/hermes-agent)
 装进 docker-compose（`profiles: ["hermes"]`，默认不影响现有服务），通过 MCP 操作熊熊之家的数据。
 
-分工边界（2026-10-12 定稿，见 `.task-docs/08-ai-assistant.md`）：
+> **✅ 2026-10-12 已按本手册完成部署并全链路验证**（模型连通、MCP 8 工具、
+> 链接队列 pending→抓取→done 写回）。下文即实际走过的路径。
+
+分工边界（见 `.task-docs/08-ai-assistant.md` 双通道定稿）：
 
 | 通道 | 承载 | 触达 |
 |------|------|------|
-| server `/api/chat`（本仓库已实现） | App 内实时探讨，同进程读库，页面上下文注入 | UI |
+| server `/api/chat` | App 内实时探讨，同进程读库，页面上下文注入 | UI |
 | Hermes 容器（本手册） | 链接队列消费、cron 周报、消息网关 | MCP + 微信/Telegram |
 
 ## 0. 前置
 
-- server 容器已在跑：`curl -s http://119.27.191.90/api/health` → `{"ok":true}`
-- `~/bear-home-server/.env` 里有 `BEAR_HOME_TOKEN`（MCP 鉴权用）
-- 服务器 2C/2G，基线内存已用 ~600MB；Hermes 镜像 ~1.3GB（amd64），确认磁盘余量
+- server 容器在跑：`curl -s http://119.27.191.90/api/health` → `{"ok":true}`
+- `~/bear-home-server/.env` 有 `BEAR_HOME_TOKEN`
+- 智谱 Key（provider zai）：写在 `~/bear-home-server/hermes-data/.env` 的 `GLM_API_KEY=`（bootstrap 会转成 `ZAI_API_KEY` 注入容器）
 
-## 1. 获取镜像（国内 Docker Hub 不可达，从 Mac 手动导）
+## 1. 镜像
 
-```sh
-# Mac 上：
-docker pull --platform linux/amd64 nousresearch/hermes-agent:stable
-docker save nousresearch/hermes-agent:stable | ssh ubuntu@119.27.191.90 'docker load'
-```
-
-（若服务器能直拉：`ssh ubuntu@… 'docker pull nousresearch/hermes-agent:stable'`，腾讯内网镜像源
-mirror.ccs.tencentyun.com 未必缓存了它，失败就走上面的手动导入。）
-
-## 2. 首次初始化（交互式向导，只做一次）
-
-数据与密钥都落在宿主机 `~/bear-home-server/hermes-data/`（= 容器内 `/root/.hermes`），
-config.yaml 与 SOUL.md 由仓库只读挂载进去。
+**服务器直拉即可**（腾讯内网镜像源有缓存，2026-10-12 实测成功）：
 
 ```sh
 ssh ubuntu@119.27.191.90
+sudo docker pull nousresearch/hermes-agent:stable   # ~1.3GB，amd64
+```
+
+（镜像源没缓存时才走 Mac 导入：`docker pull --platform linux/amd64 … && docker save … | ssh … 'docker load'`）
+
+## 2. 启动 + 注入配置（bootstrap，幂等可重跑）
+
+**不需要交互式向导**：容器首次启动由镜像 init 自举（生成完整 config/.env 到 `HERMES_HOME=/opt/data`），
+模型与 MCP 由 `bootstrap.sh` 注入（模型块走官方 `hermes config set` CLI，MCP 按 config.yaml 文档语法追加）：
+
+```sh
 cd ~/bear-home-server
-# 部署前先备份（铁律）：
-bash scripts/backup.sh
-# 拉最新代码后，进向导：
-docker compose --profile hermes run -it --rm hermes
+bash scripts/backup.sh                       # 铁律：动容器前先备份
+# 部署最新代码（Mac 上 rsync，或 git 拉取后）：
+sudo docker compose --profile hermes up -d   # 首次会拉起并自举，等 ~30s
+# 智谱 Key 就位（只此一次；也可靠 export GLM_API_KEY=… 传给 bootstrap）：
+#   hermes-data/.env 写一行 GLM_API_KEY=…
+bash deploy/hermes/bootstrap.sh
+sudo docker compose --profile hermes restart hermes
 ```
 
-向导里：
-
-1. 模型选 **OpenAI-compatible / 自定义端点**：base_url
-   `https://open.bigmodel.cn/api/paas/v4`，模型 `glm-4-flash`（免费档，支持工具调用），
-   Key 填智谱控制台创建的 Key（会写进 `hermes-data/.env` 的 `OPENAI_API_KEY`，不进 git）
-2. 其他选项按需（terminal backend 保持 local 即可——它已在独立容器里，这就是隔离边界，
-   **不要**再挂 docker.sock 进来做嵌套沙箱）
-
-向导完成后验证两件事：
+## 3. 验证清单（都在服务器上做）
 
 ```sh
-# 容器里起 hermes CLI，确认 MCP 通了、8 个工具可见
-docker compose --profile hermes run -it --rm hermes hermes
-# 会话内：/reload-mcp → 让它「查一下我家的装修记录」→ 应调用 list_entries 并返回
+# 模型连通（应答出字）：
+sudo docker exec -u hermes bear-home-server-hermes-1 hermes -z "只回复两个字：正常"
+# MCP 工具面（应列出 bear-home ✓ enabled）：
+sudo docker exec -u hermes bear-home-server-hermes-1 hermes mcp list
+# 链接队列端到端：App 存一条链接（status=pending）→
+sudo docker exec -u hermes bear-home-server-hermes-1 hermes -z "按 SOUL 流程处理 bear-home 链接队列"
+# → App 里该链接 status=done，title/summary 有真实内容
 ```
 
-## 3. 常驻运行
+## 4. 实操要点（踩过的坑，都在 2026-10-12 验证）
+
+- **此镜像 `HERMES_HOME=/opt/data`**（不是 `~/.hermes`），compose 只 bind mount
+  `./hermes-data:/opt/data`；config.yaml/SOUL.md 不要 ro 挂载覆盖（镜像自管配置，升级不裂）
+- **init 会把 hermes-data 整个 chown 成 uid 10000(hermes)**：宿主机 ubuntu 在这目录里
+  读写要用 `sudo`；bootstrap 已按此处理
+- **provider `zai` 读 `ZAI_API_KEY`**（本地 Mac 装机用的 `GLM_API_KEY` 名字不同）；.env 里两个名都写了
+- `hermes config set` 会整文件重写 config.yaml——**先 config set 再追加 MCP 块**（bootstrap 顺序如此）
+- `docker exec` 追加文件必须带 `-i`，否则 stdin 不进容器、追加静默空操作
+- `${BEAR_HOME_TOKEN}` 在 config.yaml 里保持字面量，由容器 env 运行时展开（compose 已传）
+- 资源水位实测：hermes 容器**空闲 ~116MB**，2C/2G 无压力
+- 会话内改完 MCP 用 `/reload-mcp`；改 .env/模型要 `restart hermes`
+
+## 5. 消息网关与 cron（未配，下一步可选）
+
+Telegram 最省事：`sudo docker exec -it -u hermes bear-home-server-hermes-1 hermes gateway setup`。
+微信协议非官方、有封号风险，自用慎选。cron 周报在会话里自然语言配置
+（「每周日 20:00 给我发进度周报」），SOUL.md 已写好周报格式。
+
+## 6. 升级与回滚
 
 ```sh
-docker compose --profile hermes up -d
-docker compose --profile hermes logs -f hermes    # 观察启动
+bash scripts/backup.sh          # 先备份（backup.sh 已含 hermes-data 条件打包）
+sudo docker pull nousresearch/hermes-agent:<新tag>
+# 改 docker-compose.yml 的 tag → sudo docker compose --profile hermes up -d
+# 若新镜像 config schema 变了：重跑 deploy/hermes/bootstrap.sh
 ```
 
-消息网关（不开 App 也能使唤小熊）：`docker exec -it <hermes容器> hermes gateway setup`，
-Telegram 最省事；微信协议非官方、有封号风险，自用慎选。cron 周报在会话里用自然语言配
-（「每周日 20:00 给我发进度周报」），SOUL.md 里已写好周报格式。
+`hermes-data/` 是 Hermes 的记忆、技能与自学习产物（备份脚本已覆盖）。
 
-## 4. 端到端验证清单
+## 7. 安全边界
 
-- [ ] App 存一条小红书链接 → `list_links` 出现 `status=pending`
-- [ ] Hermes 抓取写回 → status 变 `done`，title/summary 出现在笔记库
-- [ ] 故意存一个打不开的 URL → status 变 `failed`，error 有原因
-- [ ] cron 周报按点到达（网关配置后）
-- [ ] 资源水位：`docker stats`（内存告警线 ~1.5G，超了就给 compose 加 mem_limit）
-
-## 5. 升级与回滚
-
-```sh
-# 升级（先备份）：
-bash scripts/backup.sh
-docker pull --platform linux/amd64 nousresearch/hermes-agent:<新tag>   # Mac 上
-docker save … | ssh … 'docker load'
-# 改 docker-compose.yml 里的 tag → docker compose --profile hermes up -d
-```
-
-hermes-data/ 是它的记忆与技能目录（自学习产物都在里面），**备份脚本已覆盖 `data/`，
-记得把 `hermes-data/` 也加进备份范围**（见 backup.sh 的 FILES 打包列表）。
-
-## 6. 安全边界
-
-- Hermes 能执行代码：它跑在独立容器，只经 `http://server:8787/mcp` + Bearer Token 访问数据，
-  不共享 server 的文件系统写权限
-- 智谱 Key 只存在于 `hermes-data/.env`；Token 泄露即全部数据权限，泄露就轮换
-  （`.env` 改值后 `docker compose up -d`，前端 `.env` 同步）
-- MCP 工具面在 `deploy/hermes/config.yaml` 可按需收紧（include 列表）
+- Hermes 能执行代码：独立容器即隔离边界（**不要再挂 docker.sock 做嵌套沙箱**），
+  只经 `http://server:8787/mcp` + Bearer Token 访问数据，不共享 server 文件系统写权限
+- 智谱 Key 只存在于 `hermes-data/.env`（600，uid 10000）与 server `.env`（/api/chat 用）；泄露即轮换
+- MCP 工具面要收紧改 bootstrap.sh 里的 include 列表后重跑

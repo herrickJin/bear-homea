@@ -8,12 +8,12 @@
 |---|------|------|------|
 | 01 | 后端骨架（server/）+ 腾讯云部署 | ✅ 完成（2026-10-10） | [01-backend-server.md](./01-backend-server.md) |
 | 02 | 前端（bear-home）接入后端 API | ✅ 完成（2026-10-10） | [02-frontend-api.md](./02-frontend-api.md) |
-| 03 | 接入 Hermes Agent（MCP + 智谱 GLM） | 🚧 部署资产齐备（2026-10-12）· 待上服务器 | [03-hermes-agent.md](./03-hermes-agent.md) |
+| 03 | 接入 Hermes Agent（MCP + 智谱 GLM） | ✅ 上线并验证（2026-10-12）· 剩网关/cron | [03-hermes-agent.md](./03-hermes-agent.md) |
 | 04 | 方案库（小红书收藏 · 剪贴簿） | 📋 方案定稿（2026-10-10）· 待开工 | [04-links-page.md](./04-links-page.md) |
 | 05 | 前端功能剥离与骨架重置 | ✅ 完成（2026-10-10） | [05-skeleton-reset.md](./05-skeleton-reset.md) |
 | 06 | 整体风格与设计 Token | ✅ 完成（2026-10-10） | [06-style-tokens.md](./06-style-tokens.md) |
 | 07 | 记录页（选购台账） | 🚧 S1 页面完成（2026-10-12）· S2 服务端待立项 | [07-record-page.md](./07-record-page.md) |
-| 08 | AI 助手（装修记录探讨） | 🚧 后端核心完成并验证（2026-10-12）· UI 待开工 | [08-ai-assistant.md](./08-ai-assistant.md) |
+| 08 | AI 助手（装修记录探讨） | ✅ 后端上线（2026-10-12）· UI 待开工 | [08-ai-assistant.md](./08-ai-assistant.md) |
 
 状态标记：✅ 完成 · 🚧 进行中 · 📋 待开始 / 规划中 · ⛔ 受阻
 
@@ -22,18 +22,18 @@
 ```
 bear-home (Taro 小程序/H5)  ──HTTP + Bearer Token──▶  server/ (Hono + SQLite)
                         │                                  ▲    │
-                        │ 实时探讨 /api/chat（08）          │    │ MCP
+                        │ 实时探讨 /api/chat（08，已上线）  │    │ MCP
                         └──────────────────────────────────┘    │ (Streamable HTTP)
                                                                 │
-                                            Hermes Agent (部署资产就绪，待上服务器)
+                                            Hermes Agent（已上线，2026-10-12）
                                                                 │
-                                                            智谱 GLM (API)
+                                                        智谱 GLM（glm-5.3）
 ```
 
 - 后端访问：`http://119.27.191.90`（Caddy 80 端口，Token 鉴权）
 - 数据库：SQLite 单文件，在服务器 `~/bear-home-server/data/`，备份即拷目录
 - MCP 端点：`http://119.27.191.90/mcp`（8 个工具，已公网验证）
-- AI 通道：server `/api/chat`（App 内实时，已实现）+ Hermes 容器（异步常驻，待部署）
+- AI 通道：server `/api/chat`（App 内实时，已上线）+ Hermes 容器（异步常驻，已上线）
 
 ## 关键决策记录
 

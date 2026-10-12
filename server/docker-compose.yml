@@ -2,6 +2,9 @@ services:
   server:
     build: .
     restart: unless-stopped
+    # 整份 .env 进容器（config.ts 只从进程环境读，容器内没有 .env 文件）；
+    # environment 里显式列出的项优先级更高，值一致无冲突
+    env_file: .env
     environment:
       - BEAR_HOME_TOKEN=${BEAR_HOME_TOKEN}
       - PORT=8787
@@ -49,12 +52,13 @@ services:
     tty: true
     environment:
       # config.yaml 的 MCP headers 用 ${BEAR_HOME_TOKEN} 引用；智谱 Key 不放这里，
-      # 由首次向导写进 ./hermes-data/.env（OPENAI_API_KEY）
+      # 由 bootstrap 脚本写进 hermes-data/.env（GLM_API_KEY）
       - BEAR_HOME_TOKEN=${BEAR_HOME_TOKEN}
     volumes:
-      - ./hermes-data:/root/.hermes
-      - ./deploy/hermes/config.yaml:/root/.hermes/config.yaml:ro
-      - ./deploy/hermes/SOUL.md:/root/.hermes/SOUL.md:ro
+      # 此镜像 HERMES_HOME=/opt/data（非 ~/.hermes）：数据/记忆/技能全在这，
+      # 首次启动由镜像 init 生成完整配置，之后跑 deploy/hermes/bootstrap.sh 注入
+      # 模型（provider zai / glm-5.3）、MCP（bear-home）与 SOUL.md
+      - ./hermes-data:/opt/data
     depends_on:
       - server
 

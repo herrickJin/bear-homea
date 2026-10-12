@@ -1,12 +1,16 @@
 # 03 · 接入 Hermes Agent
 
-**状态**：🚧 部署资产齐备（2026-10-12，见 08-ai-assistant.md 双通道定稿）· 待上服务器安装
+**状态**：✅ 已上线（2026-10-12 部署并全链路验证）· 剩网关/cron 未配
 
+> 2026-10-12 部署记录：服务器直拉镜像成功（腾讯镜像源有 `nousresearch/hermes-agent:stable`，
+> 无需 Mac 导入）；**无需交互向导**——镜像 `HERMES_HOME=/opt/data` 自举，模型与 MCP 由
+> `deploy/hermes/bootstrap.sh` 注入（幂等）。全链路验证：`hermes -z` 模型连通（glm-5.3·zai）✅、
+> `mcp list` 8 工具 ✓ enabled ✅、链接队列 pending→抓取→title/summary/content 写回→done ✅
+> （首测暴露过「空内容标 done」，严格 SOP 提示后复测正确）。hermes 容器空闲内存 ~116MB。
+> 实操坑全记录在 `server/deploy/hermes/README.md` 第 4 节。
+>
 > 2026-10-12 更新：AI 接入定稿为**双通道**——App 内实时探讨走 server 自建 `/api/chat`
->（已实现验证，见 08）；本任务的 Hermes 容器负责常驻异步智能（链接队列、cron、网关）。
-> 部署资产已全部就绪：`docker-compose.yml` hermes 服务（`profiles: ["hermes"]`）、
-> `deploy/hermes/`（config.yaml + SOUL.md + README 手册）、backup.sh 已覆盖 hermes-data。
-> 镜像已确认：`nousresearch/hermes-agent:stable`（amd64/arm64，国内需 Mac 手动导入）。
+>（已上线验证，见 08）；本任务的 Hermes 容器负责常驻异步智能（链接队列、cron、网关）。
 
 ## 目标
 
@@ -28,12 +32,13 @@
 
 ## 步骤
 
-- [x] 确认 Hermes 的容器化部署方式（官方镜像 `nousresearch/hermes-agent`，`stable` tag；国内拉取受限 → deploy/hermes/README.md 已写 Mac `docker save | ssh docker load` 手动导入流程）（2026-10-12）
-- [x] 写入 docker-compose.yml hermes 服务（profiles 隔离，默认不影响现有部署）+ MCP 配置（内网地址 + Token）与智谱模型端点说明（2026-10-12）
-- [ ] 服务器实装：backup.sh → rsync → 导镜像 → `--profile hermes run -it` 向导 → 常驻
+- [x] 确认 Hermes 的容器化部署方式（官方镜像 `nousresearch/hermes-agent`，`stable` tag；**服务器直拉成功**，Mac 导入仅作兜底）（2026-10-12）
+- [x] 写入 docker-compose.yml hermes 服务（profiles 隔离，默认不影响现有部署）+ bootstrap.sh 注入模型（zai/glm-5.3/coding 端点）与 MCP（内网地址 + Token）（2026-10-12）
+- [x] 服务器实装：backup.sh → rsync → `--profile hermes up -d` → bootstrap.sh → restart（2026-10-12）
+- [x] 端到端验证：App 存一条链接 → Hermes 抓取写回（title/summary/content）→ status=done → App 展示（2026-10-12）
 - [ ] 配置消息网关（微信/Telegram 选一，用于不开 App 直接使唤 Agent）
-- [ ] 端到端验证：App 存一条小红书链接 → Hermes 自动抓取写回 → App 展示
-- [ ] 资源观察：2C/2G 上 Hermes + 子智能体运行的内存水位（当前基线：整机已用 600MB）
+- [ ] cron 周报（会话里自然语言配置即可，SOUL 已写好格式）
+- [x] 资源观察：hermes 容器空闲 ~116MB，2C/2G 无压力（2026-10-12）
 
 ## 风险
 

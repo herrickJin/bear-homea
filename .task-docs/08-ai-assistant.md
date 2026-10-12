@@ -1,6 +1,6 @@
 # 08 · AI 助手（装修记录探讨）：后端核心 + Hermes 接入 + UI 接入点
 
-**状态**：🚧 后端核心完成并验证（2026-10-12）· UI 待开工 · Hermes 容器待上服务器
+**状态**：✅ 后端核心上线服务器（2026-10-12）+ Hermes 容器已上线验证 · UI 待开工
 
 ## 目标
 
@@ -130,7 +130,9 @@ DELETE /api/chat/sessions/:id
 ### 非 UI · Hermes 侧触达（部署后即得）
 - 收藏链接自动总结写回笔记库；周日 20:00 周报；网关直接问「这周该干嘛」
 
-## 五、验证记录（2026-10-12，mock-llm 端到端）
+## 五、验证记录
+
+### 本地（2026-10-12，mock-llm 端到端）
 
 - 非流式：查 → search_entries 工具循环 → 回复 ✅
 - SSE：记 → tool 事件（create_entry）→ delta×3 → done（sessionId 正确）✅
@@ -142,11 +144,22 @@ DELETE /api/chat/sessions/:id
 - code-reviewer 复查：修复 1 个关键 bug（历史截断曾致多轮失忆）+ 4 个次要项
   （流式异常补日志、取消静默、toolRounds 兜底、系统提示词本地时区）
 
+### 服务器（2026-10-12 上线实测）
+
+- 部署：backup.sh → rsync → `docker compose up -d --build`；坑：**compose 必须给 server 服务
+  加 `env_file: .env`**（config.ts 只读进程环境，容器里没有 .env 文件，光 environment 列
+  BEAR_HOME_TOKEN 时 AI_* 进不去）
+- `/api/chat` 真模型（glm-5.3 · 智谱 coding 端点，与 Mac 本地 Hermes 同一 Key）：工具查询 +
+  人设回复 ✅
+- `/api/chat/stream` 公网（Caddy 反代）SSE 逐 token 到达，无缓冲问题 ✅
+- Hermes 容器上线：镜像服务器直拉成功；bootstrap.sh 注入模型/MCP/SOUL；链接队列
+  pending→抓取→写回→done 全链路 ✅（详见 03 与 deploy/hermes/README.md）
+- 测试数据已清理（links 0 / chat_sessions 0）
+
 ## 六、已知边界与后续
 
-- glm-4-flash 免费档工具调用一般；复杂任务 `.env` 换 `glm-4.6` 即可，代码零改动
+- glm-4-flash 免费档工具调用一般；线上已用 `glm-5.3`（智谱 coding 端点，`.env` 配置）
 - context.ref 由前端注入（单用户自用，无伪造风险；多用户化时需服务端校验）
 - 同会话并发消息未加锁（单用户可接受）
 - UI 实现顺序建议：P0 两处（小改动大价值）→ P1 会话页 → P2
-- 上服务器：先 `bash scripts/backup.sh`，rsync 后 `docker compose up -d --build`；
-  Hermes 按 `deploy/hermes/README.md` 单独走
+- ~~上服务器~~ ✅ 2026-10-12 已上线（server + Hermes 容器），见第五节

@@ -45,14 +45,18 @@ case "$op" in
     ;;
   backup)
     log "手动备份"
-    sh "$PROD/scripts/backup.sh"
+    # 备份脚本走仓库最新版（$REPO）而非 $PROD 已部署版：
+    # $PROD 版本的源头本来也是 rsync 自 $REPO，信任模型相同；
+    # 但走 $REPO 后修 bug 立即生效——否则出现过死锁：有 bug 的自检先 rsync 进 $PROD，
+    # 「先备份后 rsync」的顺序让备份必失败、修复永远送不进去（2026-10-12 实测）。
+    sh "$REPO/server/scripts/backup.sh"
     exit 0
     ;;
 esac
 
 # deploy server：必经备份（数据安全优先；backup.sh 内部走容器内 better-sqlite3 在线快照）
 log "deploy 开始：先备份"
-sh "$PROD/scripts/backup.sh" || { log "备份失败，中止部署"; exit 1; }
+sh "$REPO/server/scripts/backup.sh" || { log "备份失败，中止部署"; exit 1; }
 
 what=$(echo "$cmd" | sed -n 's/.*"what": *"\([a-z]*\)".*/\1/p')
 

@@ -1,6 +1,15 @@
 # 03 · 接入 Hermes Agent
 
-**状态**：✅ 已上线（2026-10-12 部署并全链路验证）· 剩网关/cron 未配
+**状态**：✅ 已上线（2026-10-12）· 微信网关 jinmo 通道已通 · xiongxiong 扫码待完成
+
+> 2026-10-12 晚补充：**微信网关上线**（iLink 官方机器人机制，扫码绑 `@im.bot` 身份，
+> 非个人号协议、无封号风险——此前文档里「非官方协议」的说法有误已更正）。
+> **双 profile 架构**：default（宿主，gateway 多路复用器）+ jinmo + xiongxiong 三个
+> profile，各自独立记忆/SOUL/.env，指向同一份 bear-home 数据。jinmo 已扫码 + 白名单
+> （`WEIXIN_DM_POLICY=allowlist`）+ `/sethome` 家频道，微信收发正常；xiongxiong 待扫码。
+> 新坑入册：**profile 的 .env 必须自带 `BEAR_HOME_TOKEN`**（`${BEAR_HOME_TOKEN}` 只从
+> profile 自己的 .env 解析，缺了 MCP 全断）；容器主进程切 `command: ["gateway","run"]`。
+> 手册见 `server/deploy/hermes/README.md` 第 5 节。
 
 > 2026-10-12 部署记录：服务器直拉镜像成功（腾讯镜像源有 `nousresearch/hermes-agent:stable`，
 > 无需 Mac 导入）；**无需交互向导**——镜像 `HERMES_HOME=/opt/data` 自举，模型与 MCP 由

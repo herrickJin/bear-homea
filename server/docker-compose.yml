@@ -50,15 +50,27 @@ services:
     restart: unless-stopped
     stdin_open: true
     tty: true
+    # 容器主进程 = 消息网关（镜像内自动转 s6 托管、崩溃自动重启）；
+    # 会话交互走 `bear`/`hermes` 直达命令或 dashboard，不占用主进程
+    command: ["gateway", "run"]
     environment:
       # config.yaml 的 MCP headers 用 ${BEAR_HOME_TOKEN} 引用；智谱 Key 不放这里，
       # 由 bootstrap 脚本写进 hermes-data/.env（GLM_API_KEY）
       - BEAR_HOME_TOKEN=${BEAR_HOME_TOKEN}
+      # Web 控制台（hermes dashboard，端口 9119）：非回环绑定强制鉴权（2026-06 硬化），
+      # Basic Auth 凭据放宿主机 .env；ports 只映射到宿主机 127.0.0.1，公网不可达，
+      # Mac 上 `ssh -N -L 9119:127.0.0.1:9119 ubuntu@<IP>` 后开 http://localhost:9119
+      - HERMES_DASHBOARD=1
+      - HERMES_DASHBOARD_BASIC_AUTH_USERNAME=${HERMES_DASHBOARD_BASIC_AUTH_USERNAME}
+      - HERMES_DASHBOARD_BASIC_AUTH_PASSWORD=${HERMES_DASHBOARD_BASIC_AUTH_PASSWORD}
     volumes:
       # 此镜像 HERMES_HOME=/opt/data（非 ~/.hermes）：数据/记忆/技能全在这，
       # 首次启动由镜像 init 生成完整配置，之后跑 deploy/hermes/bootstrap.sh 注入
       # 模型（provider zai / glm-5.3）、MCP（bear-home）与 SOUL.md
       - ./hermes-data:/opt/data
+    ports:
+      # 只绑宿主机回环：不上公网，SSH 隧道访问
+      - "127.0.0.1:9119:9119"
     depends_on:
       - server
 

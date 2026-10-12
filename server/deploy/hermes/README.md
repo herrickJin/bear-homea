@@ -71,11 +71,42 @@ sudo docker exec -u hermes bear-home-server-hermes-1 hermes -z "按 SOUL 流程�
 - 资源水位实测：hermes 容器**空闲 ~116MB**，2C/2G 无压力
 - 会话内改完 MCP 用 `/reload-mcp`；改 .env/模型要 `restart hermes`
 
-## 5. 消息网关与 cron（未配，下一步可选）
+## 5. 微信网关（2026-10-12 已上线：jinmo/xiongxiong 双 profile）
 
-Telegram 最省事：`sudo docker exec -it -u hermes bear-home-server-hermes-1 hermes gateway setup`。
-微信协议非官方、有封号风险，自用慎选。cron 周报在会话里自然语言配置
-（「每周日 20:00 给我发进度周报」），SOUL.md 已写好周报格式。
+**形态**：微信 iLink 官方机器人机制——扫码绑定一个 `...@im.bot` 机器人身份
+（**不是**挂个人微信号，无封号风险）；支持文字/图片/视频/文件；普通微信群拉不进
+bot 身份、群事件不推送，只做私聊。DM 准入：pairing / **allowlist（白名单）** / open / disabled。
+
+**多 profile = 多个微信**：每个 profile 一套隔离实例（各自的 .env/记忆/SOUL），
+各自扫码绑一个微信。`default` profile 是宿主（gateway 多路复用器从它跑），
+jinmo/xiongxiong 是两个真人各自的小熊，都指向同一份 bear-home 数据。
+
+**给某个 profile 配微信**（以 jinmo 为例，全部在服务器上跑）：
+
+```sh
+bash deploy/hermes/weixin-login.sh start jinmo     # 出二维码（8 分钟有效），对应人的微信扫+确认
+bash deploy/hermes/weixin-login.sh extract jinmo   # 凭证转正进 profile .env（DM 策略=pairing）
+# 把对方微信 ID 进白名单（ID 从被拦日志拿：docker logs … | grep Unauthorized）：
+#   profile .env 加 WEIXIN_DM_POLICY=allowlist + WEIXIN_ALLOWED_USERS=<id>@im.wechat
+sudo docker compose --profile hermes restart hermes
+```
+
+**网关常驻**：compose 里 hermes 服务 `command: ["gateway","run"]`（镜像自动转 s6
+托管，崩溃自动重启）；多路复用器按 profile 分日志（`hermes-data/logs/gateways/<名>/`）。
+首次私聊 bot 会引导 `/sethome` 设家频道（cron 周报投递到这里）。
+
+cron 周报：私聊里自然语言配置（「每周日 20:00 给我发装修进度周报」），SOUL.md 已写格式。
+
+### 网关踩坑（2026-10-12 实测）
+
+- **profile 的 .env 必须自带 `BEAR_HOME_TOKEN`**——config.yaml 的 `${BEAR_HOME_TOKEN}`
+  只从该 profile 自己的 .env/secret source 解析，不吃容器环境变量；缺了 MCP 工具全断
+  （症状：日志周期性 `Failed to connect to MCP server 'bear-home'`）。bootstrap.sh 已自动注入
+- 被 pairing 拦的消息不回复但**会留日志**，微信 ID 就从 `docker logs … | grep Unauthorized` 拿
+- `weixin-login.sh extract` 的 docker exec：`-e`/`-i` 选项必须在容器名**之前**，且 `-i` 不可省
+  （heredoc 走 stdin）
+
+Telegram（备选）：`hermes gateway setup` 里选，最省事；两家都用就各配各的。
 
 ## 6. 升级与回滚
 
@@ -92,5 +123,6 @@ sudo docker pull nousresearch/hermes-agent:<新tag>
 
 - Hermes 能执行代码：独立容器即隔离边界（**不要再挂 docker.sock 做嵌套沙箱**），
   只经 `http://server:8787/mcp` + Bearer Token 访问数据，不共享 server 文件系统写权限
-- 智谱 Key 只存在于 `hermes-data/.env`（600，uid 10000）与 server `.env`（/api/chat 用）；泄露即轮换
+- 智谱 Key 只存在于各 profile 的 `.env`（600，uid 10000）与 server `.env`（/api/chat 用）；泄露即轮换
+- 微信白名单是唯一准入：`WEIXIN_ALLOWED_USERS` 里没有的 ID 一律拒收（日志可查被拦记录）
 - MCP 工具面要收紧改 bootstrap.sh 里的 include 列表后重跑

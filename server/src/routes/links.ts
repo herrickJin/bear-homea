@@ -3,7 +3,7 @@ import type { Context } from "hono";
 import { randomUUID } from "node:crypto";
 import { db, now } from "../db/index.js";
 import type { CategoryRow, LinkNoteRow, LinkRow } from "../db/schema.js";
-import { queueScrape } from "../services/scrape.js";
+import { queueCoverStore, queueScrape } from "../services/scrape.js";
 
 export const links = new Hono();
 
@@ -195,6 +195,8 @@ async function updateHandler(c: Context) {
      cover_url = @cover_url, status = @status, error = @error, updated_at = @updated_at
      WHERE id = @id`,
   ).run(next);
+  // 外链封面异步转存：只传 id，worker 从库现读（请求输入不直达下载）
+  if (next.cover_url) queueCoverStore(next.id);
   return c.json(next);
 }
 links.patch("/:id", updateHandler);

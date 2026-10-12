@@ -59,7 +59,7 @@ export async function saveBuffer(
     size: buffer.byteLength,
     created_at: now(),
   };
-  fs.writeFileSync(resolveWithin(config.filesDir, id + ext), buffer);
+  fs.writeFileSync(resolveWithin(config.filesDir, id + safe), buffer);
   db.prepare(
     `INSERT INTO files (id, filename, ext, mime_type, size, created_at)
      VALUES (@id, @filename, @ext, @mime_type, @size, @created_at)`,

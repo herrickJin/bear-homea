@@ -5,6 +5,7 @@ import { randomUUID } from "node:crypto";
 import { z } from "zod";
 import { db, now, today } from "../db/index.js";
 import type { EntryRow, LinkRow } from "../db/schema.js";
+import { queueCoverStore, queueScrape } from "../services/scrape.js";
 
 const text = (data: unknown) => ({
   content: [{ type: "text" as const, text: JSON.stringify(data, null, 2) }],
@@ -168,7 +169,8 @@ function buildServer(): McpServer {
     "save_link",
     {
       title: "保存链接",
-      description: "保存一个 http(s) 链接等待处理；重复 URL 会去重",
+      description:
+        "保存一个 http(s) 链接。服务端会立即抓取页面兜底填 og 标题/摘要/封面（封面自动转存内链）；你随后可用 update_link 写入更高质量的摘要，或对抓取失败的行写回结果。重复 URL 会去重",
       inputSchema: { url: z.string().describe("完整的 http(s) 链接") },
     },
     ({ url }) => {
@@ -210,6 +212,7 @@ function buildServer(): McpServer {
          VALUES (@id, @url, @title, @summary, @content, @cover_url, @source,
          @status, @error, @created_at, @updated_at)`,
       ).run(row);
+      queueScrape(row.id);
       return text(row);
     },
   );
@@ -219,7 +222,7 @@ function buildServer(): McpServer {
     {
       title: "写回链接处理结果",
       description:
-        "Agent 抓取/总结链接后用此工具写回。典型流程：status 改 processing → 写入 title/summary/content/cover_url → status 改 done；失败时 status=failed 并写 error",
+        "Agent 抓取/总结链接后用此工具写回。典型流程：status 改 processing → 写入 title/summary/content/cover_url → status 改 done；失败时 status=failed 并写 error。外链封面会在落库后由服务端异步转存为 /files/ 内链（防盗链图床直引会裂图），转存失败才保留外链",
       inputSchema: {
         id: z.string().describe("链接 id"),
         title: z.string().optional(),
@@ -250,6 +253,8 @@ function buildServer(): McpServer {
          cover_url = @cover_url, status = @status, error = @error, updated_at = @updated_at
          WHERE id = @id`,
       ).run(next);
+      // 外链封面异步转存：只传 id，worker 从库现读（请求输入不直达下载）
+      if (next.cover_url) queueCoverStore(id);
       return text(next);
     },
   );

@@ -15,7 +15,8 @@ P="${1:-default}"
 
 if [ "$P" = "default" ]; then
   HOME_DIR="/opt/data"
-  hrun() { sudo docker exec -u hermes "$CONTAINER" hermes "$@"; }
+  # -p default 必须显式：无 -p 时容器内 config set 会落到 current profile（实测写进 jinmo）
+  hrun() { sudo docker exec -u hermes "$CONTAINER" hermes -p default "$@"; }
 else
   HOME_DIR="/opt/data/profiles/$P"
   hrun() { sudo docker exec -u hermes "$CONTAINER" hermes -p "$P" "$@"; }
@@ -30,6 +31,8 @@ MODEL="${HERMES_MODEL:-glm-5.3-flash}"
 hrun config set model.default "$MODEL" >/dev/null
 hrun config set model.provider zai >/dev/null
 hrun config set model.base_url https://open.bigmodel.cn/api/coding/paas/v4 >/dev/null 2>&1 || true
+# 自研技能走 external_dirs（skills/ 根会被技能 curator 按活跃度自管理，不放那里）
+hrun config set skills.external_dirs '["custom-skills"]' >/dev/null
 echo "[$P] ✓ 模型：$(hrun config get model | tr '\n' ' ')"
 
 # 2) GLM Key → profile 的 .env（从主 hermes-data/.env 读，sudo 必需——属 uid 10000）
@@ -41,16 +44,23 @@ if [ -z "$KEY" ]; then
   echo "错误：主 .env 里没有 GLM_API_KEY" >&2
   exit 1
 fi
-sudo docker exec -u hermes -e ZAI_KEY_IN="$KEY" -e HOME_DIR="$HOME_DIR" "$CONTAINER" sh -c '
+# BEAR_HOME_TOKEN 同样必须进 profile .env：config.yaml 的 ${BEAR_HOME_TOKEN} 只从
+# profile 自己的 .env/secret source 解析，容器 env 不参与（2026-10-12 default profile 踩坑复发）
+TOKEN="$(sudo grep -m1 -o '^BEAR_HOME_TOKEN=.*' "$DIR/.env" 2>/dev/null | cut -d= -f2- || true)"
+if [ -z "$TOKEN" ]; then
+  echo "错误：宿主机 .env 里没有 BEAR_HOME_TOKEN（MCP bear-home 鉴权必需）" >&2
+  exit 1
+fi
+sudo docker exec -u hermes -e ZAI_KEY_IN="$KEY" -e BEAR_TOKEN_IN="$TOKEN" -e HOME_DIR="$HOME_DIR" "$CONTAINER" sh -c '
   touch "$HOME_DIR/.env"
-  grep -v -e "^ZAI_API_KEY=" -e "^GLM_API_KEY=" -e "^GLM_BASE_URL=" -e "^HERMES_TIMEZONE=" "$HOME_DIR/.env" > "$HOME_DIR/.env.new" || true
-  printf "ZAI_API_KEY=%s\nGLM_API_KEY=%s\nGLM_BASE_URL=https://open.bigmodel.cn/api/coding/paas/v4\nHERMES_TIMEZONE=Asia/Shanghai\n" \
-    "$ZAI_KEY_IN" "$ZAI_KEY_IN" >> "$HOME_DIR/.env.new"
+  grep -v -e "^ZAI_API_KEY=" -e "^GLM_API_KEY=" -e "^GLM_BASE_URL=" -e "^HERMES_TIMEZONE=" -e "^BEAR_HOME_TOKEN=" "$HOME_DIR/.env" > "$HOME_DIR/.env.new" || true
+  printf "ZAI_API_KEY=%s\nGLM_API_KEY=%s\nGLM_BASE_URL=https://open.bigmodel.cn/api/coding/paas/v4\nHERMES_TIMEZONE=Asia/Shanghai\nBEAR_HOME_TOKEN=%s\n" \
+    "$ZAI_KEY_IN" "$ZAI_KEY_IN" "$BEAR_TOKEN_IN" >> "$HOME_DIR/.env.new"
   mv "$HOME_DIR/.env.new" "$HOME_DIR/.env"
 '
-echo "[$P] ✓ .env 已注入（ZAI_API_KEY 等 4 项）"
+echo "[$P] ✓ .env 已注入（ZAI_API_KEY、BEAR_HOME_TOKEN 等 5 项）"
 
-# 3) MCP bear-home（幂等；${BEAR_HOME_TOKEN} 保持字面量，容器 env 运行时展开）
+# 3) MCP bear-home（幂等；${BEAR_HOME_TOKEN} 保持字面量，运行时从 profile 自己的 .env 解析——第 2 步已保证）
 if hrun mcp list 2>/dev/null | grep -q "bear-home"; then
   echo "[$P] ✓ MCP bear-home 已存在，跳过"
 else
@@ -76,12 +86,19 @@ YAML
   echo "[$P] ✓ MCP bear-home 已写入 config.yaml"
 fi
 
-# 4) SOUL.md（小熊人设）
+# 4) SOUL.md（小熊人设）+ 自研技能（bear-research 等）
+# 注意：本步骤全是宿主机路径（$DIR/hermes-data），技能放 custom-skills/ 不进 skills/
 if [ "$P" = "default" ]; then
   sudo cp "$DIR/deploy/hermes/SOUL.md" "$DIR/hermes-data/SOUL.md"
+  SKILLS_TARGET="$DIR/hermes-data/custom-skills"
 else
   sudo cp "$DIR/deploy/hermes/SOUL.md" "$DIR/hermes-data/profiles/$P/SOUL.md"
+  SKILLS_TARGET="$DIR/hermes-data/profiles/$P/custom-skills"
+fi
+if [ -d "$DIR/deploy/hermes/skills" ]; then
+  sudo mkdir -p "$SKILLS_TARGET"
+  sudo cp -R "$DIR/deploy/hermes/skills/." "$SKILLS_TARGET/"
 fi
 sudo chown -R "$HERMES_UID_GID" "$DIR/hermes-data"
-echo "[$P] ✓ SOUL.md 已就位"
+echo "[$P] ✓ SOUL.md 已就位；技能已部署：$(sudo ls "$SKILLS_TARGET" 2>/dev/null | tr '\n' ' ')"
 echo "[$P] 完成。"

@@ -1,5 +1,6 @@
 import dns from "node:dns/promises";
 import { isIP } from "node:net";
+import { config } from "../config.js";
 import { db, now } from "../db/index.js";
 import type { LinkRow } from "../db/schema.js";
 import { saveBuffer } from "./files.js";
@@ -8,6 +9,9 @@ import { saveBuffer } from "./files.js";
  * 链接抓取 worker：与路由层隔离，这里没有 HTTP 输入——
  * 只接收方案 id，URL 一律从数据库现读；私网地址一律拒绝。
  */
+
+const MOBILE_UA =
+  "Mozilla/5.0 (iPhone; CPU iPhone OS 17_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.0 Mobile/15E148 Safari/604.1";
 
 /** 私网/环回/链路本地地址一律拒绝，防 SSRF。 */
 function isPublicIp(ip: string): boolean {
@@ -69,6 +73,53 @@ async function fetchPublic(
 const queue: string[] = [];
 let draining = false;
 
+/** 依次尝试的下载头：多数图床允许空 Referer（xhscdn 两种都放行），
+ *  个别（如百度 bkimg CDN）反而拒外站 Referer——空 Referer 做第一选择。 */
+const COVER_FETCH_HEADERS: Record<string, string>[] = [
+  { "User-Agent": MOBILE_UA },
+  { "User-Agent": MOBILE_UA, Referer: "https://www.xiaohongshu.com/" },
+];
+
+async function downloadCover(
+  url: string,
+): Promise<{ buffer: Buffer; type: string } | null> {
+  for (const headers of COVER_FETCH_HEADERS) {
+    try {
+      const res = await fetchPublic(url, { headers });
+      if (!res.ok) continue;
+      const buffer = Buffer.from(await res.arrayBuffer());
+      if (buffer.byteLength <= 1024 || buffer.byteLength > config.maxUploadBytes)
+        continue;
+      return {
+        buffer,
+        type: (res.headers.get("content-type") ?? "image/jpeg").split(";")[0],
+      };
+    } catch {
+      continue;
+    }
+  }
+  return null;
+}
+
+/** 远程封面转存：下载到自有 /files/，返回内链地址；失败或非 http(s) 返回 null。
+ *  图床（xhscdn 等）按 Referer 防盗链，App 页面直引外链必裂图，落库前一律转存；
+ *  转存失败时调用方保留外链——能显示总比没有强。 */
+export async function storeRemoteCover(
+  remoteUrl: string,
+): Promise<string | null> {
+  // 协议相对地址（//img.example.com/x.jpg）补全为 https
+  const url = remoteUrl.startsWith("//") ? `https:${remoteUrl}` : remoteUrl;
+  if (!/^https?:\/\//i.test(url)) return null; // 已是 /files/ 内链或非法值
+  const got = await downloadCover(url);
+  if (!got) return null;
+  try {
+    const file = await saveBuffer(got.buffer, ".jpg", got.type);
+    return `/files/${file.id}${file.ext}`;
+  } catch {
+    return null;
+  }
+}
+
 /** 保存/重置后触发抓取；只传 id，URL 由 worker 从数据库现读。 */
 export function queueScrape(id: string): void {
   queue.push(id);
@@ -89,6 +140,49 @@ async function drain(): Promise<void> {
   }
 }
 
+/* ===== 封面转存作业 =====
+ * 与抓取 worker 同一隔离模式：入口只收方案 id，封面地址一律从数据库现读，
+ * HTTP/MCP 写回层不直接触碰外链下载（结构上断开请求输入到 fetch/落盘的通路）。 */
+
+const coverQueue: string[] = [];
+let coverDraining = false;
+
+/** 写回外链封面后触发转存；转存失败保留原外链，不改其他字段。 */
+export function queueCoverStore(id: string): void {
+  coverQueue.push(id);
+  if (!coverDraining) {
+    coverDraining = true;
+    setTimeout(drainCoverQueue, 0);
+  }
+}
+
+async function drainCoverQueue(): Promise<void> {
+  try {
+    while (coverQueue.length > 0) {
+      const id = coverQueue.shift();
+      if (id) await storeLinkCover(id);
+    }
+  } finally {
+    coverDraining = false;
+  }
+}
+
+async function storeLinkCover(id: string): Promise<void> {
+  const row = db.prepare(`SELECT cover_url FROM links WHERE id = ?`).get(id) as
+    | { cover_url: string | null }
+    | undefined;
+  const remote = row?.cover_url;
+  if (!remote || remote.startsWith("/files/")) return;
+  const stored = await storeRemoteCover(remote);
+  if (stored && stored !== remote) {
+    db.prepare(`UPDATE links SET cover_url = ?, updated_at = ? WHERE id = ?`).run(
+      stored,
+      now(),
+      id,
+    );
+  }
+}
+
 async function scrapeLink(id: string): Promise<void> {
   const row = db.prepare(`SELECT * FROM links WHERE id = ?`).get(id) as
     | LinkRow
@@ -100,8 +194,7 @@ async function scrapeLink(id: string): Promise<void> {
     const res = await fetchPublic(row.url, {
       headers: {
         // 小红书对爬虫 UA 返回验证页，用移动端 Safari UA 可拿到 SSR 的 og 元信息
-        "User-Agent":
-          "Mozilla/5.0 (iPhone; CPU iPhone OS 17_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.0 Mobile/15E148 Safari/604.1",
+        "User-Agent": MOBILE_UA,
         Accept: "text/html,application/xhtml+xml",
       },
       signal: controller.signal,
@@ -151,45 +244,49 @@ async function scrapeLink(id: string): Promise<void> {
       html.match(/https?:\/\/sns-webpic-qc\.xhscdn\.com[^"'\\\s]+/i)?.[0] ?? null;
     const remoteCover = ogImageUsable ?? webpic;
 
-    // 封面转存：下载到自有 /files/，避免外链防盗链导致无法显示。
+    // 封面转存为自有 /files/ 内链，避免外链防盗链导致无法显示。
     // 扩展名固定 .jpg：真实格式由存库的 mime_type 表达，路径段必须是字面量。
-    let coverStored: string | null = null;
-    if (remoteCover) {
-      try {
-        const imgRes = await fetchPublic(remoteCover, {
-          headers: {
-            Referer: "https://www.xiaohongshu.com/",
-            "User-Agent":
-              "Mozilla/5.0 (iPhone; CPU iPhone OS 17_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.0 Mobile/15E148 Safari/604.1",
-          },
-        });
-        if (imgRes.ok) {
-          const buffer = Buffer.from(await imgRes.arrayBuffer());
-          if (buffer.byteLength > 1024) {
-            const type = (imgRes.headers.get("content-type") ?? "image/jpeg").split(";")[0];
-            const file = await saveBuffer(buffer, ".jpg", type);
-            coverStored = `/files/${file.id}${file.ext}`;
-          }
-        }
-      } catch {
-        /* 转存失败则保留远程地址 */
-      }
-    }
-    const cover = coverStored ?? remoteCover;
+    // 转存（含 await）必须放在守卫读取之前：读取与写入之间没有任何 await
+    // （better-sqlite3 同步），这段窗口才是无竞态的。
+    const fetchedCover = remoteCover
+      ? (await storeRemoteCover(remoteCover)) ?? remoteCover
+      : null;
 
+    // 本 worker 与 Hermes / 封面转存 worker 并发处理同一条：只补空字段，
+    // 别人先写进库的标题/摘要/封面一律保留（守卫读到的快照为准）。
+    const guard = db
+      .prepare(`SELECT status, title, summary, cover_url FROM links WHERE id = ?`)
+      .get(id) as
+      | {
+          status: string;
+          title: string | null;
+          summary: string | null;
+          cover_url: string | null;
+        }
+      | undefined;
+    if (!guard || guard.status !== "pending") return;
+
+    const cover = guard.cover_url || fetchedCover || null;
     db.prepare(
       `UPDATE links SET
          title = ?, summary = ?, cover_url = ?,
          status = 'done', error = NULL, updated_at = ?
        WHERE id = ?`,
     ).run(
-      (row.title ?? ogTitleUsable ?? jsonTitleClean) || null,
-      clean(ogDesc, 500) || null,
+      guard.title || (row.title ?? ogTitleUsable ?? jsonTitleClean) || null,
+      guard.summary || clean(ogDesc, 500) || null,
       cover,
       now(),
       id,
     );
+    // 落库后仍是外链（转存失败/历史遗留）就补一次转存作业，幂等
+    if (cover && /^https?:\/\//i.test(cover)) queueCoverStore(id);
   } catch (err) {
+    // 抓取失败也不抢已被人认领/写回的行：留在原状态交给 Hermes 处理
+    const current = db
+      .prepare(`SELECT status FROM links WHERE id = ?`)
+      .get(id) as { status: string } | undefined;
+    if (!current || current.status !== "pending") return;
     db.prepare(
       `UPDATE links SET status = 'failed', error = ?, updated_at = ? WHERE id = ?`,
     ).run(String(err).slice(0, 200), now(), id);

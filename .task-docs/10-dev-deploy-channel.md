@@ -52,6 +52,7 @@
 | rsync `Permission denied` | `hermes-data/` 700 且 profiles/coder 被 profile 操作重置 | 权限链幂等放开（进 deploy.sh） |
 | Docker 构建 node-gyp 找不到 Python | better-sqlite3@13 带 `binding.gyp`，npm 见之自动 node-gyp，runtime stage 无 python3 | runtime `npm ci --omit=dev --ignore-scripts`（v13 自带 prebuilds） |
 | 本地跑通 ≠ Docker 能过 | 本机容器恰有 python3 | 改依赖必真跑一次 `deploy.sh server` |
+| 备份自检假阴性 | `printf "$LIST" \| grep -q` 在 pipefail 下 grep 提前命中退出 → printf 收 SIGPIPE(141) → `\|\|` 误报「缺失」，命中越靠前越易中招 | 改 here-string：`grep -qxF "$p" <<<"$LIST"`（实测全通过） |
 
 ## 4. 验证记录（2026-10-12 全通过）
 
@@ -61,7 +62,9 @@
 
 ## 5. 遗留
 
-- **git push 未通**：容器无 GitHub 凭据（vault 空），本地领先 origin 7 个 commit；
+- **git push 未通**：容器无 GitHub 凭据（vault 空），本地领先 origin 多个 commit；
   部署不依赖 push，待配 token/deploy key 后同步
-- 备份含 hermes-data 全量打包（约 950MB/3 分钟），拖慢每次部署；后续可考虑
-  排除 `cache/state` 等易变大目录，或仅 server 部署时备份 db+files
+- ~~备份含 hermes-data 全量打包（约 950MB/3 分钟）~~ → ✅ 已解决（2026-10-12）：
+  排除可再生大目录后 61MB/19 秒，且产物自检（关键资产 9 项 + 污染检查）不过即中止部署
+- 部署并发：同 profile 多会话同时部署已用 flock 串行化（deploy.sh 客户端锁）；
+  宿主机侧 hook 无锁——若将来有容器外触发源需补

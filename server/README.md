@@ -27,6 +27,16 @@ npm install
 npm run dev                    # http://localhost:8787
 ```
 
+## 检查
+
+```sh
+npm run typecheck              # tsc --noEmit
+npm run test                   # node:test 跑 tests/
+```
+
+`npm run build` 只做 tsc 编译（Docker 镜像构建阶段只复制 `src/`，不含 `tests/`），
+所以测试不挂在 build 上——CI 请单独跑 `npm test`。
+
 ## 快速验证
 
 ```sh

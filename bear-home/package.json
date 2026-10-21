@@ -6,10 +6,11 @@
     "dev": "npm run dev:h5",
     "dev:h5": "taro build --type h5 --watch",
     "dev:weapp": "taro build --type weapp --watch",
-    "build": "npm run typecheck && npm run build:h5 && npm run build:weapp",
+    "build": "npm run typecheck && npm run test && npm run build:h5 && npm run build:weapp",
     "build:h5": "taro build --type h5",
     "build:weapp": "taro build --type weapp",
     "typecheck": "tsc --noEmit",
+    "test": "node --import tsx --test \"tests/**/*.test.ts\"",
     "icons": "node scripts/generate-icons.cjs"
   },
   "dependencies": {
@@ -39,6 +40,7 @@
     "prettier": "^3.9.9",
     "react-refresh": "^0.14.2",
     "sharp": "^0.33.5",
+    "tsx": "^4.23.15",
     "typescript": "~5.7.2",
     "webpack": "5.91.0"
   }

@@ -106,7 +106,6 @@ npm run build         # 类型检查 + 测试 + 两端构建
 
 ## 已知问题
 
-- `src/components/Ledger*.tsx`、`src/services/ledger.ts`、`src/data/mockLedger.ts`
-  是旧「选购台账」实现，新清单页已不引用，尚未删除。
 - `DESIGN.md` 按时间顺序追加章节，冲突处以后出现的章节为准。
-- `src/app.config.ts` 的小程序原生底色 `#f7f9f6` 与 token `--c-bg` 不一致。
+- 独立页面（不挂 `<Screen>`）若要用设计 token，需挂在 `tokens.css` 的载体选择器上；
+  H5 的 `page` 选择器不生效（根是 `div.taro_page`），当前靠 `:root` 兜底。

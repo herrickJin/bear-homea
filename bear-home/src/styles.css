@@ -49,10 +49,8 @@ page {
 }
 
 .ui-div,
-.ui-article,
 .ui-aside,
 .ui-main,
-.ui-header,
 .ui-section,
 .ui-footer,
 .ui-nav,
@@ -61,9 +59,7 @@ page {
 .ui-h2,
 .ui-h3,
 .ui-p,
-.ui-button,
-.ui-input,
-.ui-textarea {
+.ui-button {
   box-sizing: border-box;
 }
 
@@ -377,11 +373,6 @@ page {
   font-weight: var(--fw-medium);
 }
 
-.subtle {
-  font-size: var(--fs-xs);
-  color: var(--c-mute);
-}
-
 /* 空态：小熊坐在一圈暖光里 */
 .empty {
   padding: 64px var(--sp-5);
@@ -412,14 +403,6 @@ page {
 
 .empty .ui-button.primary {
   margin-top: var(--sp-5);
-}
-
-.footnote {
-  text-align: center;
-  font-size: var(--fs-xs);
-  line-height: var(--lh-loose);
-  color: var(--c-mute);
-  padding: var(--sp-6) var(--sp-2);
 }
 
 .page-footer {
@@ -630,14 +613,8 @@ page {
   .section-heading .ui-h2 {
     font-size: 15px;
   }
-  .section-heading .subtle {
-    font-size: var(--fs-2xs);
-  }
   .empty {
     padding: 48px 15px;
-  }
-  .footnote {
-    font-size: var(--fs-2xs);
   }
   .page-footer {
     margin-top: var(--sp-6);

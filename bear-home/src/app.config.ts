@@ -12,7 +12,8 @@ export default defineAppConfig({
   ],
   window: {
     navigationStyle: "custom",
-    backgroundColor: "#f7f9f6",
+    // 与 tokens.css 的 --c-bg 保持一致（笔记/清单页会覆盖为纯白，属局部例外）
+    backgroundColor: "#faf9f7",
     backgroundTextStyle: "dark",
   },
 });

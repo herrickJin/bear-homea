@@ -26,7 +26,7 @@ export default function Page() {
     <View className="fp-shell">
       <View className="fp-header">
         <Button
-          className="fp-back"
+          className="ui-button fp-back"
           ariaRole="button"
           onClick={onBack}
           style={{ border: "none", background: "transparent" }}
@@ -86,7 +86,7 @@ export default function Page() {
             <DetailRow k="ViewData ID" v={selected.id_viewdata} mono />
             {selected.notes && <DetailRow k="备注" v={selected.notes} />}
             <Button
-              className="fp-clear"
+              className="ui-button fp-clear"
               onClick={() => setSelectedId(null)}
               ariaRole="button"
               style={{
@@ -123,7 +123,7 @@ function Toggle({
 }): JSX.Element {
   return (
     <Button
-      className={`fp-toggle ${on ? "is-on" : ""}`}
+      className={`ui-button fp-toggle ${on ? "is-on" : ""}`}
       onClick={onClick}
       ariaRole="button"
       style={{ border: "none", background: "transparent" }}

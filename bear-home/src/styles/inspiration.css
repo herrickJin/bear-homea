@@ -5,12 +5,6 @@
  * 蜜色语录卡）、实底标签横滑行、hairline 分隔、零阴影。
  */
 
-.intro-line {
-  font-size: var(--fs-sm);
-  color: var(--c-mute);
-  margin-bottom: var(--sp-4);
-}
-
 /* 搜索 + 分页签：搜索独立整行置顶（XHS 搜索页式），分类标签行在其下；
    手机吸顶块随之整体加高 */
 .insp-toolbar {
@@ -20,9 +14,6 @@
 @media (min-width: 900px) {
   .insp-toolbar {
     margin-bottom: var(--sp-6); /* 与卡片网格的呼吸间距 */
-  }
-  .intro-line {
-    display: none;
   }
 }
 
@@ -527,38 +518,6 @@
 
 /* 关闭钮：有图 = 图区左上角半透明白圆（XHS app 同位，避开右栏「打开原文」）；
    无图想法卡 = 右上角白圆 hairline（左上是作者行文字） */
-.ui-button.detail-close {
-  position: absolute;
-  top: var(--sp-4);
-  left: var(--sp-4);
-  z-index: 5;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 36px;
-  min-width: 36px;
-  height: 36px;
-  min-height: 0;
-  padding: 0;
-  border-radius: 50%;
-  background: rgba(255, 255, 255, 0.92);
-  border: 0;
-  color: var(--c-ink);
-}
-
-.detail-sheet.no-media .ui-button.detail-close {
-  left: auto;
-  right: var(--sp-4);
-  background: var(--c-surface);
-  border: 1px solid var(--c-line);
-}
-
-@media (hover: hover) {
-  .ui-button.detail-close:hover {
-    color: var(--c-primary);
-    border-color: var(--c-primary-mid);
-  }
-}
 
 /* 图区：整图 cover 填满，不留黑边（墨底仅作加载期兜底） */
 .detail-media {
@@ -596,9 +555,6 @@
 }
 
 /* 作者行（桌面）：来源占昵称位，打开原文占关注位；手机端由 detail-topbar 替代 */
-.detail-topbar {
-  display: none;
-}
 
 .detail-author-row {
   display: flex;
@@ -616,14 +572,6 @@
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
-}
-
-.detail-note-row {
-  display: flex;
-  align-items: flex-start;
-  justify-content: space-between;
-  gap: var(--sp-3);
-  margin-bottom: var(--sp-3);
 }
 
 /* 详情标题：serif 展签 */
@@ -660,12 +608,6 @@
   .detail-delete-hint:hover {
     color: var(--c-clay);
     opacity: 0.75;
-  }
-}
-
-@media (hover: hover) {
-  .detail-note-row:hover .detail-edit-hint {
-    color: var(--c-primary-deep);
   }
 }
 
@@ -1020,13 +962,6 @@
   border-color: var(--c-primary-mid);
 }
 
-.chip-row {
-  display: flex;
-  flex-wrap: wrap;
-  gap: var(--sp-2);
-  align-items: center;
-}
-
 /* 归类 chips：静息井底描边，选中浅苔 */
 .ui-button.chip {
   display: inline-flex;
@@ -1069,31 +1004,6 @@
   }
 }
 
-.chip-new {
-  width: 100%;
-  margin-top: var(--sp-1);
-}
-
-.ui-button.shot-add {
-  display: inline-flex;
-  gap: 6px;
-  align-items: center;
-  background: var(--c-bg-deep);
-  border: 1px dashed var(--c-line-strong);
-  color: var(--c-primary);
-  border-radius: var(--r-sm);
-  min-height: 44px;
-  padding: 0 var(--sp-4);
-  font-size: var(--fs-sm);
-}
-
-.shot-preview {
-  display: flex;
-  align-items: center;
-  gap: var(--sp-3);
-  margin-top: var(--sp-2);
-}
-
 .label-actions {
   display: flex;
   gap: var(--sp-1);
@@ -1112,15 +1022,6 @@
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-}
-
-.shot-thumb {
-  width: 84px;
-  height: 84px;
-  border-radius: var(--r-sm);
-  flex-shrink: 0;
-  outline: var(--img-outline);
-  outline-offset: -1px;
 }
 
 .sheet .btn-primary {
@@ -1361,13 +1262,6 @@
   }
   /* 关闭钮：整页滚下 absolute 会被内容一起带走（804dd47 内滚模型回退即为此），
      故改 fixed 钉在视口左上。overlay 本身已是 fixed 全屏，视觉位置与原先一致 */
-  .detail-sheet .ui-button.detail-close,
-  .detail-sheet.no-media .ui-button.detail-close {
-    position: fixed;
-    top: 8px;
-    left: 8px;
-    right: auto;
-  }
   /* 图区：自然比例铺满宽度（widthFix），随内容一起滚；
      不再定档 56vh + contain，那会把图做成「固定图窗」 */
   .detail-media {
@@ -1387,24 +1281,8 @@
   }
   /* 顶部作者栏：全屏页里唯一固定件——sticky 钉在滚动容器顶部。
      固定高 52 = 关闭钮 36 + 上下 8，悬浮关闭钮与行严格垂直居中 */
-  .detail-topbar {
-    display: flex;
-    align-items: center;
-    gap: var(--sp-2);
-    position: sticky;
-    top: 0;
-    z-index: 3;
-    flex-shrink: 0;
-    height: 52px;
-    padding: 0 12px 0 56px; /* 左侧让位给悬浮关闭钮 */
-    background: var(--c-surface);
-    border-bottom: 1px solid var(--c-line);
-  }
   .detail-scroll .detail-author-row {
     display: none;
-  }
-  .detail-topbar .detail-open-btn {
-    margin-left: auto;
   }
   /* 正文区：高度随内容（滚动在 sheet 上），不再自己截断 */
   .detail-body {
@@ -1548,22 +1426,6 @@
 
 /* Existing ledger sheets retain their previous motion classes. */
 /* 收藏弹层：淡入 + 轻位移，进出同路径 */
-.save-sheet {
-  width: 420px;
-  animation: sheet-pop var(--dur-base) var(--ease-out);
-}
-
-.save-backdrop {
-  animation: sheet-fade-in var(--dur-fast) var(--ease-out);
-}
-
-.save-backdrop.closing {
-  animation: sheet-fade-out var(--dur-fast) var(--ease-out) forwards;
-}
-
-.save-sheet.closing {
-  animation: sheet-dim var(--dur-fast) var(--ease-out) forwards;
-}
 
 @keyframes sheet-fade-in {
   from {
@@ -1606,32 +1468,7 @@
 }
 
 @media (max-width: 700px) {
-  .save-backdrop {
-    align-items: flex-end;
-    padding: 0;
-  }
-  .save-backdrop .save-sheet {
-    width: 100%;
-    max-width: 100%;
-    border-radius: var(--r-xl) var(--r-xl) 0 0;
-    max-height: calc(100dvh - 48px);
-    padding-bottom: calc(var(--sp-6) + env(safe-area-inset-bottom));
-    animation-duration: 320ms;
-  }
-  .save-sheet.closing {
-    animation-name: sheet-sink;
-    animation-duration: var(--dur-base);
-  }
   /* 小抓手 */
-  .save-sheet::before {
-    content: "";
-    display: block;
-    width: 36px;
-    height: 4px;
-    border-radius: var(--r-pill);
-    background: var(--c-line-strong);
-    margin: -8px auto var(--sp-3);
-  }
 }
 
 @keyframes sheet-sink {
@@ -1643,31 +1480,12 @@
   }
 }
 
-@media (max-width: 700px) {
-  .save-sheet {
-    animation-name: sheet-rise;
-  }
-}
-
 @keyframes sheet-rise {
   from {
     transform: translateY(100%);
   }
   to {
     transform: none;
-  }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .save-backdrop,
-  .save-sheet,
-  .save-sheet.closing,
-  .save-backdrop.closing {
-    animation: sheet-fade-in var(--dur-fast) ease;
-  }
-  .save-backdrop.closing,
-  .save-sheet.closing {
-    animation-name: sheet-fade-out;
   }
 }
 
@@ -1811,9 +1629,6 @@
   width: 100%;
   height: 100%;
   object-fit: contain;
-}
-@media (prefers-reduced-motion: reduce) {
-  .detail-image-swiper .swiper-wrapper { transition-duration: 0ms !important; }
 }
 
 /* Mobile detail is one opaque page surface. Drag/settle owns its transform. */

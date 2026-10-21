@@ -30,6 +30,7 @@
   gap: var(--sp-1);
   padding: var(--sp-2) var(--sp-3) var(--sp-2) 0;
   flex: 0 0 auto;
+  width: fit-content;
   background: transparent !important;
   border: none !important;
   line-height: 1;

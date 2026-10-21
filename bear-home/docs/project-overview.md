@@ -121,7 +121,6 @@
 
 ## 阅读项目时需要注意
 
-- 旧「选购台账」实现（`components/Ledger*.tsx`、`services/ledger.ts`、`data/mockLedger.ts`）已无引用，尚未删除。
 - 后端 `entries` 仍保存旧施工记录模型（标题、正文、阶段、日期），应用侧从不写入也不展示；
   它只留在 MCP 工具面供 Hermes 使用，不在 App 聊天工具面里。
 - 笔记未配置 API 时的 mock 为内存数据，与准备数据的「服务端 + 本地缓存」方式不同。
@@ -130,7 +129,8 @@
   派生脚本可从它重新生成 `walls.json` / `rooms.json`。
 - 预算、我的及 App 内 AI 对话界面，仍需后续产品设计与实现；
   「小家装修计划与 Agent 助理」已有设计稿（`docs/plans/global-renovation-plan.md`），尚未实施。
-- `src/app.config.ts` 的小程序原生底色 `#f7f9f6` 与 token `--c-bg` 不一致，界面上会有轻微色差。
+- 独立页面（不挂 `<Screen>`）没有 `.app-shell` 承载设计 token；H5 也没有 `<page>` 元素
+  （根是 `div.taro_page`），所以 `tokens.css` 额外挂 `:root` 兜底。
 
 整体判断：项目已从跨端骨架进入核心功能落地阶段，当前最完整的三块是装修笔记库、装修准备清单和户型工具；
 AI 与微信联动为资料收集和整理提供扩展能力。下一个大块是「小家装修计划 + Agent 助理」，

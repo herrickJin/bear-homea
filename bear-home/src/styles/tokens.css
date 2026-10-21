@@ -3,13 +3,16 @@
  * 风格方向与使用规范见 bear-home/DESIGN.md。
  * 改色值 / 字号 / 间距只改这个文件，页面与组件只消费变量。
  *
- * 跨端说明：小程序没有 :root，变量同时挂在 page 与 .app-shell 上。
+ * 跨端说明：小程序没有 :root，变量同时挂在 page 与 .app-shell 上；
+ * H5 也没有 <page> 元素（根是 div.taro_page），所以额外挂 :root 兜底——
+ * 不挂 .app-shell 的独立页面（如户型工具）也要能取到 token。
  * 断点值无法用变量，见 DESIGN.md「断点」（700 / 900 / 1100）。
  * 注意：图标 PNG 的三色（green/muted/white）由 scripts/generate-icons.cjs
  * 生成，改 --c-primary 时需同步脚本并重新 npm run icons。
  */
 
 page,
+:root,
 .app-shell {
   /* ===== 色彩 · 画廊白墙 + 苔绿单强调 ===== */
   --c-ink: #1f2421; /* 近黑（带一丝绿意）· 标题与正文 */

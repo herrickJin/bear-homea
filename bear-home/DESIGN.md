@@ -97,9 +97,14 @@ App 的第一职责是把它们大幅、安静、体面地挂出来；同时保�
 - ✅ 新色先进 tokens.css 起名再使用；金额/尺寸/日期用 `--font-mono`
 - ✅ 分隔用 `--c-line`（透明墨 hairline）；图片描边用 outline 不用 border
 - ✅ 胶带/便签/摘录条按第一、二章签名位使用；小熊只出现在品牌位与空态
+- ✅ Taro `<Button>` 一律挂 `ui-button`（含 `::after{border:none}` 与 `display:inline-flex`），
+  页面专属样式再叠自己的修饰类
+- ✅ 独立页面（不挂 `<Screen>`）要能取到 token：H5 没有 `<page>` 元素，
+  载体靠 `tokens.css` 的 `:root`；小程序仍由 `page` / `.app-shell` 承载
 - ❌ 不用纯黑纯灰；不引第二套字体；不做毛玻璃；按钮与页面底色不做渐变
 - ❌ 蜂蜜黄不进按钮/导航/正文色；陶橘不铺面；一屏最多一条胶带
 - ❌ 导航选中态不改字重；卡片不叠阴影
+- ❌ 新页面别漏 `ui-button`：缺了会让 Taro 按钮撑满整行，且 typecheck 与构建都发现不了
 
 ## 七、图标
 

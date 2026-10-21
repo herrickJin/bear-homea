@@ -12,6 +12,7 @@ export const LINKS_DDL = `CREATE TABLE IF NOT EXISTS links (
     note TEXT,
     category_ids TEXT NOT NULL DEFAULT '[]',
     shot_url TEXT,
+    shot_urls TEXT NOT NULL DEFAULT '[]',
     source TEXT,
     status TEXT NOT NULL DEFAULT 'pending'
       CHECK (status IN ('pending', 'processing', 'done', 'failed')),
@@ -116,6 +117,7 @@ export type LinkRow = {
   note: string | null;
   category_ids: string;
   shot_url: string | null;
+  shot_urls?: string;
   cover_url: string | null;
   source: string | null;
   status: "pending" | "processing" | "done" | "failed";

@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import Taro from "@tarojs/taro";
 import { Button, Input, Text, Textarea, View } from "@tarojs/components";
-import { X } from "./Icons";
+import SheetHeader from "./SheetHeader";
 import type {
   LedgerCategory,
   LedgerDraft,
@@ -114,15 +114,10 @@ export default function LedgerSheet({
       onClick={requestClose}
     >
       <View
-        className={`ui-div ${`sheet save-sheet${closing ? " closing" : ""}`}`}
+        className={`ui-div ${`sheet sheet-with-header save-sheet${closing ? " closing" : ""}`}`}
         onClick={(e) => e.stopPropagation()}
       >
-        <View className="ui-div section-heading">
-          <Text className="ui-h2">{initial ? "编辑条目" : "记一笔"}</Text>
-          <Button ariaRole="button" className="ui-button" onClick={requestClose}>
-            <X size={18} tone="muted" />
-          </Button>
-        </View>
+        <SheetHeader title={initial ? "编辑条目" : "记一笔"} onClose={requestClose} />
 
         <Text className="ui-span field-label">品类（{kindLabels[kind]}）</Text>
         <View className="ui-div chip-row">

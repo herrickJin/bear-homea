@@ -30,6 +30,7 @@ interface LinkRow {
   note: string | null;
   category_ids: string;
   shot_url: string | null;
+  shot_urls?: string | null;
   cover_url: string | null;
   source: string | null;
   status: LinkStatus;
@@ -43,8 +44,14 @@ export interface InspirationNote {
   date: string;
 }
 
-const absUrl = (u: string): string =>
-  u.startsWith("http") || !API_BASE_URL ? u : `${API_BASE_URL}${u}`;
+const absUrl = (u: string): string => {
+  // Older uploads were saved with the server's HTTP IP address. Serve them
+  // through the configured HTTPS origin to avoid mixed content after migration.
+  if (API_BASE_URL.startsWith("https://") && u.startsWith("http://119.27.191.90/files/")) {
+    return `${API_BASE_URL}${u.slice("http://119.27.191.90".length)}`;
+  }
+  return u.startsWith("http") || !API_BASE_URL ? u : `${API_BASE_URL}${u}`;
+};
 
 const parseIds = (raw: string | null): string[] => {
   try {
@@ -64,6 +71,7 @@ function mapLink(row: LinkRow): InspirationLink {
     summary: row.summary,
     categoryIds: parseIds(row.category_ids),
     shotPath: row.shot_url ? absUrl(row.shot_url) : null,
+    shotPaths: (parseIds(row.shot_urls ?? null).length ? parseIds(row.shot_urls ?? null) : row.shot_url ? [row.shot_url] : []).map(absUrl),
     coverUrl: row.cover_url ? absUrl(row.cover_url) : null,
     notes: (row.notes ?? []).map((n) => ({
       id: n.id,
@@ -147,11 +155,20 @@ export async function saveLink(
       const existing = mock.findLinkByUrl(draft.url)!;
       return { item: existing, duplicated: true };
     }
-    const item = mock.addLink(draft);
+    const paths = await Promise.all((draft.shotPaths ?? (draft.shotPath ? [draft.shotPath] : [])).map(async path => {
+      if (!path.startsWith("blob:")) return path;
+      const blob = await (await fetch(path)).blob();
+      return new Promise<string>((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onload = () => resolve(reader.result as string);
+        reader.onerror = () => reject(reader.error);
+        reader.readAsDataURL(blob);
+      });
+    }));
+    const item = mock.addLink({ ...draft, shotPath: paths[0] ?? null, shotPaths: paths });
     return { item, duplicated: false };
   }
-  let shotUrl: string | null = null;
-  if (draft.shotPath) shotUrl = await uploadFile(draft.shotPath);
+  const shotUrls = await Promise.all((draft.shotPaths ?? (draft.shotPath ? [draft.shotPath] : [])).map(uploadFile));
   const row = await apiRequest<LinkRow & { deduplicated?: boolean }>(
     "/api/links",
     {
@@ -161,7 +178,8 @@ export async function saveLink(
         title: draft.title,
         note: draft.note,
         category_ids: draft.categoryIds,
-        shot_url: shotUrl,
+        shot_url: shotUrls[0] ?? null,
+        shot_urls: shotUrls,
       },
     },
   );

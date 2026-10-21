@@ -1,0 +1,60 @@
+/* One compact header shared by every application sheet. */
+.sheet-header {
+  display: flex;
+  align-items: center;
+  flex-shrink: 0;
+  gap: var(--sp-2);
+  min-height: 48px;
+  padding: 0 var(--sp-5);
+  border-bottom: 1px solid var(--c-line);
+  background: var(--c-surface);
+  color: var(--c-ink);
+  font-family: var(--font-sans);
+  position: sticky;
+  top: 0;
+  z-index: 6;
+}
+.sheet-header-title {
+  flex: 1;
+  min-width: 0;
+  font-size: var(--fs-base);
+  font-weight: var(--fw-medium);
+  line-height: var(--lh-tight);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.sheet-header-action { display: flex; align-items: center; flex-shrink: 0; }
+.sheet-header .ui-button.sheet-header-close {
+  flex-shrink: 0;
+  width: 44px;
+  height: 44px;
+  min-width: 44px;
+  min-height: 44px;
+  margin-right: calc(-1 * var(--sp-3));
+  background: transparent;
+  border: 0;
+  border-radius: var(--r-sm);
+}
+.sheet-header .detail-open-btn {
+  min-height: 32px;
+  font-size: var(--fs-sm);
+  padding: 0;
+}
+/* Older sheets pad their whole container; extend the header to its edges. */
+.sheet.sheet-with-header { padding-top: 0; }
+.sheet.sheet-with-header::before { display: none; }
+.sheet-with-header > .sheet-header {
+  margin: 0 calc(-1 * var(--sp-6)) var(--sp-4);
+}
+/* The note detail keeps its two-column content below the same header. */
+.detail-sheet { flex-direction: column; }
+.detail-layout { display: flex; flex: 1; min-height: 0; overflow: hidden; }
+.detail-layout .detail-author-row { display: none; }
+@media (max-width: 700px) {
+  .sheet-with-header > .sheet-header {
+    margin-left: calc(-1 * var(--sp-5));
+    margin-right: calc(-1 * var(--sp-5));
+  }
+  .detail-layout { flex: none; flex-direction: column; overflow: visible; }
+}

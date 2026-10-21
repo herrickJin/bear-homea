@@ -2,7 +2,7 @@ import { useState } from "react";
 import Taro from "@tarojs/taro";
 import { Button, Input, Text, View } from "@tarojs/components";
 import type { Category } from "../data/mockInspiration";
-import { X } from "./Icons";
+import SheetHeader from "./SheetHeader";
 import useSheetMotion from "../hooks/useSheetMotion";
 
 interface CategoryManagerProps {
@@ -57,13 +57,8 @@ export default function CategoryManager({
 
   return (
     <View className={`ui-div sheet-backdrop manage-backdrop${entered ? " is-entered" : ""}`} onClick={requestClose}>
-      <View className="ui-div sheet" onClick={(e) => e.stopPropagation()}>
-        <View className="ui-div section-heading">
-          <Text className="ui-h2">管理分类</Text>
-          <Button ariaRole="button" className="ui-button" onClick={requestClose}>
-            <X size={18} tone="muted" />
-          </Button>
-        </View>
+      <View className="ui-div sheet sheet-with-header" onClick={(e) => e.stopPropagation()}>
+        <SheetHeader title="管理分类" onClose={requestClose} />
 
         {categories.map((c, index) => (
           <View className="ui-div cat-row" key={c.id}>

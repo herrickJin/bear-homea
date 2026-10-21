@@ -77,7 +77,11 @@ links.post("/", async (c) => {
   const url = clean(body.url, 2000) || null;
   const note = clean(body.note, 500) || null;
   const title = clean(body.title, 500) || null;
-  const shotUrl = clean(body.shot_url, 500) || null;
+  const shotUrls = Array.isArray(body.shot_urls)
+    ? body.shot_urls.map((value: unknown) => clean(value, 500)).filter(Boolean)
+    : [];
+  const shotUrl = shotUrls[0] || clean(body.shot_url, 500) || null;
+  if (!shotUrls.length && shotUrl) shotUrls.push(shotUrl);
   const categoryIds = normalizeCategoryIds(body.category_ids);
 
   if (url) {
@@ -104,6 +108,7 @@ links.post("/", async (c) => {
       note,
       category_ids: JSON.stringify(categoryIds),
       shot_url: shotUrl,
+      shot_urls: JSON.stringify(shotUrls),
       cover_url: null,
       source: friendlySource(source),
       status: "pending",
@@ -113,16 +118,16 @@ links.post("/", async (c) => {
     };
     db.prepare(
       `INSERT INTO links (id, url, title, summary, content, note, category_ids,
-         shot_url, cover_url, source, status, error, created_at, updated_at)
+         shot_url, shot_urls, cover_url, source, status, error, created_at, updated_at)
        VALUES (@id, @url, @title, @summary, @content, @note, @category_ids,
-         @shot_url, @cover_url, @source, @status, @error, @created_at, @updated_at)`,
+         @shot_url, @shot_urls, @cover_url, @source, @status, @error, @created_at, @updated_at)`,
     ).run(row);
     queueScrape(row.id);
     return c.json(row, 201);
   }
 
-  // 纯想法：必须有一句正文
-  if (!note) return c.json({ error: "写点什么，或粘贴一个链接" }, 400);
+  // 纯想法支持仅图片。
+  if (!note && !shotUrls.length) return c.json({ error: "写点想法，或粘贴图片或链接" }, 400);
   const row: LinkRow = {
     id: `idea-${Date.now()}-${randomUUID().slice(0, 8)}`,
     url: null,
@@ -132,6 +137,7 @@ links.post("/", async (c) => {
     note,
     category_ids: JSON.stringify(categoryIds),
     shot_url: shotUrl,
+    shot_urls: JSON.stringify(shotUrls),
     cover_url: null,
     source: "想法",
     status: "done",
@@ -141,9 +147,9 @@ links.post("/", async (c) => {
   };
   db.prepare(
     `INSERT INTO links (id, url, title, summary, content, note, category_ids,
-       shot_url, cover_url, source, status, error, created_at, updated_at)
+       shot_url, shot_urls, cover_url, source, status, error, created_at, updated_at)
      VALUES (@id, @url, @title, @summary, @content, @note, @category_ids,
-       @shot_url, @cover_url, @source, @status, @error, @created_at, @updated_at)`,
+       @shot_url, @shot_urls, @cover_url, @source, @status, @error, @created_at, @updated_at)`,
   ).run(row);
   return c.json(row, 201);
 });
@@ -185,6 +191,9 @@ async function updateHandler(c: Context) {
       body.shot_url !== undefined
         ? clean(body.shot_url, 500) || null
         : row.shot_url,
+    shot_urls: body.shot_url !== undefined
+      ? JSON.stringify(body.shot_url ? [clean(body.shot_url, 500)] : [])
+      : row.shot_urls ?? "[]",
     cover_url:
       body.cover_url !== undefined
         ? clean(body.cover_url, 2000) || null
@@ -195,7 +204,7 @@ async function updateHandler(c: Context) {
   };
   db.prepare(
     `UPDATE links SET title = @title, summary = @summary, content = @content,
-     note = @note, category_ids = @category_ids, shot_url = @shot_url,
+     note = @note, category_ids = @category_ids, shot_url = @shot_url, shot_urls = @shot_urls,
      cover_url = @cover_url, status = @status, error = @error, updated_at = @updated_at
      WHERE id = @id`,
   ).run(next);

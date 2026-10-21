@@ -1,5 +1,5 @@
-import { useCallback, useEffect, useState } from "react";
-import Taro from "@tarojs/taro";
+import { useCallback, useState } from "react";
+import Taro, { useDidShow } from "@tarojs/taro";
 import { Button, View } from "@tarojs/components";
 import Screen from "../../components/Screen";
 import LinkCard from "../../components/LinkCard";
@@ -10,6 +10,7 @@ import CategoryManager from "../../components/CategoryManager";
 import LinkDetailSheet from "../../components/LinkDetailSheet";
 import Bear from "../../components/Bear";
 import { Plus } from "../../components/Icons";
+import { ApiError } from "../../services/api";
 import * as inspiration from "../../services/inspiration";
 import { filterLinks } from "../../data/mockInspiration";
 import type {
@@ -27,7 +28,7 @@ export default function Page() {
   const [query, setQuery] = useState("");
   const [saveOpen, setSaveOpen] = useState(false);
   const [manageOpen, setManageOpen] = useState(false);
-  // 详情弹层：原地渲染，不走路由（小红书式，列表保持在背后）
+  // 桌面详情保留页内覆盖层；手机/平板走详情路由。
   const [activeLink, setActiveLink] = useState<InspirationLink | null>(null);
 
   const refresh = useCallback(async () => {
@@ -46,9 +47,9 @@ export default function Page() {
     }
   }, []);
 
-  useEffect(() => {
+  useDidShow(() => {
     refresh();
-  }, [refresh]);
+  });
 
   const visible = filterLinks(links, activeId, query);
 
@@ -79,9 +80,19 @@ export default function Page() {
   }
 
   async function handleCreateCategory(name: string): Promise<Category> {
-    const category = await inspiration.createCategory(name);
-    setCategories(await inspiration.listCategories());
-    return category;
+    try {
+      const category = await inspiration.createCategory(name);
+      setCategories(prev => prev.some(c => c.id === category.id) ? prev : [...prev, category]);
+      return category;
+    } catch (error) {
+      if (error instanceof ApiError && error.status === 409) {
+        const cats = await inspiration.listCategories();
+        setCategories(cats);
+        const existing = cats.find(c => c.name === name);
+        if (existing) return existing;
+      }
+      throw error;
+    }
   }
 
   async function handleRename(id: string, name: string) {
@@ -118,6 +129,11 @@ export default function Page() {
   }
 
   function openDetail(link: InspirationLink) {
+    const width = process.env.TARO_ENV === "h5" ? window.innerWidth : Taro.getWindowInfo().windowWidth;
+    if (width <= 1099) {
+      Taro.navigateTo({ url: `/pages/inspiration-detail/index?id=${encodeURIComponent(link.id)}` });
+      return;
+    }
     setActiveLink(link);
   }
 
@@ -223,6 +239,7 @@ export default function Page() {
         categories={categories}
         onClose={() => setSaveOpen(false)}
         onSave={handleSave}
+        onCreateCategory={handleCreateCategory}
       />
       <CategoryManager
         open={manageOpen}

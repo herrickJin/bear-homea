@@ -1,9 +1,11 @@
 export default defineAppConfig({
+  // Detail gestures own their transition; avoid a second H5 route animation.
+  animation: false,
   pages: [
-    "pages/home/index",
     "pages/inspiration/index",
     "pages/inspiration-detail/index",
     "pages/record/index",
+    "pages/home/index",
     "pages/budget/index",
     "pages/profile/index",
   ],

@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import Taro from "@tarojs/taro";
 import { Button, Text, View } from "@tarojs/components";
-import { X } from "./Icons";
+import SheetHeader from "./SheetHeader";
 import type { LedgerItem, LedgerStatus } from "../services/ledger";
 import { displayDate, formatPrice, kindLabels, statusMeta, statusOrder } from "../services/ledger";
 
@@ -50,17 +50,10 @@ export default function LedgerDetailSheet({
   return (
     <View className="ui-div sheet-backdrop save-backdrop" onClick={onClose}>
       <View
-        className="ui-div sheet save-sheet rec-detail"
+        className="ui-div sheet sheet-with-header save-sheet rec-detail"
         onClick={(e) => e.stopPropagation()}
       >
-        <View className="ui-div section-heading rec-detail-top">
-          <Text className="ui-span rec-detail-kind">
-            {kindLabels[item.kind]} · {item.category}
-          </Text>
-          <Button ariaRole="button" ariaLabel="关闭" className="ui-button" onClick={onClose}>
-            <X size={18} tone="muted" />
-          </Button>
-        </View>
+        <SheetHeader title={`${kindLabels[item.kind]} · ${item.category}`} onClose={onClose} />
 
         <View className="ui-h3 rec-detail-name">{item.name}</View>
         {item.price != null ? (

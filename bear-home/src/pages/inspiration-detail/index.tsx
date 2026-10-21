@@ -7,8 +7,7 @@ import LinkDetailSheet from "../../components/LinkDetailSheet";
 import * as inspiration from "../../services/inspiration";
 import type { Category, InspirationLink } from "../../services/inspiration";
 
-/** 直链入口（如刷新/分享 URL）。常规打开走方案库页内弹层（LinkDetailSheet），
- *  本页仅负责取数后渲染同一覆盖层，关闭即返回列表。 */
+/** 手机/平板详情路由与分享直链入口，返回时恢复笔记列表。 */
 export default function Page() {
   const router = useRouter();
   const id = router.params.id ?? "";
@@ -25,6 +24,7 @@ export default function Page() {
         setCategories(cats);
         setLoading(false);
       },
+      () => { if (alive) setLoading(false); },
     );
     return () => {
       alive = false;
@@ -32,6 +32,10 @@ export default function Page() {
   }, [id]);
 
   function goBack() {
+    if (Taro.getCurrentPages().length <= 1) {
+      Taro.redirectTo({ url: "/pages/inspiration/index" });
+      return;
+    }
     Taro.navigateBack().catch(() =>
       Taro.redirectTo({ url: "/pages/inspiration/index" }),
     );

@@ -24,6 +24,7 @@ export default function LinkCard({
   const status = statusLabel(link.status);
   const title = displayTitle(link);
   const isIdea = !link.url;
+  const image = link.shotPath || link.coverUrl;
   const isXhs = !isIdea && isXiaohongshu(link.source);
 
   return (
@@ -31,24 +32,20 @@ export default function LinkCard({
       className={`ui-div ${`link-card${isIdea ? " card-idea" : ""}`}`}
       onClick={() => onOpen(link)}
     >
-      {isIdea ? (
+      {image ? (
+        <Image className="link-shot" src={image} mode="widthFix" />
+      ) : isIdea ? (
         <View className="ui-div idea-quote">
           <Text className="idea-mark">“</Text>
           <Text className="idea-text">{title}</Text>
           <View className="ui-i idea-dash" />
         </View>
-      ) : (link.shotPath || link.coverUrl) ? (
-        <Image
-          className="link-shot"
-          src={link.shotPath ?? link.coverUrl ?? ""}
-          mode="widthFix"
-        />
       ) : link.shotTint ? (
         <View className={`ui-div ${`link-shot shot-mock shot-${link.shotTint}`}`}>
           <Bookmark size={22} tone="muted" />
         </View>
       ) : null}
-      {!isIdea && <View className="ui-h3 link-note">{title}</View>}
+      {(image || !isIdea) && <View className="ui-h3 link-note">{title}</View>}
       {tags.length > 0 && (
         <View className="ui-div link-tags">
           {tags.map((t) => (

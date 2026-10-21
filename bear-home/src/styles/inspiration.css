@@ -499,7 +499,6 @@
   justify-content: center;
   padding: var(--sp-6);
   background: rgba(31, 36, 33, 0.48);
-
 }
 
 /* 点背景关闭（桌面） */
@@ -517,7 +516,6 @@
   border-radius: var(--r-xl);
   overflow: hidden;
   box-shadow: var(--shadow-sheet);
-
 }
 
 /* 无图方案：窄栏、高度随内容（避免大片留白） */
@@ -564,6 +562,7 @@
 
 /* 图区：整图 cover 填满，不留黑边（墨底仅作加载期兜底） */
 .detail-media {
+  position: relative;
   width: 57%;
   flex-shrink: 0;
   display: flex;
@@ -689,6 +688,10 @@
   line-height: var(--lh-loose);
   overflow-wrap: anywhere;
 }
+/* 标题与正文之间留呼吸间距；两段类名才能压过 styles.css 里 .ui-p 的 margin:0 */
+.detail-scroll .detail-summary {
+  margin-top: var(--sp-5);
+}
 
 /* 详情标签：统一胶囊规格，标签之间留足间距 */
 /* 详情标签：与正文/标题的间隔由本容器 margin-top 控制；胶囊间紧凑 sp-1 */
@@ -747,16 +750,28 @@
   min-width: 0;
 }
 
-/* 打开原文：小苔绿圆角钮（XHS 关注键位）；H5 直跳，小程序复制链接 */
+/* 打开原文：文字按钮（无底色、无边框，仅苔绿文字）；H5 直跳，小程序复制链接 */
 .ui-button.detail-open-btn {
   flex-shrink: 0;
   display: inline-flex;
   align-items: center;
   min-height: 32px;
-  padding: 0 var(--sp-4);
+  padding: 0;
+  background: transparent;
+  border: 0;
+  color: var(--c-primary);
   font-size: var(--fs-sm);
-  border-radius: var(--r-pill);
+  font-weight: var(--fw-medium);
   text-decoration: none;
+}
+.ui-button.detail-open-btn:active {
+  color: var(--c-primary-deep);
+}
+@media (hover: hover) {
+  .ui-button.detail-open-btn:hover {
+    color: var(--c-primary-deep);
+    text-decoration: underline;
+  }
 }
 
 .detail-notes {
@@ -1116,13 +1131,19 @@
 @media (max-width: 700px) {
   .insp-toolbar {
     position: sticky;
-    top: calc(56px + env(safe-area-inset-top));
+    /* 独立 Header 已移除，吸顶只避让设备安全区。 */
+    top: env(safe-area-inset-top, 0px);
     z-index: 5;
     background: var(--c-bg);
     padding: var(--sp-2) 0;
     margin-bottom: 0; /* 块下间距由 cat-tabs-wrap 自身 margin 提供 */
     box-shadow: 0 1px 0 var(--c-line);
   }
+}
+
+/* 小程序滚动后继续避让状态栏和系统胶囊。 */
+.is-weapp .insp-toolbar {
+  top: calc(var(--status-height) + var(--nav-height));
 }
 
 /* All note sheets share an interruptible entry/exit transition. */
@@ -1141,31 +1162,56 @@
   transition: opacity var(--dur-base) var(--ease-out);
 }
 .note-backdrop::before,
-.manage-backdrop::before { content: ""; }
+.manage-backdrop::before {
+  content: "";
+}
 .detail-overlay .detail-sheet,
 .note-backdrop .sheet,
 .manage-backdrop .sheet {
   position: relative;
   opacity: 0;
   transform: translateY(8px) scale(0.97);
-  transition: transform var(--dur-base) var(--ease-out), opacity var(--dur-base) var(--ease-out);
+  transition:
+    transform var(--dur-base) var(--ease-out),
+    opacity var(--dur-base) var(--ease-out);
 }
 .detail-overlay:not(.is-entered),
 .note-backdrop:not(.is-entered),
-.manage-backdrop:not(.is-entered) { pointer-events: none; }
+.manage-backdrop:not(.is-entered) {
+  pointer-events: none;
+}
 .is-entered .detail-backdrop,
 .note-backdrop.is-entered::before,
-.manage-backdrop.is-entered::before { opacity: 1; }
+.manage-backdrop.is-entered::before {
+  opacity: 1;
+}
 .detail-overlay.is-entered .detail-sheet,
 .note-backdrop.is-entered .sheet,
 .manage-backdrop.is-entered .sheet {
   opacity: 1;
   transform: none;
 }
-.note-save-sheet { width: 420px; }
+.note-save-sheet {
+  width: 420px;
+}
+/* PC/Pad：收藏弹层放大一档（与记录编辑弹层同宽 520），
+   输入区随之加高，标签行少折一行；手机仍是全宽底部弹层 */
+@media (min-width: 701px) {
+  .note-save-sheet {
+    width: 520px;
+  }
+  .note-save-sheet .field-textarea {
+    min-height: 120px;
+  }
+}
 @media (max-width: 700px) {
-  .note-backdrop, .manage-backdrop { align-items: flex-end; padding: 0; }
-  .note-backdrop .sheet, .manage-backdrop .sheet {
+  .note-backdrop,
+  .manage-backdrop {
+    align-items: flex-end;
+    padding: 0;
+  }
+  .note-backdrop .sheet,
+  .manage-backdrop .sheet {
     width: 100%;
     max-width: 100%;
     max-height: calc(100dvh - 48px);
@@ -1175,8 +1221,12 @@
     opacity: 1;
     transition-timing-function: var(--ease-drawer, var(--ease-out));
   }
-  .note-backdrop.is-entered .sheet, .manage-backdrop.is-entered .sheet { transform: none; }
-  .note-save-sheet::before, .manage-backdrop .sheet::before {
+  .note-backdrop.is-entered .sheet,
+  .manage-backdrop.is-entered .sheet {
+    transform: none;
+  }
+  .note-save-sheet::before,
+  .manage-backdrop .sheet::before {
     content: "";
     display: block;
     width: 36px;
@@ -1392,59 +1442,108 @@
 }
 
 /* Notes interaction palette: one action color, quiet content. */
-.page-inspiration .eyebrow {
-  background: none;
-  box-shadow: none;
-  transform: none;
-  padding: 0;
-  color: var(--c-mute);
+
+.page-inspiration .heading-dot {
+  display: none;
 }
-.page-inspiration .heading-dot { display: none; }
-.page-inspiration .cat-tab.active { background: var(--c-ink); }
-.page-inspiration .cat-tab.active:hover { background: var(--c-ink-2); }
+.page-inspiration .cat-tab.active {
+  background: var(--c-ink);
+}
+.page-inspiration .cat-tab.active:hover {
+  background: var(--c-ink-2);
+}
 .page-inspiration .cat-tab {
-  transition: transform var(--dur-fast) var(--ease-out), background-color var(--dur-fast) ease, color var(--dur-fast) ease;
+  transition:
+    transform var(--dur-fast) var(--ease-out),
+    background-color var(--dur-fast) ease,
+    color var(--dur-fast) ease;
 }
 .page-inspiration .cat-expand {
-  transition: transform var(--dur-fast) var(--ease-out), opacity var(--dur-fast) ease, visibility var(--dur-fast) ease;
+  transition:
+    transform var(--dur-fast) var(--ease-out),
+    opacity var(--dur-fast) ease,
+    visibility var(--dur-fast) ease;
 }
-.page-inspiration .fab, .page-inspiration .note-send { background: var(--c-primary); }
-.page-inspiration .fab:active, .page-inspiration .note-send:active { background: var(--c-primary-deep); }
+.page-inspiration .fab,
+.page-inspiration .note-send {
+  background: var(--c-primary);
+}
+.page-inspiration .fab:active,
+.page-inspiration .note-send:active {
+  background: var(--c-primary-deep);
+}
 @media (hover: hover) and (pointer: fine) {
-  .page-inspiration .fab:hover, .page-inspiration .note-send:hover { background: var(--c-primary-deep); }
+  .page-inspiration .fab:hover,
+  .page-inspiration .note-send:hover {
+    background: var(--c-primary-deep);
+  }
 }
-.page-inspiration .idea-quote, .page-inspiration .tag-chip {
+.page-inspiration .idea-quote,
+.page-inspiration .tag-chip {
   background: var(--c-bg-deep);
   color: var(--c-ink-2);
 }
-.page-inspiration .idea-mark { color: var(--c-faint); }
-.page-inspiration .idea-dash { background: var(--c-line-strong); }
-.page-inspiration .detail-note { font-family: var(--font-sans); font-weight: var(--fw-medium); }
-.page-inspiration .link-card:active { opacity: 1; }
-.page-inspiration .link-shot, .page-inspiration .idea-quote {
-  transition: transform var(--dur-fast) var(--ease-out), opacity var(--dur-fast) ease;
+.page-inspiration .idea-mark {
+  color: var(--c-faint);
+}
+.page-inspiration .idea-dash {
+  background: var(--c-line-strong);
+}
+.page-inspiration .detail-note {
+  font-family: var(--font-sans);
+  font-weight: var(--fw-medium);
+}
+.page-inspiration .link-card:active {
+  opacity: 1;
+}
+.page-inspiration .link-shot,
+.page-inspiration .idea-quote {
+  transition:
+    transform var(--dur-fast) var(--ease-out),
+    opacity var(--dur-fast) ease;
 }
 .page-inspiration .link-card:active .link-shot,
-.page-inspiration .link-card:active .idea-quote { transform: scale(0.98); opacity: 0.92; }
+.page-inspiration .link-card:active .idea-quote {
+  transform: scale(0.98);
+  opacity: 0.92;
+}
 @media (max-width: 1099px) {
-  .detail-overlay .detail-sheet { transform: translateY(16px); }
-  .detail-overlay.is-entered .detail-sheet { transform: none; }
+  .detail-overlay .detail-sheet {
+    transform: translateY(16px);
+  }
+  .detail-overlay.is-entered .detail-sheet {
+    transform: none;
+  }
 }
 @media (prefers-reduced-motion: reduce) {
-  .detail-overlay .detail-sheet, .note-backdrop .sheet, .manage-backdrop .sheet,
-  .detail-backdrop, .note-backdrop::before, .manage-backdrop::before {
+  .detail-overlay .detail-sheet,
+  .note-backdrop .sheet,
+  .manage-backdrop .sheet,
+  .detail-backdrop,
+  .note-backdrop::before,
+  .manage-backdrop::before {
     transition: none;
     transform: none;
   }
-  .page-inspiration .link-shot, .page-inspiration .idea-quote,
-  .page-inspiration .link-shot img { transition: none; transform: none !important; }
+  .page-inspiration .link-shot,
+  .page-inspiration .idea-quote,
+  .page-inspiration .link-shot img {
+    transition: none;
+    transform: none !important;
+  }
 }
 
-.page-inspiration .ui-button:active { transition-duration: 100ms; }
-.page-inspiration .ui-button.disabled:active { transform: none; }
+.page-inspiration .ui-button:active {
+  transition-duration: 100ms;
+}
+.page-inspiration .ui-button.disabled:active {
+  transform: none;
+}
 @media (prefers-reduced-motion: reduce) {
   .note-backdrop:not(.is-entered) .sheet,
-  .manage-backdrop:not(.is-entered) .sheet { opacity: 0; }
+  .manage-backdrop:not(.is-entered) .sheet {
+    opacity: 0;
+  }
 }
 
 /* Existing ledger sheets retain their previous motion classes. */
@@ -1570,4 +1669,194 @@
   .save-sheet.closing {
     animation-name: sheet-fade-out;
   }
+}
+
+.note-tag-create { display:flex; align-items:center; gap:10px; margin:10px 0 18px; }
+.note-tag-create .field-input { flex:1; min-width:0; margin:0; }
+.note-tag-create .field-action { flex-shrink:0; }
+.ui-button.note-add-tag { border-style:dashed; color:var(--c-green, #356d5b); }
+
+/* A single writing surface for a clipboard screenshot and its accompanying text. */
+.idea-composer {
+  border: 1px solid var(--c-line);
+  border-radius: var(--r-sm);
+  background: var(--c-bg-deep);
+  overflow: hidden;
+  transition: border-color var(--dur-fast) var(--ease-out);
+}
+
+.idea-composer:focus-within {
+  border-color: var(--c-primary-mid);
+  background: var(--c-surface);
+}
+
+.idea-composer .idea-textarea {
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  min-height: 116px;
+}
+
+.idea-shot-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--sp-3);
+  padding: 0 var(--sp-3) var(--sp-3);
+}
+
+.idea-shot-preview {
+  position: relative;
+  width: 140px;
+  max-width: 100%;
+}
+
+.idea-shot {
+  display: block;
+  width: 100%;
+  height: 140px;
+  overflow: hidden;
+  border-radius: var(--r-sm);
+  background: var(--c-bg-deep);
+  cursor: zoom-in;
+}
+
+.ui-button.idea-shot-remove {
+  position: absolute;
+  top: 4px;
+  right: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  min-width: 28px;
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  background: rgba(0, 0, 0, 0.6);
+  cursor: pointer;
+}
+
+.idea-input-hint {
+  display: block;
+  margin-top: var(--sp-2);
+  font-size: var(--fs-xs);
+  line-height: var(--lh-base);
+  color: var(--c-mute);
+}
+
+@media (max-width: 1099px) {
+  #note-detail-sheet {
+    touch-action: pan-y pinch-zoom;
+  }
+}
+
+.detail-media .detail-shot { cursor: zoom-in; }
+.detail-image-nav {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+.detail-image-count {
+  position: absolute;
+  bottom: 12px;
+  left: 50%;
+  transform: translateX(-50%);
+  padding: 5px 12px;
+  border-radius: 24px;
+  background: rgba(0, 0, 0, 0.6);
+  color: #fff;
+  font-size: 13px;
+  white-space: nowrap;
+}
+.detail-image-nav .ui-button {
+  position: absolute;
+  /* Keep positioning independent from the shared button press transform. */
+  top: calc(50% - 20px);
+  transform: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  min-width: 40px;
+  height: 40px;
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  background: rgba(0, 0, 0, 0.6);
+  color: #fff;
+  font-size: 30px;
+  line-height: 1;
+  pointer-events: auto;
+  cursor: pointer;
+}
+.detail-image-nav .detail-image-prev { left: 12px; }
+.detail-image-nav .detail-image-next { right: 12px; }
+.detail-image-nav .ui-button:active { transform: scale(0.98); }
+.detail-image-nav .ui-button[disabled]:not([disabled="false"]) { opacity: 0.35; }
+@media (prefers-reduced-motion: reduce) {
+  .detail-image-nav .ui-button:active { transform: none; }
+}
+
+/* A stable image area keeps mobile text and the page counter still while swiping. */
+.detail-media .detail-image-swiper {
+  display: block;
+  width: 100%;
+  height: clamp(240px, 65vh, 640px);
+  touch-action: pan-y pinch-zoom;
+}
+.detail-media .detail-image-swiper .detail-shot,
+.detail-media .detail-image-swiper .detail-shot img,
+.detail-media .detail-image-swiper .detail-shot > * {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+@media (prefers-reduced-motion: reduce) {
+  .detail-image-swiper .swiper-wrapper { transition-duration: 0ms !important; }
+}
+
+/* Mobile detail is one opaque page surface. Drag/settle owns its transform. */
+@media (max-width: 1099px) {
+  .detail-overlay .detail-sheet,
+  .detail-overlay.is-entered .detail-sheet {
+    transform: none;
+    opacity: 1;
+    transition: none;
+  }
+  .detail-overlay:not(.is-entered) { pointer-events: auto; }
+  .detail-overlay .detail-backdrop { display: none; }
+  .taro_page.note-back-underlay {
+    display: block !important;
+    position: fixed;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 0;
+    pointer-events: none;
+  }
+  /* With Taro route animation disabled, pages are in normal document flow.
+     Revealing the list must not push the translated detail below the viewport. */
+  .taro_page.note-back-foreground {
+    position: fixed;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+  }
+}
+
+.detail-back-edge { display: none; }
+@media (max-width: 1099px) {
+  .detail-back-edge {
+    display: block;
+    position: fixed;
+    inset: 0 auto 0 0;
+    width: 28px;
+    z-index: 3;
+    touch-action: none;
+    user-select: none;
+    -webkit-user-select: none;
+  }
+  .note-back-foreground { box-shadow: var(--shadow-sheet); }
 }

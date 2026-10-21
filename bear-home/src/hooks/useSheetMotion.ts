@@ -7,7 +7,7 @@ function reducedMotion() {
     window.matchMedia?.("(prefers-reduced-motion: reduce)").matches;
 }
 
-export default function useSheetMotion(open: boolean, onClose: () => void) {
+export default function useSheetMotion(open: boolean, onClose: () => void, animate = true) {
   const [visible, setVisible] = useState(open);
   const [entered, setEntered] = useState(false);
   const enterTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
@@ -37,6 +37,7 @@ export default function useSheetMotion(open: boolean, onClose: () => void) {
   }, [open]);
 
   const requestClose = useCallback(() => {
+    if (!animate) { closeCallback.current(); return; }
     if (closing.current) return;
     closing.current = true;
     clearTimers();
@@ -45,7 +46,7 @@ export default function useSheetMotion(open: boolean, onClose: () => void) {
       setVisible(false);
       closeCallback.current();
     }, reducedMotion() ? 0 : EXIT_MS);
-  }, []);
+  }, [animate]);
 
   useEffect(() => {
     if (!visible || typeof window === "undefined") return;

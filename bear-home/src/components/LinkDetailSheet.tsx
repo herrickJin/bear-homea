@@ -1,8 +1,10 @@
 import { useEffect, useState } from "react";
 import Taro from "@tarojs/taro";
-import { Button, Image, Text, Textarea, View } from "@tarojs/components";
+import { Button, Image, Swiper, SwiperItem, Text, Textarea, View } from "@tarojs/components";
 import { ArrowUp, Plus, X } from "./Icons";
+import SheetHeader from "./SheetHeader";
 import useSheetMotion from "../hooks/useSheetMotion";
+import useSwipeBack from "../hooks/useSwipeBack";
 import * as inspiration from "../services/inspiration";
 import type { Category, InspirationLink } from "../services/inspiration";
 import {
@@ -23,8 +25,8 @@ interface LinkDetailSheetProps {
   onDeleted: (id: string) => void;
 }
 
-/** 方案详情：小红书笔记详情式覆盖层。原地渲染在列表页上，不走路由。
- *  桌面 = 暗背景 + 居中 sheet（点背景/X/ESC 关闭）；手机 = 全屏页。 */
+/** 方案详情：桌面在列表上显示居中覆盖层；手机路由使用同一组件显示全屏页。
+ *  手机支持横滑返回，桌面支持背景/X/ESC 关闭。 */
 export default function LinkDetailSheet({
   link: initial,
   categories,
@@ -32,18 +34,21 @@ export default function LinkDetailSheet({
   onChange,
   onDeleted,
 }: LinkDetailSheetProps) {
-  const { entered, requestClose } = useSheetMotion(true, onClose);
   const [link, setLink] = useState(initial);
+  const [imageIndex, setImageIndex] = useState(0);
   const [editing, setEditing] = useState(false);
   const [draftNote, setDraftNote] = useState("");
   const [addingTag, setAddingTag] = useState(false);
   const [noteDraft, setNoteDraft] = useState("");
   // 宽屏图区 cover 填满不露黑边；窄屏/小程序自然高度（widthFix，
   // H5 的 aspectFit 内层 img 是绝对定位，容器 height:auto 会塌成 0）
-  const [isWide, setIsWide] = useState(process.env.TARO_ENV !== "h5");
+  const [isWide, setIsWide] = useState(() => process.env.TARO_ENV === "h5" && window.innerWidth > 1099);
+  const requestBack = useSwipeBack(onClose, editing || Boolean(noteDraft.trim()));
+  const { entered, requestClose } = useSheetMotion(true, requestBack, process.env.TARO_ENV !== "h5" || isWide);
 
   useEffect(() => {
     setLink(initial);
+    setImageIndex(0);
     setEditing(false);
     setAddingTag(false);
     setNoteDraft("");
@@ -70,7 +75,9 @@ export default function LinkDetailSheet({
   }, []);
 
   const current = link;
-  const shot = current.shotPath ?? current.coverUrl;
+  const shots = current.shotPaths?.length ? current.shotPaths
+    : current.shotPath ? [current.shotPath] : current.coverUrl ? [current.coverUrl] : [];
+  const shot = shots[imageIndex] ?? shots[0];
   const tags = categories.filter((c) => current.categoryIds.includes(c.id));
   const available = categories.filter(
     (c) => !current.categoryIds.includes(c.id),
@@ -157,25 +164,14 @@ export default function LinkDetailSheet({
   return (
     <View className={`ui-div detail-overlay${entered ? " is-entered" : ""}`}>
       <View className="detail-backdrop" onClick={requestClose} />
-      <View className={`ui-div detail-sheet${shot ? "" : " no-media"}`}>
-        <Button
-          ariaRole="button"
-          ariaLabel="关闭"
-          className="ui-button detail-close"
-          onClick={requestClose}
-        >
-          <X size={15} tone="muted" />
-        </Button>
-          {/* 手机端顶部作者栏（sticky；桌面隐藏，作者行在 scroll 内） */}
-          <View className="ui-div detail-topbar">
-            <Text className="detail-author">
-              {sourceLabel(current.source)}
-              {status ? ` · ${status}` : ""}
-            </Text>
-            {current.url &&
-              (process.env.TARO_ENV === "h5" ? (
+      {process.env.TARO_ENV === "h5" && <View id="note-back-edge" className="detail-back-edge" ariaHidden />}
+      <View id="note-detail-sheet" className={`ui-div detail-sheet${shot ? "" : " no-media"}`}>
+        <SheetHeader
+          title={`${sourceLabel(current.source)}${status ? ` · ${status}` : ""}`}
+          onClose={requestClose}
+          action={current.url ? (process.env.TARO_ENV === "h5" ? (
                 <a
-                  className="ui-button primary detail-open-btn"
+                  className="ui-button detail-open-btn"
                   href={current.url}
                   target="_blank"
                   rel="noreferrer"
@@ -185,20 +181,47 @@ export default function LinkDetailSheet({
               ) : (
                 <Button
                   ariaRole="button"
-                  className="ui-button primary detail-open-btn"
+                  className="ui-button detail-open-btn"
                   onClick={copyLink}
                 >
                   打开原文 ↗
                 </Button>
-              ))}
-          </View>
+              )) : undefined}
+        />
+        <View className="ui-div detail-layout">
           {shot && (
           <View className="ui-div detail-media">
-              <Image
-                className="detail-shot"
-                src={shot}
-                mode={isWide ? "aspectFill" : "widthFix"}
-              />
+              {!isWide && shots.length > 1 ? (
+                <Swiper
+                  className="detail-image-swiper"
+                  current={imageIndex}
+                  duration={300}
+                  onChange={event => setImageIndex(event.detail.current)}
+                >
+                  {shots.map((src, index) => (
+                    <SwiperItem key={`${index}-${src}`}>
+                      <Image
+                        className="detail-shot"
+                        src={src}
+                        mode="aspectFit"
+                        onClick={() => Taro.previewImage({ current: src, urls: shots })}
+                      />
+                    </SwiperItem>
+                  ))}
+                </Swiper>
+              ) : (
+                <Image
+                  className="detail-shot"
+                  src={shot}
+                  mode={isWide ? "aspectFill" : "widthFix"}
+                  onClick={() => Taro.previewImage({ current: shot, urls: shots })}
+                />
+              )}
+              {shots.length > 1 && <View className="ui-div detail-image-nav">
+                {isWide && <Button ariaRole="button" ariaLabel="上一张图片" className="ui-button detail-image-prev" disabled={imageIndex === 0} onClick={() => setImageIndex(index => index - 1)}>‹</Button>}
+                <Text className="detail-image-count">{imageIndex + 1} / {shots.length}</Text>
+                {isWide && <Button ariaRole="button" ariaLabel="下一张图片" className="ui-button detail-image-next" disabled={imageIndex >= shots.length - 1} onClick={() => setImageIndex(index => index + 1)}>›</Button>}
+              </View>}
           </View>
         )}
         <View className="ui-div detail-body">
@@ -211,7 +234,7 @@ export default function LinkDetailSheet({
               {current.url &&
                 (process.env.TARO_ENV === "h5" ? (
                   <a
-                    className="ui-button primary detail-open-btn"
+                    className="ui-button detail-open-btn"
                     href={current.url}
                     target="_blank"
                     rel="noreferrer"
@@ -221,7 +244,7 @@ export default function LinkDetailSheet({
                 ) : (
                   <Button
                     ariaRole="button"
-                    className="ui-button primary detail-open-btn"
+                    className="ui-button detail-open-btn"
                     onClick={copyLink}
                   >
                     打开原文 ↗
@@ -376,6 +399,7 @@ export default function LinkDetailSheet({
               </Button>
             </View>
           </View>
+        </View>
         </View>
       </View>
     </View>

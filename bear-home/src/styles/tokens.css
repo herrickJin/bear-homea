@@ -115,7 +115,8 @@ page,
 }
 
 /* Notes: neutral surfaces keep collected interiors in focus. */
-.app-shell.page-inspiration {
+.app-shell.page-inspiration,
+.app-shell.page-record {
   --c-ink: #262626;
   --c-ink-2: #484848;
   --c-mute: #737373;

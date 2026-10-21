@@ -33,6 +33,10 @@ const migrate = db.transaction(() => {
     ).run();
     db.prepare(`DROP TABLE links_legacy`).run();
   }
+  const linkCols = db.prepare(`pragma table_info(links)`).all() as PragmaColumn[];
+  if (!linkCols.some(col => col.name === "shot_urls")) {
+    db.prepare(`ALTER TABLE links ADD COLUMN shot_urls TEXT NOT NULL DEFAULT '[]'`).run();
+  }
 });
 migrate();
 

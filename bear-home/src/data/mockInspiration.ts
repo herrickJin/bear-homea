@@ -32,6 +32,8 @@ export interface InspirationLink {
   categoryIds: string[];
   /** 用户截图本地路径（选图后临时路径） */
   shotPath: string | null;
+  /** 全部截图，旧笔记回退到 shotPath */
+  shotPaths?: string[];
   /** 服务端解析到的网页封面（如小红书笔记首图） */
   coverUrl?: string | null;
   /** 方案备注时间线（真实后端返回；mock 模式为空） */
@@ -53,6 +55,8 @@ export interface SaveDraft {
   categoryIds: string[];
   note: string;
   shotPath: string | null;
+  /** 全部截图，旧笔记回退到 shotPath */
+  shotPaths?: string[];
 }
 
 export const initialCategories: Category[] = [
@@ -218,6 +222,7 @@ export function addLink(draft: SaveDraft): InspirationLink {
     summary: null,
     categoryIds: [...draft.categoryIds],
     shotPath: draft.shotPath,
+    shotPaths: draft.shotPaths ? [...draft.shotPaths] : undefined,
     shotTint: null,
     source: draft.url ? hostnameOf(draft.url) : "笔记",
     status: draft.url ? "pending" : "done",

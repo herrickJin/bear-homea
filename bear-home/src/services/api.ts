@@ -41,10 +41,31 @@ export async function apiRequest<T>(
 
 /** 上传本地文件（截图等），返回可公开访问的完整 URL */
 export async function uploadFile(filePath: string): Promise<string> {
+  // Clipboard images have object URLs rather than paths selected by Taro.
+  if (process.env.TARO_ENV === "h5" && filePath.startsWith("blob:")) {
+    const image = await (await fetch(filePath)).blob();
+    const form = new FormData();
+    const extension = image.type.split("/")[1]?.replace("jpeg", "jpg") || "png";
+    form.append("file", image, `screenshot.${extension}`);
+    const response = await fetch(`${API_BASE_URL}/api/uploads`, {
+      method: "POST",
+      headers: { Authorization: `Bearer ${API_TOKEN}` },
+      body: form,
+      credentials: "omit",
+      signal: AbortSignal.timeout(60000),
+    });
+    if (!response.ok) throw new ApiError(response.status, "上传失败");
+    const data = await response.json() as { files: { url: string }[] };
+    const url = data.files?.[0]?.url;
+    if (!url) throw new ApiError(response.status, "上传失败");
+    return url.startsWith("http") ? url : `${API_BASE_URL}${url}`;
+  }
   const res = await Taro.uploadFile({
     url: `${API_BASE_URL}/api/uploads`,
     filePath,
     name: "file",
+    // Upload auth uses a Bearer token. H5 must not request cookie credentials.
+    ...(process.env.TARO_ENV === "h5" ? { withCredentials: false } : {}),
     header: { Authorization: `Bearer ${API_TOKEN}` },
   });
   if (res.statusCode >= 400) {

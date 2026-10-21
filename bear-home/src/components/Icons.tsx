@@ -1,3 +1,6 @@
+import RefreshCwgreen from "../assets/icons/RefreshCw-green.png";
+import RefreshCwmuted from "../assets/icons/RefreshCw-muted.png";
+import RefreshCwwhite from "../assets/icons/RefreshCw-white.png";
 import { Image } from "@tarojs/components";
 import ArrowDownRightgreen from "../assets/icons/ArrowDownRight-green.png";
 import ArrowDownRightmuted from "../assets/icons/ArrowDownRight-muted.png";
@@ -332,4 +335,9 @@ export function Xiaohongshu({ size = 13 }: { size?: number }) {
       ariaHidden
     />
   );
+}
+
+export function RefreshCw({ size = 20, tone = "green" }: IconProps) {
+  const sources = { green: RefreshCwgreen, muted: RefreshCwmuted, white: RefreshCwwhite };
+  return <Image className="ui-icon" src={sources[tone]} style={{ width: `${size}px`, height: `${size}px` }} mode="aspectFit" ariaHidden />;
 }

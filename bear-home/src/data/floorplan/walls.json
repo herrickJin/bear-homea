@@ -1,0 +1,3251 @@
+{
+  "units": "mm",
+  "origin": "GLB 模型原点 (与 ViewData.json 同源); 输出为 XZ 平面二维坐标 [x, z], mm",
+  "scale_note": "1 GLB unit = 10mm",
+  "axis_note": "GLB +Z = 北, GLB -Z = 南, GLB -X = 东, GLB +X = 西 (依据 WechatIMG209.jpg 原始户型图指北针); ViewData.json 房间多边形的 (X,Y) 对应 GLB 的 (X,-Y)",
+  "outer_bbox": {
+    "x": [
+      -8175.1,
+      5237.5
+    ],
+    "z": [
+      -5500.4,
+      5884.7
+    ]
+  },
+  "rooms": [
+    {
+      "id": "eHaXGv38",
+      "name": "客厅",
+      "glb_name": "客餐厅",
+      "node": "Room-客餐厅-eHaXGv38",
+      "area_m2": 46.562157,
+      "note": "方案把原始的客厅 + 餐厅合并成一个 '客餐厅' 大空间 (餐桌也放在这里)。"
+    },
+    {
+      "id": "mCOSmg5M",
+      "name": "主卧",
+      "glb_name": "主卧",
+      "node": "Room-主卧-mCOSmg5M",
+      "area_m2": 15.93765,
+      "note": null
+    },
+    {
+      "id": "f1qYqHqH",
+      "name": "南次卧",
+      "glb_name": "次卧",
+      "node": "Room-次卧-f1qYqHqH",
+      "area_m2": 10.071001,
+      "note": "位于户型东南侧。"
+    },
+    {
+      "id": "EX4vhDXo",
+      "name": "主卫",
+      "glb_name": "卫生间",
+      "node": "Room-卫生间-EX4vhDXo",
+      "area_m2": 4.0032897,
+      "note": "位于东北角, 与主卧共墙, 判定为主卫。"
+    },
+    {
+      "id": "g3cnKYnd",
+      "name": "北次卧",
+      "glb_name": "次卧",
+      "node": "Room-次卧-g3cnKYnd",
+      "area_m2": 9.402578,
+      "note": "位于户型东北侧。"
+    },
+    {
+      "id": "XrCzEEni",
+      "name": "餐厅",
+      "glb_name": "书房",
+      "node": "Room-书房-XrCzEEni",
+      "area_m2": 6.5702686,
+      "note": "原始户型此位置是餐厅/入户过道, 方案加隔墙围合出 '书房'。"
+    },
+    {
+      "id": "qOPrZ97W",
+      "name": "公卫",
+      "glb_name": "卫生间",
+      "node": "Room-卫生间-qOPrZ97W",
+      "area_m2": 2.1264038,
+      "note": "位于户型中北部, 服务过道, 判定为公卫。"
+    },
+    {
+      "id": "WFGji10I",
+      "name": "厨房",
+      "glb_name": "厨房",
+      "node": "Room-厨房-WFGji10I",
+      "area_m2": 5.332611,
+      "note": "西北角厨房。"
+    },
+    {
+      "id": "z5u59ReE",
+      "name": "生活阳台",
+      "glb_name": "生活阳台",
+      "node": "Room-生活阳台-z5u59ReE",
+      "area_m2": 8.537326,
+      "note": "西南角生活阳台。"
+    }
+  ],
+  "walls": [
+    {
+      "id": "W01",
+      "p1": [
+        4997.5,
+        -5260.3
+      ],
+      "p2": [
+        4997.5,
+        -3925.3
+      ],
+      "p1_center": [
+        5117.1,
+        -5260.3
+      ],
+      "p2_center": [
+        5117.1,
+        -3925.3
+      ],
+      "thickness": 239.2,
+      "height": 2800.0,
+      "room": "生活阳台",
+      "room_id": "z5u59ReE",
+      "rooms": [
+        "生活阳台"
+      ],
+      "rooms_id": [
+        "z5u59ReE"
+      ],
+      "kind": "exterior",
+      "rotation_deg": 90.0,
+      "face1_mm": 4997.5,
+      "face2_mm": 5236.7
+    },
+    {
+      "id": "W02",
+      "p1": [
+        -1606.7,
+        -5260.3
+      ],
+      "p2": [
+        -1606.7,
+        -4525.3
+      ],
+      "p1_center": [
+        -1500.4,
+        -5260.3
+      ],
+      "p2_center": [
+        -1500.4,
+        -4525.3
+      ],
+      "thickness": 212.5,
+      "height": 2800.0,
+      "room": "生活阳台",
+      "room_id": "z5u59ReE",
+      "rooms": [
+        "生活阳台"
+      ],
+      "rooms_id": [
+        "z5u59ReE"
+      ],
+      "kind": "exterior",
+      "rotation_deg": 90.0,
+      "face1_mm": -1606.7,
+      "face2_mm": -1394.2
+    },
+    {
+      "id": "W03",
+      "p1": [
+        -8174.2,
+        -4285.3
+      ],
+      "p2": [
+        -8174.2,
+        529.7
+      ],
+      "p1_center": [
+        -8044.2,
+        -4285.3
+      ],
+      "p2_center": [
+        -8044.2,
+        529.7
+      ],
+      "thickness": 260.0,
+      "height": 2800.0,
+      "room": "主卧",
+      "room_id": "mCOSmg5M",
+      "rooms": [
+        "主卧"
+      ],
+      "rooms_id": [
+        "mCOSmg5M"
+      ],
+      "kind": "exterior",
+      "rotation_deg": 90.0,
+      "face1_mm": -8174.2,
+      "face2_mm": -7914.2
+    },
+    {
+      "id": "W04",
+      "p1": [
+        -4604.2,
+        -4285.3
+      ],
+      "p2": [
+        -4604.2,
+        -685.3
+      ],
+      "p1_center": [
+        -4504.6,
+        -4285.3
+      ],
+      "p2_center": [
+        -4504.6,
+        -685.3
+      ],
+      "thickness": 199.2,
+      "height": 2800.0,
+      "room": "主卧",
+      "room_id": "mCOSmg5M",
+      "rooms": [
+        "主卧",
+        "南次卧"
+      ],
+      "rooms_id": [
+        "mCOSmg5M",
+        "f1qYqHqH"
+      ],
+      "kind": "interior",
+      "rotation_deg": 90.0,
+      "face1_mm": -4604.2,
+      "face2_mm": -4405.0
+    },
+    {
+      "id": "W05",
+      "p1": [
+        -1606.7,
+        -4285.3
+      ],
+      "p2": [
+        -1606.7,
+        -3925.3
+      ],
+      "p1_center": [
+        -1500.4,
+        -4285.3
+      ],
+      "p2_center": [
+        -1500.4,
+        -3925.3
+      ],
+      "thickness": 212.5,
+      "height": 2800.0,
+      "room": "南次卧",
+      "room_id": "f1qYqHqH",
+      "rooms": [
+        "南次卧",
+        "生活阳台"
+      ],
+      "rooms_id": [
+        "f1qYqHqH",
+        "z5u59ReE"
+      ],
+      "kind": "interior",
+      "rotation_deg": 90.0,
+      "face1_mm": -1606.7,
+      "face2_mm": -1394.2
+    },
+    {
+      "id": "W06",
+      "p1": [
+        -1606.7,
+        -3645.3
+      ],
+      "p2": [
+        -1606.7,
+        -685.3
+      ],
+      "p1_center": [
+        -1500.4,
+        -3645.3
+      ],
+      "p2_center": [
+        -1500.4,
+        -685.3
+      ],
+      "thickness": 212.5,
+      "height": 2800.0,
+      "room": "南次卧",
+      "room_id": "f1qYqHqH",
+      "rooms": [
+        "南次卧",
+        "客厅"
+      ],
+      "rooms_id": [
+        "f1qYqHqH",
+        "eHaXGv38"
+      ],
+      "kind": "interior",
+      "rotation_deg": 90.0,
+      "face1_mm": -1606.7,
+      "face2_mm": -1394.2
+    },
+    {
+      "id": "W07",
+      "p1": [
+        -4604.2,
+        -685.3
+      ],
+      "p2": [
+        -4604.2,
+        -555.3
+      ],
+      "p1_center": [
+        -4485.9,
+        -685.3
+      ],
+      "p2_center": [
+        -4485.9,
+        -555.3
+      ],
+      "thickness": 236.6,
+      "height": 2800.0,
+      "room": "主卧",
+      "room_id": "mCOSmg5M",
+      "rooms": [
+        "主卧"
+      ],
+      "rooms_id": [
+        "mCOSmg5M"
+      ],
+      "kind": "exterior",
+      "rotation_deg": 90.0,
+      "face1_mm": -4604.2,
+      "face2_mm": -4367.6
+    },
+    {
+      "id": "W08",
+      "p1": [
+        -4604.2,
+        -555.3
+      ],
+      "p2": [
+        -4604.2,
+        529.7
+      ],
+      "p1_center": [
+        -4504.6,
+        -555.3
+      ],
+      "p2_center": [
+        -4504.6,
+        529.7
+      ],
+      "thickness": 199.2,
+      "height": 2800.0,
+      "room": "主卧",
+      "room_id": "mCOSmg5M",
+      "rooms": [
+        "主卧",
+        "客厅"
+      ],
+      "rooms_id": [
+        "mCOSmg5M",
+        "eHaXGv38"
+      ],
+      "kind": "interior",
+      "rotation_deg": 90.0,
+      "face1_mm": -4604.2,
+      "face2_mm": -4405.0
+    },
+    {
+      "id": "W09",
+      "p1": [
+        -3376.0,
+        529.7
+      ],
+      "p2": [
+        -3376.0,
+        659.7
+      ],
+      "p1_center": [
+        -3220.4,
+        529.7
+      ],
+      "p2_center": [
+        -3220.4,
+        659.7
+      ],
+      "thickness": 311.2,
+      "height": 2800.0,
+      "room": "客厅",
+      "room_id": "eHaXGv38",
+      "rooms": [
+        "客厅"
+      ],
+      "rooms_id": [
+        "eHaXGv38"
+      ],
+      "kind": "exterior",
+      "rotation_deg": 90.0,
+      "face1_mm": -3376.0,
+      "face2_mm": -3064.8
+    },
+    {
+      "id": "W10",
+      "p1": [
+        -1394.2,
+        529.7
+      ],
+      "p2": [
+        -1394.2,
+        649.7
+      ],
+      "p1_center": [
+        -1355.8,
+        529.7
+      ],
+      "p2_center": [
+        -1355.8,
+        649.7
+      ],
+      "thickness": 76.7,
+      "height": 2800.0,
+      "room": null,
+      "room_id": null,
+      "rooms": [],
+      "rooms_id": [],
+      "kind": "unknown",
+      "rotation_deg": 90.0,
+      "face1_mm": -1394.2,
+      "face2_mm": -1317.5
+    },
+    {
+      "id": "W11",
+      "p1": [
+        -6365.8,
+        529.7
+      ],
+      "p2": [
+        -6365.8,
+        594.7
+      ],
+      "p1_center": [
+        -6300.1,
+        529.7
+      ],
+      "p2_center": [
+        -6300.1,
+        594.7
+      ],
+      "thickness": 131.5,
+      "height": 2800.0,
+      "room": null,
+      "room_id": null,
+      "rooms": [],
+      "rooms_id": [],
+      "kind": "unknown",
+      "rotation_deg": 90.0,
+      "face1_mm": -6365.8,
+      "face2_mm": -6234.3
+    },
+    {
+      "id": "W12",
+      "p1": [
+        -1504.2,
+        529.7
+      ],
+      "p2": [
+        -1504.2,
+        649.7
+      ],
+      "p1_center": [
+        -1449.2,
+        529.7
+      ],
+      "p2_center": [
+        -1449.2,
+        649.7
+      ],
+      "thickness": 110.0,
+      "height": 2800.0,
+      "room": null,
+      "room_id": null,
+      "rooms": [],
+      "rooms_id": [],
+      "kind": "unknown",
+      "rotation_deg": 90.0,
+      "face1_mm": -1504.2,
+      "face2_mm": -1394.2
+    },
+    {
+      "id": "W13",
+      "p1": [
+        -1504.2,
+        529.7
+      ],
+      "p2": [
+        -1504.2,
+        649.7
+      ],
+      "p1_center": [
+        -1410.8,
+        529.7
+      ],
+      "p2_center": [
+        -1410.8,
+        649.7
+      ],
+      "thickness": 186.7,
+      "height": 2800.0,
+      "room": null,
+      "room_id": null,
+      "rooms": [],
+      "rooms_id": [],
+      "kind": "unknown",
+      "rotation_deg": 90.0,
+      "face1_mm": -1504.2,
+      "face2_mm": -1317.5
+    },
+    {
+      "id": "W14",
+      "p1": [
+        537.5,
+        529.7
+      ],
+      "p2": [
+        537.5,
+        649.7
+      ],
+      "p1_center": [
+        687.1,
+        529.7
+      ],
+      "p2_center": [
+        687.1,
+        649.7
+      ],
+      "thickness": 299.2,
+      "height": 2800.0,
+      "room": "客厅",
+      "room_id": "eHaXGv38",
+      "rooms": [
+        "客厅"
+      ],
+      "rooms_id": [
+        "eHaXGv38"
+      ],
+      "kind": "exterior",
+      "rotation_deg": 90.0,
+      "face1_mm": 537.5,
+      "face2_mm": 836.7
+    },
+    {
+      "id": "W15",
+      "p1": [
+        597.5,
+        649.7
+      ],
+      "p2": [
+        597.5,
+        3319.7
+      ],
+      "p1_center": [
+        717.1,
+        649.7
+      ],
+      "p2_center": [
+        717.1,
+        3319.7
+      ],
+      "thickness": 239.2,
+      "height": 2800.0,
+      "room": "餐厅",
+      "room_id": "XrCzEEni",
+      "rooms": [
+        "餐厅",
+        "客厅"
+      ],
+      "rooms_id": [
+        "XrCzEEni",
+        "eHaXGv38"
+      ],
+      "kind": "interior",
+      "rotation_deg": 90.0,
+      "face1_mm": 597.5,
+      "face2_mm": 836.7
+    },
+    {
+      "id": "W16",
+      "p1": [
+        -1614.2,
+        659.7
+      ],
+      "p2": [
+        -1614.2,
+        1534.7
+      ],
+      "p1_center": [
+        -1504.2,
+        659.7
+      ],
+      "p2_center": [
+        -1504.2,
+        1534.7
+      ],
+      "thickness": 220.0,
+      "height": 2800.0,
+      "room": "客厅",
+      "room_id": "eHaXGv38",
+      "rooms": [
+        "客厅",
+        "餐厅"
+      ],
+      "rooms_id": [
+        "eHaXGv38",
+        "XrCzEEni"
+      ],
+      "kind": "interior",
+      "rotation_deg": 90.0,
+      "face1_mm": -1614.2,
+      "face2_mm": -1394.2
+    },
+    {
+      "id": "W17",
+      "p1": [
+        -8174.2,
+        659.7
+      ],
+      "p2": [
+        -8174.2,
+        3259.7
+      ],
+      "p1_center": [
+        -8044.2,
+        659.7
+      ],
+      "p2_center": [
+        -8044.2,
+        3259.7
+      ],
+      "thickness": 260.0,
+      "height": 2800.0,
+      "room": "主卫",
+      "room_id": "EX4vhDXo",
+      "rooms": [
+        "主卫"
+      ],
+      "rooms_id": [
+        "EX4vhDXo"
+      ],
+      "kind": "exterior",
+      "rotation_deg": 90.0,
+      "face1_mm": -8174.2,
+      "face2_mm": -7914.2
+    },
+    {
+      "id": "W18",
+      "p1": [
+        -6304.3,
+        659.7
+      ],
+      "p2": [
+        -6304.3,
+        3259.7
+      ],
+      "p1_center": [
+        -6234.7,
+        659.7
+      ],
+      "p2_center": [
+        -6234.7,
+        3259.7
+      ],
+      "thickness": 139.2,
+      "height": 2800.0,
+      "room": "主卫",
+      "room_id": "EX4vhDXo",
+      "rooms": [
+        "主卫",
+        "北次卧"
+      ],
+      "rooms_id": [
+        "EX4vhDXo",
+        "g3cnKYnd"
+      ],
+      "kind": "interior",
+      "rotation_deg": 90.0,
+      "face1_mm": -6304.3,
+      "face2_mm": -6165.1
+    },
+    {
+      "id": "W19",
+      "p1": [
+        -3304.2,
+        659.7
+      ],
+      "p2": [
+        -3304.2,
+        3259.7
+      ],
+      "p1_center": [
+        -3184.5,
+        659.7
+      ],
+      "p2_center": [
+        -3184.5,
+        3259.7
+      ],
+      "thickness": 239.4,
+      "height": 2800.0,
+      "room": "北次卧",
+      "room_id": "g3cnKYnd",
+      "rooms": [
+        "北次卧",
+        "公卫"
+      ],
+      "rooms_id": [
+        "g3cnKYnd",
+        "qOPrZ97W"
+      ],
+      "kind": "interior",
+      "rotation_deg": 90.0,
+      "face1_mm": -3304.2,
+      "face2_mm": -3064.8
+    },
+    {
+      "id": "W20",
+      "p1": [
+        -1614.2,
+        1664.7
+      ],
+      "p2": [
+        -1614.2,
+        3259.7
+      ],
+      "p1_center": [
+        -1504.2,
+        1664.7
+      ],
+      "p2_center": [
+        -1504.2,
+        3259.7
+      ],
+      "thickness": 220.0,
+      "height": 2800.0,
+      "room": "餐厅",
+      "room_id": "XrCzEEni",
+      "rooms": [
+        "餐厅"
+      ],
+      "rooms_id": [
+        "XrCzEEni"
+      ],
+      "kind": "exterior",
+      "rotation_deg": 90.0,
+      "face1_mm": -1614.2,
+      "face2_mm": -1394.2
+    },
+    {
+      "id": "W21",
+      "p1": [
+        -8174.2,
+        2439.7
+      ],
+      "p2": [
+        -8174.2,
+        3259.7
+      ],
+      "p1_center": [
+        -7933.2,
+        2439.7
+      ],
+      "p2_center": [
+        -7933.2,
+        3259.7
+      ],
+      "thickness": 481.9,
+      "height": 2800.0,
+      "room": "主卫",
+      "room_id": "EX4vhDXo",
+      "rooms": [
+        "主卫"
+      ],
+      "rooms_id": [
+        "EX4vhDXo"
+      ],
+      "kind": "exterior",
+      "rotation_deg": 90.0,
+      "face1_mm": -8174.2,
+      "face2_mm": -7692.3
+    },
+    {
+      "id": "W22",
+      "p1": [
+        -7914.2,
+        2439.7
+      ],
+      "p2": [
+        -7914.2,
+        3259.7
+      ],
+      "p1_center": [
+        -7803.2,
+        2439.7
+      ],
+      "p2_center": [
+        -7803.2,
+        3259.7
+      ],
+      "thickness": 221.9,
+      "height": 2800.0,
+      "room": "主卫",
+      "room_id": "EX4vhDXo",
+      "rooms": [
+        "主卫"
+      ],
+      "rooms_id": [
+        "EX4vhDXo"
+      ],
+      "kind": "exterior",
+      "rotation_deg": 90.0,
+      "face1_mm": -7914.2,
+      "face2_mm": -7692.3
+    },
+    {
+      "id": "W23",
+      "p1": [
+        -1846.4,
+        2454.4
+      ],
+      "p2": [
+        -1846.4,
+        3259.7
+      ],
+      "p1_center": [
+        -1730.3,
+        2454.4
+      ],
+      "p2_center": [
+        -1730.3,
+        3259.7
+      ],
+      "thickness": 232.2,
+      "height": 2800.0,
+      "room": "公卫",
+      "room_id": "qOPrZ97W",
+      "rooms": [
+        "公卫"
+      ],
+      "rooms_id": [
+        "qOPrZ97W"
+      ],
+      "kind": "exterior",
+      "rotation_deg": 90.0,
+      "face1_mm": -1846.4,
+      "face2_mm": -1614.2
+    },
+    {
+      "id": "W24",
+      "p1": [
+        -1846.4,
+        2454.4
+      ],
+      "p2": [
+        -1846.4,
+        3259.7
+      ],
+      "p1_center": [
+        -1620.3,
+        2454.4
+      ],
+      "p2_center": [
+        -1620.3,
+        3259.7
+      ],
+      "thickness": 452.2,
+      "height": 2800.0,
+      "room": "公卫",
+      "room_id": "qOPrZ97W",
+      "rooms": [
+        "公卫",
+        "餐厅"
+      ],
+      "rooms_id": [
+        "qOPrZ97W",
+        "XrCzEEni"
+      ],
+      "kind": "interior",
+      "rotation_deg": 90.0,
+      "face1_mm": -1846.4,
+      "face2_mm": -1394.2
+    },
+    {
+      "id": "W25",
+      "p1": [
+        -3304.2,
+        3259.7
+      ],
+      "p2": [
+        -3304.2,
+        3947.2
+      ],
+      "p1_center": [
+        -3085.8,
+        3259.7
+      ],
+      "p2_center": [
+        -3085.8,
+        3947.2
+      ],
+      "thickness": 436.9,
+      "height": 2800.0,
+      "room": "北次卧",
+      "room_id": "g3cnKYnd",
+      "rooms": [
+        "北次卧"
+      ],
+      "rooms_id": [
+        "g3cnKYnd"
+      ],
+      "kind": "exterior",
+      "rotation_deg": 90.0,
+      "face1_mm": -3304.2,
+      "face2_mm": -2867.3
+    },
+    {
+      "id": "W26",
+      "p1": [
+        3162.5,
+        3319.7
+      ],
+      "p2": [
+        3162.5,
+        3439.7
+      ],
+      "p1_center": [
+        3303.4,
+        3319.7
+      ],
+      "p2_center": [
+        3303.4,
+        3439.7
+      ],
+      "thickness": 281.7,
+      "height": 2800.0,
+      "room": "客厅",
+      "room_id": "eHaXGv38",
+      "rooms": [
+        "客厅"
+      ],
+      "rooms_id": [
+        "eHaXGv38"
+      ],
+      "kind": "exterior",
+      "rotation_deg": 90.0,
+      "face1_mm": 3162.5,
+      "face2_mm": 3444.2
+    },
+    {
+      "id": "W27",
+      "p1": [
+        -6394.3,
+        3379.7
+      ],
+      "p2": [
+        -6394.3,
+        3947.2
+      ],
+      "p1_center": [
+        -6279.7,
+        3379.7
+      ],
+      "p2_center": [
+        -6279.7,
+        3947.2
+      ],
+      "thickness": 229.2,
+      "height": 2800.0,
+      "room": "北次卧",
+      "room_id": "g3cnKYnd",
+      "rooms": [
+        "北次卧"
+      ],
+      "rooms_id": [
+        "g3cnKYnd"
+      ],
+      "kind": "exterior",
+      "rotation_deg": 90.0,
+      "face1_mm": -6394.3,
+      "face2_mm": -6165.1
+    },
+    {
+      "id": "W28",
+      "p1": [
+        -8174.2,
+        3379.7
+      ],
+      "p2": [
+        -8174.2,
+        3499.7
+      ],
+      "p1_center": [
+        -7992.9,
+        3379.7
+      ],
+      "p2_center": [
+        -7992.9,
+        3499.7
+      ],
+      "thickness": 362.5,
+      "height": 2800.0,
+      "room": null,
+      "room_id": null,
+      "rooms": [],
+      "rooms_id": [],
+      "kind": "unknown",
+      "rotation_deg": 90.0,
+      "face1_mm": -8174.2,
+      "face2_mm": -7811.7
+    },
+    {
+      "id": "W29",
+      "p1": [
+        -2167.5,
+        3379.7
+      ],
+      "p2": [
+        -2167.5,
+        3499.7
+      ],
+      "p1_center": [
+        -1946.5,
+        3379.7
+      ],
+      "p2_center": [
+        -1946.5,
+        3499.7
+      ],
+      "thickness": 441.9,
+      "height": 2800.0,
+      "room": null,
+      "room_id": null,
+      "rooms": [],
+      "rooms_id": [],
+      "kind": "unknown",
+      "rotation_deg": 90.0,
+      "face1_mm": -2167.5,
+      "face2_mm": -1725.6
+    },
+    {
+      "id": "W30",
+      "p1": [
+        -1725.6,
+        3379.7
+      ],
+      "p2": [
+        -1725.6,
+        3499.7
+      ],
+      "p1_center": [
+        -1559.9,
+        3379.7
+      ],
+      "p2_center": [
+        -1559.9,
+        3499.7
+      ],
+      "thickness": 331.4,
+      "height": 2800.0,
+      "room": "餐厅",
+      "room_id": "XrCzEEni",
+      "rooms": [
+        "餐厅"
+      ],
+      "rooms_id": [
+        "XrCzEEni"
+      ],
+      "kind": "exterior",
+      "rotation_deg": 90.0,
+      "face1_mm": -1725.6,
+      "face2_mm": -1394.2
+    },
+    {
+      "id": "W31",
+      "p1": [
+        3244.8,
+        3439.7
+      ],
+      "p2": [
+        3244.8,
+        5654.7
+      ],
+      "p1_center": [
+        3344.5,
+        3439.7
+      ],
+      "p2_center": [
+        3344.5,
+        5654.7
+      ],
+      "thickness": 199.4,
+      "height": 2800.0,
+      "room": "厨房",
+      "room_id": "WFGji10I",
+      "rooms": [
+        "厨房",
+        "客厅"
+      ],
+      "rooms_id": [
+        "WFGji10I",
+        "eHaXGv38"
+      ],
+      "kind": "interior",
+      "rotation_deg": 90.0,
+      "face1_mm": 3244.8,
+      "face2_mm": 3444.2
+    },
+    {
+      "id": "W32",
+      "p1": [
+        597.5,
+        3439.7
+      ],
+      "p2": [
+        597.5,
+        3947.2
+      ],
+      "p1_center": [
+        717.1,
+        3439.7
+      ],
+      "p2_center": [
+        717.1,
+        3947.2
+      ],
+      "thickness": 239.2,
+      "height": 2800.0,
+      "room": "餐厅",
+      "room_id": "XrCzEEni",
+      "rooms": [
+        "餐厅",
+        "厨房"
+      ],
+      "rooms_id": [
+        "XrCzEEni",
+        "WFGji10I"
+      ],
+      "kind": "interior",
+      "rotation_deg": 90.0,
+      "face1_mm": 597.5,
+      "face2_mm": 836.7
+    },
+    {
+      "id": "W33",
+      "p1": [
+        -2167.5,
+        3499.7
+      ],
+      "p2": [
+        -2167.5,
+        3999.7
+      ],
+      "p1_center": [
+        -1890.8,
+        3499.7
+      ],
+      "p2_center": [
+        -1890.8,
+        3999.7
+      ],
+      "thickness": 553.3,
+      "height": 2800.0,
+      "room": null,
+      "room_id": null,
+      "rooms": [],
+      "rooms_id": [],
+      "kind": "unknown",
+      "rotation_deg": 90.0,
+      "face1_mm": -2167.5,
+      "face2_mm": -1614.2
+    },
+    {
+      "id": "W34",
+      "p1": [
+        -1614.2,
+        3499.7
+      ],
+      "p2": [
+        -1614.2,
+        3947.2
+      ],
+      "p1_center": [
+        -1504.2,
+        3499.7
+      ],
+      "p2_center": [
+        -1504.2,
+        3947.2
+      ],
+      "thickness": 220.0,
+      "height": 2800.0,
+      "room": "餐厅",
+      "room_id": "XrCzEEni",
+      "rooms": [
+        "餐厅"
+      ],
+      "rooms_id": [
+        "XrCzEEni"
+      ],
+      "kind": "exterior",
+      "rotation_deg": 90.0,
+      "face1_mm": -1614.2,
+      "face2_mm": -1394.2
+    },
+    {
+      "id": "W35",
+      "p1": [
+        -3304.2,
+        3499.7
+      ],
+      "p2": [
+        -3304.2,
+        3947.2
+      ],
+      "p1_center": [
+        -3184.5,
+        3499.7
+      ],
+      "p2_center": [
+        -3184.5,
+        3947.2
+      ],
+      "thickness": 239.4,
+      "height": 2800.0,
+      "room": "北次卧",
+      "room_id": "g3cnKYnd",
+      "rooms": [
+        "北次卧"
+      ],
+      "rooms_id": [
+        "g3cnKYnd"
+      ],
+      "kind": "exterior",
+      "rotation_deg": 90.0,
+      "face1_mm": -3304.2,
+      "face2_mm": -3064.8
+    },
+    {
+      "id": "W36",
+      "p1": [
+        -3304.2,
+        3499.7
+      ],
+      "p2": [
+        -3304.2,
+        3947.2
+      ],
+      "p1_center": [
+        -3181.8,
+        3499.7
+      ],
+      "p2_center": [
+        -3181.8,
+        3947.2
+      ],
+      "thickness": 244.7,
+      "height": 2800.0,
+      "room": "北次卧",
+      "room_id": "g3cnKYnd",
+      "rooms": [
+        "北次卧"
+      ],
+      "rooms_id": [
+        "g3cnKYnd"
+      ],
+      "kind": "exterior",
+      "rotation_deg": 90.0,
+      "face1_mm": -3304.2,
+      "face2_mm": -3059.5
+    },
+    {
+      "id": "W37",
+      "p1": [
+        -3064.8,
+        3499.7
+      ],
+      "p2": [
+        -3064.8,
+        3999.7
+      ],
+      "p1_center": [
+        -2966.1,
+        3499.7
+      ],
+      "p2_center": [
+        -2966.1,
+        3999.7
+      ],
+      "thickness": 197.5,
+      "height": 2800.0,
+      "room": null,
+      "room_id": null,
+      "rooms": [],
+      "rooms_id": [],
+      "kind": "unknown",
+      "rotation_deg": 90.0,
+      "face1_mm": -3064.8,
+      "face2_mm": -2867.3
+    },
+    {
+      "id": "W38",
+      "p1": [
+        -3059.5,
+        3499.7
+      ],
+      "p2": [
+        -3059.5,
+        3999.7
+      ],
+      "p1_center": [
+        -2963.4,
+        3499.7
+      ],
+      "p2_center": [
+        -2963.4,
+        3999.7
+      ],
+      "thickness": 192.2,
+      "height": 2184.0,
+      "room": null,
+      "room_id": null,
+      "rooms": [],
+      "rooms_id": [],
+      "kind": "unknown",
+      "rotation_deg": 90.0,
+      "face1_mm": -3059.5,
+      "face2_mm": -2867.3
+    },
+    {
+      "id": "W39",
+      "p1": [
+        -1975.5,
+        3499.7
+      ],
+      "p2": [
+        -1975.5,
+        3947.2
+      ],
+      "p1_center": [
+        -1684.9,
+        3499.7
+      ],
+      "p2_center": [
+        -1684.9,
+        3947.2
+      ],
+      "thickness": 581.3,
+      "height": 2800.0,
+      "room": "餐厅",
+      "room_id": "XrCzEEni",
+      "rooms": [
+        "餐厅"
+      ],
+      "rooms_id": [
+        "XrCzEEni"
+      ],
+      "kind": "exterior",
+      "rotation_deg": 90.0,
+      "face1_mm": -1975.5,
+      "face2_mm": -1394.2
+    },
+    {
+      "id": "W40",
+      "p1": [
+        -1614.2,
+        3947.2
+      ],
+      "p2": [
+        -1614.2,
+        4107.2
+      ],
+      "p1_center": [
+        -1443.3,
+        3947.2
+      ],
+      "p2_center": [
+        -1443.3,
+        4107.2
+      ],
+      "thickness": 341.7,
+      "height": 2800.0,
+      "room": null,
+      "room_id": null,
+      "rooms": [],
+      "rooms_id": [],
+      "kind": "unknown",
+      "rotation_deg": 90.0,
+      "face1_mm": -1614.2,
+      "face2_mm": -1272.5
+    },
+    {
+      "id": "W41",
+      "p1": [
+        597.5,
+        4107.2
+      ],
+      "p2": [
+        597.5,
+        5654.7
+      ],
+      "p1_center": [
+        717.1,
+        4107.2
+      ],
+      "p2_center": [
+        717.1,
+        5654.7
+      ],
+      "thickness": 239.2,
+      "height": 2800.0,
+      "room": "厨房",
+      "room_id": "WFGji10I",
+      "rooms": [
+        "厨房"
+      ],
+      "rooms_id": [
+        "WFGji10I"
+      ],
+      "kind": "exterior",
+      "rotation_deg": 90.0,
+      "face1_mm": 597.5,
+      "face2_mm": 836.7
+    },
+    {
+      "id": "W42",
+      "p1": [
+        2742.3,
+        5311.0
+      ],
+      "p2": [
+        2742.3,
+        5654.7
+      ],
+      "p1_center": [
+        2993.6,
+        5311.0
+      ],
+      "p2_center": [
+        2993.6,
+        5654.7
+      ],
+      "thickness": 502.5,
+      "height": 2800.0,
+      "room": "厨房",
+      "room_id": "WFGji10I",
+      "rooms": [
+        "厨房"
+      ],
+      "rooms_id": [
+        "WFGji10I"
+      ],
+      "kind": "exterior",
+      "rotation_deg": 90.0,
+      "face1_mm": 2742.3,
+      "face2_mm": 3244.8
+    },
+    {
+      "id": "W43",
+      "p1": [
+        4638.0,
+        5654.7
+      ],
+      "p2": [
+        4638.0,
+        5884.7
+      ],
+      "p1_center": [
+        4937.4,
+        5654.7
+      ],
+      "p2_center": [
+        4937.4,
+        5884.7
+      ],
+      "thickness": 598.7,
+      "height": 2800.0,
+      "room": null,
+      "room_id": null,
+      "rooms": [],
+      "rooms_id": [],
+      "kind": "unknown",
+      "rotation_deg": 90.0,
+      "face1_mm": 4638.0,
+      "face2_mm": 5236.7
+    },
+    {
+      "id": "W44",
+      "p1": [
+        3344.2,
+        5769.7
+      ],
+      "p2": [
+        3344.2,
+        5884.7
+      ],
+      "p1_center": [
+        3453.1,
+        5769.7
+      ],
+      "p2_center": [
+        3453.1,
+        5884.7
+      ],
+      "thickness": 217.8,
+      "height": 2800.0,
+      "room": null,
+      "room_id": null,
+      "rooms": [],
+      "rooms_id": [],
+      "kind": "unknown",
+      "rotation_deg": 90.0,
+      "face1_mm": 3344.2,
+      "face2_mm": 3562.0
+    },
+    {
+      "id": "W45",
+      "p1": [
+        -7915.0,
+        -4524.5
+      ],
+      "p2": [
+        -4605.0,
+        -4524.5
+      ],
+      "p1_center": [
+        -7915.0,
+        -4404.9
+      ],
+      "p2_center": [
+        -4605.0,
+        -4404.9
+      ],
+      "thickness": 239.2,
+      "height": 2800.0,
+      "room": "主卧",
+      "room_id": "mCOSmg5M",
+      "rooms": [
+        "主卧"
+      ],
+      "rooms_id": [
+        "mCOSmg5M"
+      ],
+      "kind": "exterior",
+      "rotation_deg": 0.0,
+      "face1_mm": -4524.5,
+      "face2_mm": -4285.3
+    },
+    {
+      "id": "W46",
+      "p1": [
+        -7915.0,
+        529.7
+      ],
+      "p2": [
+        -6305.1,
+        529.7
+      ],
+      "p1_center": [
+        -7915.0,
+        594.3
+      ],
+      "p2_center": [
+        -6305.1,
+        594.3
+      ],
+      "thickness": 129.2,
+      "height": 2800.0,
+      "room": "主卧",
+      "room_id": "mCOSmg5M",
+      "rooms": [
+        "主卧",
+        "主卫"
+      ],
+      "rooms_id": [
+        "mCOSmg5M",
+        "EX4vhDXo"
+      ],
+      "kind": "interior",
+      "rotation_deg": 0.0,
+      "face1_mm": 529.7,
+      "face2_mm": 658.9
+    },
+    {
+      "id": "W47",
+      "p1": [
+        -7692.5,
+        3259.5
+      ],
+      "p2": [
+        -6305.1,
+        3259.5
+      ],
+      "p1_center": [
+        -7692.5,
+        3379.2
+      ],
+      "p2_center": [
+        -6305.1,
+        3379.2
+      ],
+      "thickness": 239.4,
+      "height": 2800.0,
+      "room": "主卫",
+      "room_id": "EX4vhDXo",
+      "rooms": [
+        "主卫"
+      ],
+      "rooms_id": [
+        "EX4vhDXo"
+      ],
+      "kind": "exterior",
+      "rotation_deg": 0.0,
+      "face1_mm": 3259.5,
+      "face2_mm": 3498.9
+    },
+    {
+      "id": "W48",
+      "p1": [
+        -6165.1,
+        529.7
+      ],
+      "p2": [
+        -4605.0,
+        529.7
+      ],
+      "p1_center": [
+        -6165.1,
+        594.3
+      ],
+      "p2_center": [
+        -4605.0,
+        594.3
+      ],
+      "thickness": 129.2,
+      "height": 2800.0,
+      "room": "主卧",
+      "room_id": "mCOSmg5M",
+      "rooms": [
+        "主卧",
+        "北次卧"
+      ],
+      "rooms_id": [
+        "mCOSmg5M",
+        "g3cnKYnd"
+      ],
+      "kind": "interior",
+      "rotation_deg": 0.0,
+      "face1_mm": 529.7,
+      "face2_mm": 658.9
+    },
+    {
+      "id": "W49",
+      "p1": [
+        -6165.1,
+        3947.2
+      ],
+      "p2": [
+        -3305.0,
+        3947.2
+      ],
+      "p1_center": [
+        -6165.1,
+        4026.8
+      ],
+      "p2_center": [
+        -3305.0,
+        4026.8
+      ],
+      "thickness": 159.2,
+      "height": 2800.0,
+      "room": "北次卧",
+      "room_id": "g3cnKYnd",
+      "rooms": [
+        "北次卧"
+      ],
+      "rooms_id": [
+        "g3cnKYnd"
+      ],
+      "kind": "exterior",
+      "rotation_deg": 0.0,
+      "face1_mm": 3947.2,
+      "face2_mm": 4106.4
+    },
+    {
+      "id": "W50",
+      "p1": [
+        -4605.0,
+        -619.5
+      ],
+      "p2": [
+        -4505.0,
+        -619.5
+      ],
+      "p1_center": [
+        -4605.0,
+        -518.1
+      ],
+      "p2_center": [
+        -4505.0,
+        -518.1
+      ],
+      "thickness": 202.8,
+      "height": 2800.0,
+      "room": null,
+      "room_id": null,
+      "rooms": [],
+      "rooms_id": [],
+      "kind": "unknown",
+      "rotation_deg": 0.0,
+      "face1_mm": -619.5,
+      "face2_mm": -416.7
+    },
+    {
+      "id": "W51",
+      "p1": [
+        -4605.0,
+        492.5
+      ],
+      "p2": [
+        -4405.0,
+        492.5
+      ],
+      "p1_center": [
+        -4605.0,
+        575.7
+      ],
+      "p2_center": [
+        -4405.0,
+        575.7
+      ],
+      "thickness": 166.4,
+      "height": 2800.0,
+      "room": "北次卧",
+      "room_id": "g3cnKYnd",
+      "rooms": [
+        "北次卧"
+      ],
+      "rooms_id": [
+        "g3cnKYnd"
+      ],
+      "kind": "exterior",
+      "rotation_deg": 0.0,
+      "face1_mm": 492.5,
+      "face2_mm": 658.9
+    },
+    {
+      "id": "W52",
+      "p1": [
+        -4405.0,
+        -4524.5
+      ],
+      "p2": [
+        -1607.5,
+        -4524.5
+      ],
+      "p1_center": [
+        -4405.0,
+        -4404.9
+      ],
+      "p2_center": [
+        -1607.5,
+        -4404.9
+      ],
+      "thickness": 239.2,
+      "height": 2800.0,
+      "room": "南次卧",
+      "room_id": "f1qYqHqH",
+      "rooms": [
+        "南次卧"
+      ],
+      "rooms_id": [
+        "f1qYqHqH"
+      ],
+      "kind": "exterior",
+      "rotation_deg": 0.0,
+      "face1_mm": -4524.5,
+      "face2_mm": -4285.3
+    },
+    {
+      "id": "W53",
+      "p1": [
+        -4405.0,
+        -684.5
+      ],
+      "p2": [
+        -1607.5,
+        -684.5
+      ],
+      "p1_center": [
+        -4405.0,
+        -619.9
+      ],
+      "p2_center": [
+        -1607.5,
+        -619.9
+      ],
+      "thickness": 129.2,
+      "height": 2800.0,
+      "room": "南次卧",
+      "room_id": "f1qYqHqH",
+      "rooms": [
+        "南次卧",
+        "客厅"
+      ],
+      "rooms_id": [
+        "f1qYqHqH",
+        "eHaXGv38"
+      ],
+      "kind": "interior",
+      "rotation_deg": 0.0,
+      "face1_mm": -684.5,
+      "face2_mm": -555.3
+    },
+    {
+      "id": "W54",
+      "p1": [
+        -4405.0,
+        529.7
+      ],
+      "p2": [
+        -3305.0,
+        529.7
+      ],
+      "p1_center": [
+        -4405.0,
+        594.3
+      ],
+      "p2_center": [
+        -3305.0,
+        594.3
+      ],
+      "thickness": 129.2,
+      "height": 2800.0,
+      "room": "客厅",
+      "room_id": "eHaXGv38",
+      "rooms": [
+        "客厅",
+        "北次卧"
+      ],
+      "rooms_id": [
+        "eHaXGv38",
+        "g3cnKYnd"
+      ],
+      "kind": "interior",
+      "rotation_deg": 0.0,
+      "face1_mm": 529.7,
+      "face2_mm": 658.9
+    },
+    {
+      "id": "W55",
+      "p1": [
+        -3065.0,
+        1534.7
+      ],
+      "p2": [
+        -1615.0,
+        1534.7
+      ],
+      "p1_center": [
+        -3065.0,
+        1599.3
+      ],
+      "p2_center": [
+        -1615.0,
+        1599.3
+      ],
+      "thickness": 129.2,
+      "height": 2800.0,
+      "room": "客厅",
+      "room_id": "eHaXGv38",
+      "rooms": [
+        "客厅",
+        "公卫"
+      ],
+      "rooms_id": [
+        "eHaXGv38",
+        "qOPrZ97W"
+      ],
+      "kind": "interior",
+      "rotation_deg": 0.0,
+      "face1_mm": 1534.7,
+      "face2_mm": 1663.9
+    },
+    {
+      "id": "W56",
+      "p1": [
+        -3065.0,
+        3259.5
+      ],
+      "p2": [
+        -1846.4,
+        3259.5
+      ],
+      "p1_center": [
+        -3065.0,
+        3379.2
+      ],
+      "p2_center": [
+        -1846.4,
+        3379.2
+      ],
+      "thickness": 239.4,
+      "height": 2800.0,
+      "room": "公卫",
+      "room_id": "qOPrZ97W",
+      "rooms": [
+        "公卫"
+      ],
+      "rooms_id": [
+        "qOPrZ97W"
+      ],
+      "kind": "exterior",
+      "rotation_deg": 0.0,
+      "face1_mm": 3259.5,
+      "face2_mm": 3498.9
+    },
+    {
+      "id": "W57",
+      "p1": [
+        -3059.5,
+        3498.9
+      ],
+      "p2": [
+        -2867.5,
+        3498.9
+      ],
+      "p1_center": [
+        -3059.5,
+        3749.3
+      ],
+      "p2_center": [
+        -2867.5,
+        3749.3
+      ],
+      "thickness": 500.8,
+      "height": 2800.0,
+      "room": null,
+      "room_id": null,
+      "rooms": [],
+      "rooms_id": [],
+      "kind": "unknown",
+      "rotation_deg": 0.0,
+      "face1_mm": 3498.9,
+      "face2_mm": 3999.7
+    },
+    {
+      "id": "W58",
+      "p1": [
+        -2298.4,
+        529.7
+      ],
+      "p2": [
+        -1615.0,
+        529.7
+      ],
+      "p1_center": [
+        -2298.4,
+        594.3
+      ],
+      "p2_center": [
+        -1615.0,
+        594.3
+      ],
+      "thickness": 129.2,
+      "height": 2800.0,
+      "room": "客厅",
+      "room_id": "eHaXGv38",
+      "rooms": [
+        "客厅"
+      ],
+      "rooms_id": [
+        "eHaXGv38"
+      ],
+      "kind": "exterior",
+      "rotation_deg": 0.0,
+      "face1_mm": 529.7,
+      "face2_mm": 658.9
+    },
+    {
+      "id": "W59",
+      "p1": [
+        -2167.5,
+        3498.9
+      ],
+      "p2": [
+        -1975.5,
+        3498.9
+      ],
+      "p1_center": [
+        -2167.5,
+        3749.3
+      ],
+      "p2_center": [
+        -1975.5,
+        3749.3
+      ],
+      "thickness": 500.8,
+      "height": 2800.0,
+      "room": null,
+      "room_id": null,
+      "rooms": [],
+      "rooms_id": [],
+      "kind": "unknown",
+      "rotation_deg": 0.0,
+      "face1_mm": 3498.9,
+      "face2_mm": 3999.7
+    },
+    {
+      "id": "W60",
+      "p1": [
+        -1505.0,
+        529.7
+      ],
+      "p2": [
+        597.5,
+        529.7
+      ],
+      "p1_center": [
+        -1505.0,
+        589.3
+      ],
+      "p2_center": [
+        597.5,
+        589.3
+      ],
+      "thickness": 119.2,
+      "height": 2800.0,
+      "room": "客厅",
+      "room_id": "eHaXGv38",
+      "rooms": [
+        "客厅",
+        "餐厅"
+      ],
+      "rooms_id": [
+        "eHaXGv38",
+        "XrCzEEni"
+      ],
+      "kind": "interior",
+      "rotation_deg": 0.0,
+      "face1_mm": 529.7,
+      "face2_mm": 648.9
+    },
+    {
+      "id": "W61",
+      "p1": [
+        -1502.5,
+        -4524.5
+      ],
+      "p2": [
+        -1397.5,
+        -4524.5
+      ],
+      "p1_center": [
+        -1502.5,
+        -4464.5
+      ],
+      "p2_center": [
+        -1397.5,
+        -4464.5
+      ],
+      "thickness": 120.0,
+      "height": 2800.0,
+      "room": null,
+      "room_id": null,
+      "rooms": [],
+      "rooms_id": [],
+      "kind": "unknown",
+      "rotation_deg": 0.0,
+      "face1_mm": -4524.5,
+      "face2_mm": -4404.5
+    },
+    {
+      "id": "W62",
+      "p1": [
+        -1397.5,
+        -5499.5
+      ],
+      "p2": [
+        4997.5,
+        -5499.5
+      ],
+      "p1_center": [
+        -1397.5,
+        -5379.9
+      ],
+      "p2_center": [
+        4997.5,
+        -5379.9
+      ],
+      "thickness": 239.2,
+      "height": 2800.0,
+      "room": "生活阳台",
+      "room_id": "z5u59ReE",
+      "rooms": [
+        "生活阳台"
+      ],
+      "rooms_id": [
+        "z5u59ReE"
+      ],
+      "kind": "exterior",
+      "rotation_deg": 0.0,
+      "face1_mm": -5499.5,
+      "face2_mm": -5260.3
+    },
+    {
+      "id": "W63",
+      "p1": [
+        -1397.5,
+        -3924.5
+      ],
+      "p2": [
+        4997.5,
+        -3924.5
+      ],
+      "p1_center": [
+        -1397.5,
+        -3784.9
+      ],
+      "p2_center": [
+        4997.5,
+        -3784.9
+      ],
+      "thickness": 279.2,
+      "height": 2800.0,
+      "room": "生活阳台",
+      "room_id": "z5u59ReE",
+      "rooms": [
+        "生活阳台",
+        "客厅"
+      ],
+      "rooms_id": [
+        "z5u59ReE",
+        "eHaXGv38"
+      ],
+      "kind": "interior",
+      "rotation_deg": 0.0,
+      "face1_mm": -3924.5,
+      "face2_mm": -3645.3
+    },
+    {
+      "id": "W64",
+      "p1": [
+        -1395.0,
+        3947.2
+      ],
+      "p2": [
+        597.5,
+        3947.2
+      ],
+      "p1_center": [
+        -1395.0,
+        4026.8
+      ],
+      "p2_center": [
+        597.5,
+        4026.8
+      ],
+      "thickness": 159.2,
+      "height": 2800.0,
+      "room": "餐厅",
+      "room_id": "XrCzEEni",
+      "rooms": [
+        "餐厅"
+      ],
+      "rooms_id": [
+        "XrCzEEni"
+      ],
+      "kind": "exterior",
+      "rotation_deg": 0.0,
+      "face1_mm": 3947.2,
+      "face2_mm": 4106.4
+    },
+    {
+      "id": "W65",
+      "p1": [
+        597.5,
+        529.7
+      ],
+      "p2": [
+        837.5,
+        529.7
+      ],
+      "p1_center": [
+        597.5,
+        594.3
+      ],
+      "p2_center": [
+        837.5,
+        594.3
+      ],
+      "thickness": 129.2,
+      "height": 2800.0,
+      "room": "客厅",
+      "room_id": "eHaXGv38",
+      "rooms": [
+        "客厅"
+      ],
+      "rooms_id": [
+        "eHaXGv38"
+      ],
+      "kind": "exterior",
+      "rotation_deg": 0.0,
+      "face1_mm": 529.7,
+      "face2_mm": 658.9
+    },
+    {
+      "id": "W66",
+      "p1": [
+        597.5,
+        5359.5
+      ],
+      "p2": [
+        837.5,
+        5359.5
+      ],
+      "p1_center": [
+        597.5,
+        5621.7
+      ],
+      "p2_center": [
+        837.5,
+        5621.7
+      ],
+      "thickness": 524.4,
+      "height": 2800.0,
+      "room": null,
+      "room_id": null,
+      "rooms": [],
+      "rooms_id": [],
+      "kind": "unknown",
+      "rotation_deg": 0.0,
+      "face1_mm": 5359.5,
+      "face2_mm": 5883.9
+    },
+    {
+      "id": "W67",
+      "p1": [
+        717.5,
+        4026.4
+      ],
+      "p2": [
+        837.5,
+        4026.4
+      ],
+      "p1_center": [
+        717.5,
+        4268.1
+      ],
+      "p2_center": [
+        837.5,
+        4268.1
+      ],
+      "thickness": 483.3,
+      "height": 2800.0,
+      "room": null,
+      "room_id": null,
+      "rooms": [],
+      "rooms_id": [],
+      "kind": "unknown",
+      "rotation_deg": 0.0,
+      "face1_mm": 4026.4,
+      "face2_mm": 4509.7
+    },
+    {
+      "id": "W68",
+      "p1": [
+        837.5,
+        3319.7
+      ],
+      "p2": [
+        3245.0,
+        3319.7
+      ],
+      "p1_center": [
+        837.5,
+        3379.3
+      ],
+      "p2_center": [
+        3245.0,
+        3379.3
+      ],
+      "thickness": 119.2,
+      "height": 2800.0,
+      "room": "客厅",
+      "room_id": "eHaXGv38",
+      "rooms": [
+        "客厅",
+        "厨房"
+      ],
+      "rooms_id": [
+        "eHaXGv38",
+        "WFGji10I"
+      ],
+      "kind": "interior",
+      "rotation_deg": 0.0,
+      "face1_mm": 3319.7,
+      "face2_mm": 3438.9
+    },
+    {
+      "id": "W69",
+      "p1": [
+        837.5,
+        5654.7
+      ],
+      "p2": [
+        3245.0,
+        5654.7
+      ],
+      "p1_center": [
+        837.5,
+        5769.3
+      ],
+      "p2_center": [
+        3245.0,
+        5769.3
+      ],
+      "thickness": 229.2,
+      "height": 2800.0,
+      "room": "厨房",
+      "room_id": "WFGji10I",
+      "rooms": [
+        "厨房"
+      ],
+      "rooms_id": [
+        "WFGji10I"
+      ],
+      "kind": "exterior",
+      "rotation_deg": 0.0,
+      "face1_mm": 5654.7,
+      "face2_mm": 5883.9
+    },
+    {
+      "id": "W70",
+      "p1": [
+        2742.5,
+        5310.8
+      ],
+      "p2": [
+        3245.0,
+        5310.8
+      ],
+      "p1_center": [
+        2742.5,
+        5482.8
+      ],
+      "p2_center": [
+        3245.0,
+        5482.8
+      ],
+      "thickness": 343.9,
+      "height": 2800.0,
+      "room": "厨房",
+      "room_id": "WFGji10I",
+      "rooms": [
+        "厨房"
+      ],
+      "rooms_id": [
+        "WFGji10I"
+      ],
+      "kind": "exterior",
+      "rotation_deg": 0.0,
+      "face1_mm": 5310.8,
+      "face2_mm": 5654.7
+    },
+    {
+      "id": "W71",
+      "p1": [
+        2742.5,
+        5310.8
+      ],
+      "p2": [
+        3245.0,
+        5310.8
+      ],
+      "p1_center": [
+        2742.5,
+        5597.4
+      ],
+      "p2_center": [
+        3245.0,
+        5597.4
+      ],
+      "thickness": 573.1,
+      "height": 2800.0,
+      "room": "厨房",
+      "room_id": "WFGji10I",
+      "rooms": [
+        "厨房"
+      ],
+      "rooms_id": [
+        "WFGji10I"
+      ],
+      "kind": "exterior",
+      "rotation_deg": 0.0,
+      "face1_mm": 5310.8,
+      "face2_mm": 5883.9
+    },
+    {
+      "id": "W72",
+      "p1": [
+        3445.0,
+        5654.7
+      ],
+      "p2": [
+        4997.5,
+        5654.7
+      ],
+      "p1_center": [
+        3445.0,
+        5769.3
+      ],
+      "p2_center": [
+        4997.5,
+        5769.3
+      ],
+      "thickness": 229.2,
+      "height": 2800.0,
+      "room": "客厅",
+      "room_id": "eHaXGv38",
+      "rooms": [
+        "客厅"
+      ],
+      "rooms_id": [
+        "eHaXGv38"
+      ],
+      "kind": "exterior",
+      "rotation_deg": 0.0,
+      "face1_mm": 5654.7,
+      "face2_mm": 5883.9
+    }
+  ],
+  "openings": [
+    {
+      "id": "O01",
+      "type": "door",
+      "subtype": "passage",
+      "center": [
+        -6767.8,
+        594.7
+      ],
+      "width": 803.9,
+      "height": 2300.0,
+      "sill": 0.0,
+      "head": 2300.0,
+      "wall_id": "W46",
+      "rotation_deg": 0.0,
+      "room": "主卧",
+      "room_id": "mCOSmg5M",
+      "rooms_touched": [
+        "主卧",
+        "主卫"
+      ],
+      "rooms_touched_id": [
+        "mCOSmg5M",
+        "EX4vhDXo"
+      ]
+    },
+    {
+      "id": "O02",
+      "type": "window",
+      "subtype": "window",
+      "center": [
+        -6337.5,
+        -4405.3
+      ],
+      "width": 2050.0,
+      "height": 1400.0,
+      "sill": 900.0,
+      "head": 2300.0,
+      "wall_id": "W45",
+      "rotation_deg": 0.0,
+      "room": "主卧",
+      "room_id": "mCOSmg5M",
+      "rooms_touched": [
+        "主卧"
+      ],
+      "rooms_touched_id": [
+        "mCOSmg5M"
+      ]
+    },
+    {
+      "id": "O03",
+      "type": "window",
+      "subtype": "window",
+      "center": [
+        -4760.0,
+        4027.2
+      ],
+      "width": 1755.0,
+      "height": 1400.0,
+      "sill": 900.0,
+      "head": 2300.0,
+      "wall_id": "W49",
+      "rotation_deg": 0.0,
+      "room": "北次卧",
+      "room_id": "g3cnKYnd",
+      "rooms_touched": [
+        "北次卧"
+      ],
+      "rooms_touched_id": [
+        "g3cnKYnd"
+      ]
+    },
+    {
+      "id": "O04",
+      "type": "door",
+      "subtype": "passage",
+      "center": [
+        -4505.0,
+        37.9
+      ],
+      "width": 909.2,
+      "height": 2300.0,
+      "sill": 0.0,
+      "head": 2300.0,
+      "wall_id": "W08",
+      "rotation_deg": 90.0,
+      "room": "客厅",
+      "room_id": "eHaXGv38",
+      "rooms_touched": [
+        "主卧",
+        "客厅"
+      ],
+      "rooms_touched_id": [
+        "mCOSmg5M",
+        "eHaXGv38"
+      ]
+    },
+    {
+      "id": "O05",
+      "type": "door",
+      "subtype": "passage",
+      "center": [
+        -3928.5,
+        -620.3
+      ],
+      "width": 878.2,
+      "height": 2300.0,
+      "sill": 0.0,
+      "head": 2300.0,
+      "wall_id": "W53",
+      "rotation_deg": 0.0,
+      "room": "客厅",
+      "room_id": "eHaXGv38",
+      "rooms_touched": [
+        "南次卧",
+        "客厅"
+      ],
+      "rooms_touched_id": [
+        "f1qYqHqH",
+        "eHaXGv38"
+      ]
+    },
+    {
+      "id": "O06",
+      "type": "door",
+      "subtype": "passage",
+      "center": [
+        -3815.1,
+        594.7
+      ],
+      "width": 878.3,
+      "height": 2300.0,
+      "sill": 0.0,
+      "head": 2300.0,
+      "wall_id": "W54",
+      "rotation_deg": 0.0,
+      "room": "客厅",
+      "room_id": "eHaXGv38",
+      "rooms_touched": [
+        "客厅",
+        "北次卧"
+      ],
+      "rooms_touched_id": [
+        "eHaXGv38",
+        "g3cnKYnd"
+      ]
+    },
+    {
+      "id": "O07",
+      "type": "window",
+      "subtype": "window",
+      "center": [
+        -3002.5,
+        -4405.3
+      ],
+      "width": 1750.0,
+      "height": 1400.0,
+      "sill": 900.0,
+      "head": 2300.0,
+      "wall_id": "W52",
+      "rotation_deg": 0.0,
+      "room": "南次卧",
+      "room_id": "f1qYqHqH",
+      "rooms_touched": [
+        "南次卧"
+      ],
+      "rooms_touched_id": [
+        "f1qYqHqH"
+      ]
+    },
+    {
+      "id": "O08",
+      "type": "door",
+      "subtype": "passage",
+      "center": [
+        -2698.5,
+        1632.0
+      ],
+      "width": 732.5,
+      "height": 2299.8,
+      "sill": 0.0,
+      "head": 2299.8,
+      "wall_id": "W55",
+      "rotation_deg": 0.0,
+      "room": "客厅",
+      "room_id": "eHaXGv38",
+      "rooms_touched": [
+        "客厅",
+        "公卫"
+      ],
+      "rooms_touched_id": [
+        "eHaXGv38",
+        "qOPrZ97W"
+      ]
+    },
+    {
+      "id": "O09",
+      "type": "window",
+      "subtype": "window",
+      "center": [
+        -645.0,
+        4027.2
+      ],
+      "width": 1255.0,
+      "height": 1400.0,
+      "sill": 900.0,
+      "head": 2300.0,
+      "wall_id": "W64",
+      "rotation_deg": 0.0,
+      "room": "餐厅",
+      "room_id": "XrCzEEni",
+      "rooms_touched": [
+        "餐厅"
+      ],
+      "rooms_touched_id": [
+        "XrCzEEni"
+      ]
+    },
+    {
+      "id": "O10",
+      "type": "door",
+      "subtype": "passage",
+      "center": [
+        -390.0,
+        589.7
+      ],
+      "width": 1855.0,
+      "height": 2300.0,
+      "sill": 0.0,
+      "head": 2300.0,
+      "wall_id": "W60",
+      "rotation_deg": 0.0,
+      "room": "客厅",
+      "room_id": "eHaXGv38",
+      "rooms_touched": [
+        "客厅",
+        "餐厅"
+      ],
+      "rooms_touched_id": [
+        "eHaXGv38",
+        "XrCzEEni"
+      ]
+    },
+    {
+      "id": "O11",
+      "type": "window",
+      "subtype": "window",
+      "center": [
+        717.5,
+        1489.7
+      ],
+      "width": 1660.0,
+      "height": 1400.0,
+      "sill": 900.0,
+      "head": 2300.0,
+      "wall_id": "W15",
+      "rotation_deg": 90.0,
+      "room": "餐厅",
+      "room_id": "XrCzEEni",
+      "rooms_touched": [
+        "餐厅",
+        "客厅"
+      ],
+      "rooms_touched_id": [
+        "XrCzEEni",
+        "eHaXGv38"
+      ]
+    },
+    {
+      "id": "O12",
+      "type": "door",
+      "subtype": "passage",
+      "center": [
+        2290.0,
+        3379.7
+      ],
+      "width": 1745.0,
+      "height": 2300.0,
+      "sill": 0.0,
+      "head": 2300.0,
+      "wall_id": "W68",
+      "rotation_deg": 0.0,
+      "room": "客厅",
+      "room_id": "eHaXGv38",
+      "rooms_touched": [
+        "客厅",
+        "厨房"
+      ],
+      "rooms_touched_id": [
+        "eHaXGv38",
+        "WFGji10I"
+      ]
+    },
+    {
+      "id": "O13",
+      "type": "door",
+      "subtype": "door",
+      "center": [
+        4100.0,
+        5769.7
+      ],
+      "width": 1076.0,
+      "height": 2100.0,
+      "sill": 0.0,
+      "head": 2100.0,
+      "wall_id": "W72",
+      "rotation_deg": 0.0,
+      "room": "客厅",
+      "room_id": "eHaXGv38",
+      "rooms_touched": [
+        "客厅"
+      ],
+      "rooms_touched_id": [
+        "eHaXGv38"
+      ]
+    }
+  ],
+  "checks": {
+    "wall_bbox_x_mm": [
+      -8174.2,
+      5236.7
+    ],
+    "wall_bbox_z_mm": [
+      -5499.5,
+      5884.7
+    ],
+    "glb_scene_bbox_mm": {
+      "x": [
+        -8175.1,
+        5237.5
+      ],
+      "y": [
+        -100.0,
+        2800.2
+      ],
+      "z": [
+        -5500.4,
+        5884.7
+      ]
+    },
+    "expected_outer_mm": {
+      "width": 13412.5,
+      "depth": 11385.0
+    },
+    "openings": [
+      {
+        "id": "O01",
+        "type": "door",
+        "subtype": "passage",
+        "center_mm": [
+          -6767.8,
+          594.7
+        ],
+        "width_mm": 803.9,
+        "height_mm": 2300.0,
+        "sill_mm": 0.0,
+        "wall_id": "W46",
+        "rooms_touched": [
+          "mCOSmg5M",
+          "EX4vhDXo"
+        ]
+      },
+      {
+        "id": "O02",
+        "type": "window",
+        "subtype": "window",
+        "center_mm": [
+          -6337.5,
+          -4405.3
+        ],
+        "width_mm": 2050.0,
+        "height_mm": 1400.0,
+        "sill_mm": 900.0,
+        "wall_id": "W45",
+        "rooms_touched": [
+          "mCOSmg5M"
+        ]
+      },
+      {
+        "id": "O03",
+        "type": "window",
+        "subtype": "window",
+        "center_mm": [
+          -4760.0,
+          4027.2
+        ],
+        "width_mm": 1755.0,
+        "height_mm": 1400.0,
+        "sill_mm": 900.0,
+        "wall_id": "W49",
+        "rooms_touched": [
+          "g3cnKYnd"
+        ]
+      },
+      {
+        "id": "O04",
+        "type": "door",
+        "subtype": "passage",
+        "center_mm": [
+          -4505.0,
+          37.9
+        ],
+        "width_mm": 909.2,
+        "height_mm": 2300.0,
+        "sill_mm": 0.0,
+        "wall_id": "W08",
+        "rooms_touched": [
+          "mCOSmg5M",
+          "eHaXGv38"
+        ]
+      },
+      {
+        "id": "O05",
+        "type": "door",
+        "subtype": "passage",
+        "center_mm": [
+          -3928.5,
+          -620.3
+        ],
+        "width_mm": 878.2,
+        "height_mm": 2300.0,
+        "sill_mm": 0.0,
+        "wall_id": "W53",
+        "rooms_touched": [
+          "f1qYqHqH",
+          "eHaXGv38"
+        ]
+      },
+      {
+        "id": "O06",
+        "type": "door",
+        "subtype": "passage",
+        "center_mm": [
+          -3815.1,
+          594.7
+        ],
+        "width_mm": 878.3,
+        "height_mm": 2300.0,
+        "sill_mm": 0.0,
+        "wall_id": "W54",
+        "rooms_touched": [
+          "eHaXGv38",
+          "g3cnKYnd"
+        ]
+      },
+      {
+        "id": "O07",
+        "type": "window",
+        "subtype": "window",
+        "center_mm": [
+          -3002.5,
+          -4405.3
+        ],
+        "width_mm": 1750.0,
+        "height_mm": 1400.0,
+        "sill_mm": 900.0,
+        "wall_id": "W52",
+        "rooms_touched": [
+          "f1qYqHqH"
+        ]
+      },
+      {
+        "id": "O08",
+        "type": "door",
+        "subtype": "passage",
+        "center_mm": [
+          -2698.5,
+          1632.0
+        ],
+        "width_mm": 732.5,
+        "height_mm": 2299.8,
+        "sill_mm": 0.0,
+        "wall_id": "W55",
+        "rooms_touched": [
+          "eHaXGv38",
+          "qOPrZ97W"
+        ]
+      },
+      {
+        "id": "O09",
+        "type": "window",
+        "subtype": "window",
+        "center_mm": [
+          -645.0,
+          4027.2
+        ],
+        "width_mm": 1255.0,
+        "height_mm": 1400.0,
+        "sill_mm": 900.0,
+        "wall_id": "W64",
+        "rooms_touched": [
+          "XrCzEEni"
+        ]
+      },
+      {
+        "id": "O10",
+        "type": "door",
+        "subtype": "passage",
+        "center_mm": [
+          -390.0,
+          589.7
+        ],
+        "width_mm": 1855.0,
+        "height_mm": 2300.0,
+        "sill_mm": 0.0,
+        "wall_id": "W60",
+        "rooms_touched": [
+          "eHaXGv38",
+          "XrCzEEni"
+        ]
+      },
+      {
+        "id": "O11",
+        "type": "window",
+        "subtype": "window",
+        "center_mm": [
+          717.5,
+          1489.7
+        ],
+        "width_mm": 1660.0,
+        "height_mm": 1400.0,
+        "sill_mm": 900.0,
+        "wall_id": "W15",
+        "rooms_touched": [
+          "XrCzEEni",
+          "eHaXGv38"
+        ]
+      },
+      {
+        "id": "O12",
+        "type": "door",
+        "subtype": "passage",
+        "center_mm": [
+          2290.0,
+          3379.7
+        ],
+        "width_mm": 1745.0,
+        "height_mm": 2300.0,
+        "sill_mm": 0.0,
+        "wall_id": "W68",
+        "rooms_touched": [
+          "eHaXGv38",
+          "WFGji10I"
+        ]
+      },
+      {
+        "id": "O13",
+        "type": "door",
+        "subtype": "door",
+        "center_mm": [
+          4100.0,
+          5769.7
+        ],
+        "width_mm": 1076.0,
+        "height_mm": 2100.0,
+        "sill_mm": 0.0,
+        "wall_id": "W72",
+        "rooms_touched": [
+          "eHaXGv38"
+        ]
+      }
+    ],
+    "door_props": [
+      {
+        "name": "SM_门套_210cm_StaticMeshComponent0",
+        "room_id": "mCOSmg5M",
+        "center_mm": [
+          -4505.0,
+          37.9
+        ],
+        "size_mm": [
+          204.0,
+          2300.0,
+          909.2
+        ],
+        "rot_y_deg": 0.0,
+        "nearest_opening": "O04",
+        "dist_to_opening_mm": 0.0
+      },
+      {
+        "name": "SM_平开门_StaticMeshComponent0",
+        "room_id": "mCOSmg5M",
+        "center_mm": [
+          -4585.2,
+          37.9
+        ],
+        "size_mm": [
+          90.8,
+          2289.1,
+          887.9
+        ],
+        "rot_y_deg": 0.0,
+        "nearest_opening": "O04",
+        "dist_to_opening_mm": 80.2
+      },
+      {
+        "name": "SM_门套_210cm_StaticMeshComponent0",
+        "room_id": "f1qYqHqH",
+        "center_mm": [
+          -3928.5,
+          -620.3
+        ],
+        "size_mm": [
+          878.2,
+          2300.0,
+          134.0
+        ],
+        "rot_y_deg": 0.0,
+        "nearest_opening": "O05",
+        "dist_to_opening_mm": 0.0
+      },
+      {
+        "name": "SM_平开门_StaticMeshComponent0",
+        "room_id": "f1qYqHqH",
+        "center_mm": [
+          -3928.5,
+          -665.5
+        ],
+        "size_mm": [
+          857.6,
+          2289.1,
+          90.8
+        ],
+        "rot_y_deg": 0.0,
+        "nearest_opening": "O05",
+        "dist_to_opening_mm": 45.2
+      },
+      {
+        "name": "SM_门套_210cm_StaticMeshComponent0",
+        "room_id": "g3cnKYnd",
+        "center_mm": [
+          -3815.2,
+          594.7
+        ],
+        "size_mm": [
+          878.3,
+          2300.0,
+          134.0
+        ],
+        "rot_y_deg": 0.0,
+        "nearest_opening": "O06",
+        "dist_to_opening_mm": 0.1
+      },
+      {
+        "name": "SM_平开门_StaticMeshComponent0",
+        "room_id": "g3cnKYnd",
+        "center_mm": [
+          -3815.2,
+          639.9
+        ],
+        "size_mm": [
+          857.7,
+          2289.1,
+          90.8
+        ],
+        "rot_y_deg": 0.0,
+        "nearest_opening": "O06",
+        "dist_to_opening_mm": 45.2
+      }
+    ],
+    "rooms": [
+      {
+        "id": "eHaXGv38",
+        "name": "客厅",
+        "glb_name": "客餐厅",
+        "area_viewdata_m2": 46.562157,
+        "area_recomputed_m2": 46.5622,
+        "diff_m2": 0.0
+      },
+      {
+        "id": "mCOSmg5M",
+        "name": "主卧",
+        "glb_name": "主卧",
+        "area_viewdata_m2": 15.93765,
+        "area_recomputed_m2": 15.9377,
+        "diff_m2": 0.0
+      },
+      {
+        "id": "f1qYqHqH",
+        "name": "南次卧",
+        "glb_name": "次卧",
+        "area_viewdata_m2": 10.071001,
+        "area_recomputed_m2": 10.071,
+        "diff_m2": -0.0
+      },
+      {
+        "id": "EX4vhDXo",
+        "name": "主卫",
+        "glb_name": "卫生间",
+        "area_viewdata_m2": 4.0032897,
+        "area_recomputed_m2": 4.0033,
+        "diff_m2": 0.0
+      },
+      {
+        "id": "g3cnKYnd",
+        "name": "北次卧",
+        "glb_name": "次卧",
+        "area_viewdata_m2": 9.402578,
+        "area_recomputed_m2": 9.4026,
+        "diff_m2": 0.0
+      },
+      {
+        "id": "XrCzEEni",
+        "name": "餐厅",
+        "glb_name": "书房",
+        "area_viewdata_m2": 6.5702686,
+        "area_recomputed_m2": 6.5703,
+        "diff_m2": 0.0
+      },
+      {
+        "id": "qOPrZ97W",
+        "name": "公卫",
+        "glb_name": "卫生间",
+        "area_viewdata_m2": 2.1264038,
+        "area_recomputed_m2": 2.1264,
+        "diff_m2": -0.0
+      },
+      {
+        "id": "WFGji10I",
+        "name": "厨房",
+        "glb_name": "厨房",
+        "area_viewdata_m2": 5.332611,
+        "area_recomputed_m2": 5.3326,
+        "diff_m2": 0.0
+      },
+      {
+        "id": "z5u59ReE",
+        "name": "生活阳台",
+        "glb_name": "生活阳台",
+        "area_viewdata_m2": 8.537326,
+        "area_recomputed_m2": 8.5373,
+        "diff_m2": -0.0
+      }
+    ]
+  },
+  "rejected_openings": [
+    {
+      "x1": -791.5,
+      "x2": -460.5,
+      "z1": -416.53,
+      "z2": -412.53,
+      "kind": "door",
+      "levels": [
+        210.0
+      ],
+      "host_wall": null,
+      "reason": "板面宽度恰好等于相邻房间在该方向上的整宽 → 判定为吊顶/隔断顶板, 不是洞口"
+    },
+    {
+      "x1": -791.5,
+      "x2": -460.5,
+      "z1": -412.53,
+      "z2": -368.53,
+      "kind": "passage",
+      "levels": [
+        230.0
+      ],
+      "host_wall": null,
+      "reason": "板面宽度恰好等于相邻房间在该方向上的整宽 → 判定为吊顶/隔断顶板, 不是洞口"
+    },
+    {
+      "x1": -616.51,
+      "x2": -330.5,
+      "z1": 344.72,
+      "z2": 394.72,
+      "kind": "passage",
+      "levels": [
+        230.0
+      ],
+      "host_wall": null,
+      "reason": "板面宽度恰好等于相邻房间在该方向上的整宽 → 判定为吊顶/隔断顶板, 不是洞口"
+    },
+    {
+      "x1": -440.5,
+      "x2": -160.75,
+      "z1": -416.53,
+      "z2": -412.4,
+      "kind": "door",
+      "levels": [
+        210.0
+      ],
+      "host_wall": null,
+      "reason": "板面宽度恰好等于相邻房间在该方向上的整宽 → 判定为吊顶/隔断顶板, 不是洞口"
+    },
+    {
+      "x1": -440.5,
+      "x2": -160.75,
+      "z1": -412.4,
+      "z2": -368.53,
+      "kind": "passage",
+      "levels": [
+        230.0
+      ],
+      "host_wall": null,
+      "reason": "板面宽度恰好等于相邻房间在该方向上的整宽 → 判定为吊顶/隔断顶板, 不是洞口"
+    },
+    {
+      "x1": -139.5,
+      "x2": 59.75,
+      "z1": 334.72,
+      "z2": 394.72,
+      "kind": "passage",
+      "levels": [
+        230.0
+      ],
+      "host_wall": null,
+      "reason": "板面宽度恰好等于相邻房间在该方向上的整宽 → 判定为吊顶/隔断顶板, 不是洞口"
+    }
+  ],
+  "notes": [
+    "坐标系: GLB 与 ViewData.json 的朝向不同 —— ViewData 房间多边形的 (X, Y) 对应 GLB 的 (X, -Y)。本脚本用 GLB 几何独立验证: 厨房/主卧/书房的房间网格 包围盒与多边形按 (X,-Y) 换算后逐条完全吻合 (误差 < 0.01 单位)。",
+    "方位 (依据 archive/floorplan-3d/resource/WechatIMG209.jpg 原始户型图指北针): GLB +Z = 北, GLB -Z = 南, GLB -X = 东, GLB +X = 西 (模型 X 轴相对常规东向为镜像)。",
+    "墙体系结构: GLB 建筑构件分两种节点 —— 'Mesh' 下是 Section-* (剖切面, 非墙) 与 MergedMesh_* (墙体/楼板实体); 'Model' 下是家具与门窗成品件 (SM_门套_*/SM_平开门_* 等)。",
+    "墙体识别: 合并所有竖直轴向面 → 按 (法向轴, 平面坐标) 聚类 → 把成对的平行面配成墙板, 厚度 = 两面间距。墙板沿厚度方向常被拆成两片, 中间多出一层约 1.6mm 的'中板', 脚本用'中板规则'排除这种伪配对。",
+    "洞口识别: 每个洞口在 GLB 里都有水平板面 (窗台 900 / 门头 2100 / 垭口过梁 2300), 板面轮廓 = 洞口在墙上的投影, 直接给出洞口的宽度与所在墙厚; 再用'宿主墙面在该处确实是空的'做真实性检验。",
+    "墙高统一按 2800mm (GLB y=280) 记录; 局部矮墙/反坎按实际几何高度记录。"
+  ]
+}

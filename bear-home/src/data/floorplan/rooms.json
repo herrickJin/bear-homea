@@ -1,0 +1,2520 @@
+{
+  "meta": {
+    "generated_by": "extract_rooms_materials.py",
+    "generated_at_utc": "2026-10-21T03:04:45Z",
+    "project": "城投南山长投·领峯 D143 (123kanfang 交互设计方案)",
+    "role": "参考档案 —— 第一版工具只做『还原原始建筑测量图』, 本文件暂不直接显示",
+    "sources": {
+      "ViewData.json": {
+        "path": "archive/floorplan-source/ViewData.json",
+        "sha256": "2ca7340cb6ecf923db80b4309105be386d89649bc227170e5bd336c0730c8cb9"
+      },
+      "floordata0.glb": {
+        "path": "archive/floorplan-source/floordata0.glb",
+        "sha256": "86109ec4645434355afdfc189ab0df750f626296b1c2497fdc8722ed1ec3bfec",
+        "bytes": 8651780
+      },
+      "plan-123kanfang.png": {
+        "path": "archive/floorplan-source/plan-123kanfang.png",
+        "sha256": "a253d4d11d858701b382b82a01dfa5c12f51e740b24f59a37f81b3eab8725d95",
+        "bytes": 50703
+      }
+    },
+    "units": {
+      "glb_unit_mm": 10.0,
+      "area_m2_per_glb_unit2": 0.0001,
+      "note": "ViewData.Area 直接是 ㎡; 其余长度由 GLB 单位 ×10 得到 mm"
+    },
+    "coordinate_system": {
+      "glb": "右手系, Y 轴竖直向上 (地坪 Y=0, 顶棚 Y=280 → 2800mm); X 向右为正, Z 向下(平面图南)为正",
+      "viewdata_to_glb": "GLB_X_mm = ViewData_X × 10 ; GLB_Z_mm = −ViewData_Y × 10",
+      "warning": "ViewData 的 Y 与 GLB 的 Z **方向相反** (ViewData Y 向上为正)。『同坐标系』只对单位成立, 轴向需翻转。",
+      "glb_scene_bbox_mm": {
+        "x_min": -8175.08,
+        "x_max": 5237.51,
+        "y_min": -100.0,
+        "y_max": 2800.2,
+        "z_min": -5500.38,
+        "z_max": 5884.7
+      }
+    },
+    "plan_image_calibration": {
+      "plan_image": "../plan-123kanfang.png",
+      "method": "平面图 = GLB 场景 XZ 包围盒的 1:1 正投影 (1 px = 1 GLB 单位 = 10 mm), 原点锚定在图像墨迹包围盒左上角对应的场景包围盒角点",
+      "status": "ok",
+      "image_size_px": [
+        1563,
+        1363
+      ],
+      "ink_bbox_px": {
+        "x_min": 110,
+        "x_max": 1450,
+        "y_min": 112,
+        "y_max": 1334
+      },
+      "scene_bbox_glb_units": {
+        "x_min": -817.5082,
+        "x_max": 523.751,
+        "z_min": -550.0383,
+        "z_max": 588.4701
+      },
+      "scene_bbox_mm": {
+        "x_min": -8175.1,
+        "x_max": 5237.5,
+        "z_min": -5500.4,
+        "z_max": 5884.7
+      },
+      "scale_px_per_glb_unit": 1.0,
+      "offset_px": {
+        "x": 927.508,
+        "z": 662.038
+      },
+      "formula_px": "px = X_glb + 927.508 ; py = Z_glb + 662.038",
+      "scale_check": {
+        "ink_width_px": 1341,
+        "scene_width_units": 1341.259,
+        "delta_px": -0.259,
+        "ink_height_px": 1223,
+        "scene_depth_units": 1138.508,
+        "delta_px_y": 84.492,
+        "note": "Y 向墨迹下沿比场景多出的部分来自入户门开启弧线, 不参与标定"
+      }
+    },
+    "px_mm_conversion": {
+      "formula": "px = X_glb + 927.508 ; py = Z_glb + 662.038",
+      "inverse": "X_glb = px − 927.508 ; Z_glb = py − 662.038",
+      "scale": "1 px = 1 GLB 单位 = 10 mm",
+      "origin": "图片左上角; x 向右, y 向下 (与 GLB 的 +Z 同向)",
+      "note": "平面图是 123kanfang 的渲染图, 标定式由脚本自动求解并用墙线吻合率自检"
+    },
+    "share_link_public": {
+      "share_page": "https://webresource.123kanfang.com/livedeco/diy2d-v2/index.html?id=16836619",
+      "api_endpoint": "https://decogateway.123kanfang.com/shareLinks/ShareLinks/GetParams?guid=16836619&alwaysReturn=true",
+      "retrieved_at_utc": "2026-10-21T03:04:43Z",
+      "access_note": "公开分享链接, 未登录、未绕过任何访问控制; 只读取公开参数",
+      "parameters_raw": "?hid=whyjyzs-3_1e52a61365ff4704854603010c6e07b3&domain=//livedeco.oss-cn-shanghai.aliyuncs.com/&bucket=livedeco&taskID=2453652&datatype=floorplandata&pc=1&styleName=Italian_1311&userGuid=6b3724c7763140f28599b4495a1c09f8&companyName=武汉一家一欧标装饰工程有限公司&houseName=复制-城投南山长投.领峯&taskIDs=2453652",
+      "parameters": {
+        "hid": "whyjyzs-3_1e52a61365ff4704854603010c6e07b3",
+        "domain": "//livedeco.oss-cn-shanghai.aliyuncs.com/",
+        "bucket": "livedeco",
+        "taskID": "2453652",
+        "datatype": "floorplandata",
+        "pc": "1",
+        "styleName": "Italian_1311",
+        "userGuid": "6b3724c7763140f28599b4495a1c09f8",
+        "companyName": "武汉一家一欧标装饰工程有限公司",
+        "houseName": "复制-城投南山长投.领峯",
+        "taskIDs": "2453652"
+      },
+      "status": "live"
+    },
+    "room_naming": {
+      "policy": "主名使用原始户型命名; 同时保留 123kanfang 方案命名与两级 ID 供反查",
+      "decided_by": "lead, 2026-10-21",
+      "map": {
+        "mCOSmg5M": {
+          "name_original_plan": "主卧",
+          "name_123kanfang": "主卧",
+          "english_id": "master_bedroom",
+          "needs_confirmation": false
+        },
+        "f1qYqHqH": {
+          "name_original_plan": "北次卧",
+          "name_123kanfang": "次卧",
+          "english_id": "north_bedroom",
+          "needs_confirmation": true
+        },
+        "g3cnKYnd": {
+          "name_original_plan": "南次卧",
+          "name_123kanfang": "次卧",
+          "english_id": "south_bedroom",
+          "needs_confirmation": true
+        },
+        "eHaXGv38": {
+          "name_original_plan": "客厅",
+          "name_123kanfang": "客餐厅",
+          "english_id": "living_room",
+          "needs_confirmation": false
+        },
+        "XrCzEEni": {
+          "name_original_plan": "储物间/多功能角",
+          "name_123kanfang": "书房",
+          "english_id": "utility",
+          "needs_confirmation": true
+        },
+        "EX4vhDXo": {
+          "name_original_plan": "主卫",
+          "name_123kanfang": "卫生间",
+          "english_id": "master_bathroom",
+          "needs_confirmation": true
+        },
+        "qOPrZ97W": {
+          "name_original_plan": "公卫",
+          "name_123kanfang": "卫生间",
+          "english_id": "guest_bathroom",
+          "needs_confirmation": true
+        },
+        "WFGji10I": {
+          "name_original_plan": "厨房",
+          "name_123kanfang": "厨房",
+          "english_id": "kitchen",
+          "needs_confirmation": false
+        },
+        "z5u59ReE": {
+          "name_original_plan": "生活阳台",
+          "name_123kanfang": "生活阳台",
+          "english_id": "living_balcony",
+          "needs_confirmation": false
+        }
+      }
+    },
+    "notes": [
+      "1. 命名以『原始户型』为准 (主卧/北次卧/南次卧/客厅/储物间·多功能角/厨房/生活阳台/公卫/主卫), 『客厅·LDK 餐厅区』是客厅区内的派生分区, 不是独立房间; 第一版不另立『餐厅』。",
+      "2. px↔mm 换算: px = X_glb + 927.508 ; py = Z_glb + 662.038",
+      "3. ViewData→GLB 换算: GLB_X_mm = ViewData_X × 10 ; GLB_Z_mm = −ViewData_Y × 10。",
+      "4. 公开分享链接参数 (可复用): ?hid=whyjyzs-3_1e52a61365ff4704854603010c6e07b3&domain=//livedeco.oss-cn-shanghai.aliyuncs.com/&bucket=livedeco&taskID=2453652&datatype=floorplandata&pc=1&styleName=Italian_1311&userGuid=6b3724c7763140f28599b4495a1c09f8&companyName=武汉一家一欧标装饰工程有限公司&houseName=复制-城投南山长投.领峯&taskIDs=2453652",
+      "5. 两个『次卧』按位置/面积/家具判定为北次卧(客卧位)/南次卧(次卧位); 两个『卫生间』按与主卧的相邻关系判定为主卫/公卫 —— 123kanfang 原始数据没有区分标签, 属推断。",
+      "6. 储物间/多功能角 (6.57㎡) 的原始户型名待现场照片确认; 123kanfang 方案将此处改为电竞房 (推拉门 + 电竞椅×2 + 背景墙)。",
+      "7. 平面图 plan-123kanfang.png 是渲染图不是测量图, 不含尺寸标注, 不能替代原始户型测量图。"
+    ],
+    "hotspots_public": [
+      {
+        "id": "LCcQFRkx",
+        "name": "客厅",
+        "room": "客餐厅",
+        "position": {
+          "X": 69.87058,
+          "Y": 60.0,
+          "Z": 93.46906
+        },
+        "camera_height": 120.0,
+        "thumbnail_path": "ThumbnailImages/LivingDiningRoom_LCcQFRkx.jpg",
+        "panorama_tile_paths": [
+          "PanoramaTileImages/LivingDiningRoom_LCcQFRkx_l.jpg",
+          "PanoramaTileImages/LivingDiningRoom_LCcQFRkx_r.jpg",
+          "PanoramaTileImages/LivingDiningRoom_LCcQFRkx_u.jpg",
+          "PanoramaTileImages/LivingDiningRoom_LCcQFRkx_d.jpg",
+          "PanoramaTileImages/LivingDiningRoom_LCcQFRkx_f.jpg",
+          "PanoramaTileImages/LivingDiningRoom_LCcQFRkx_b.jpg"
+        ]
+      },
+      {
+        "id": "964oGiou",
+        "name": "盥洗室",
+        "room": "客餐厅",
+        "position": {
+          "X": -134.07623,
+          "Y": 60.0,
+          "Z": -51.600998
+        },
+        "camera_height": 120.0,
+        "thumbnail_path": "ThumbnailImages/LivingDiningRoom_964oGiou.jpg",
+        "panorama_tile_paths": [
+          "PanoramaTileImages/LivingDiningRoom_964oGiou_l.jpg",
+          "PanoramaTileImages/LivingDiningRoom_964oGiou_r.jpg",
+          "PanoramaTileImages/LivingDiningRoom_964oGiou_u.jpg",
+          "PanoramaTileImages/LivingDiningRoom_964oGiou_d.jpg",
+          "PanoramaTileImages/LivingDiningRoom_964oGiou_f.jpg",
+          "PanoramaTileImages/LivingDiningRoom_964oGiou_b.jpg"
+        ]
+      },
+      {
+        "id": "jCYl1x7J",
+        "name": "客厅",
+        "room": "客餐厅",
+        "position": {
+          "X": 155.3102,
+          "Y": 60.0,
+          "Z": -107.77424
+        },
+        "camera_height": 120.0,
+        "thumbnail_path": "ThumbnailImages/LivingDiningRoom_jCYl1x7J.jpg",
+        "panorama_tile_paths": [
+          "PanoramaTileImages/LivingDiningRoom_jCYl1x7J_l.jpg",
+          "PanoramaTileImages/LivingDiningRoom_jCYl1x7J_r.jpg",
+          "PanoramaTileImages/LivingDiningRoom_jCYl1x7J_u.jpg",
+          "PanoramaTileImages/LivingDiningRoom_jCYl1x7J_d.jpg",
+          "PanoramaTileImages/LivingDiningRoom_jCYl1x7J_f.jpg",
+          "PanoramaTileImages/LivingDiningRoom_jCYl1x7J_b.jpg"
+        ]
+      },
+      {
+        "id": "sSiM07Mb",
+        "name": "主卧",
+        "room": "主卧",
+        "position": {
+          "X": -343.267,
+          "Y": 60.0,
+          "Z": 108.8165
+        },
+        "camera_height": 120.0,
+        "thumbnail_path": "ThumbnailImages/MainBedroom_sSiM07Mb.jpg",
+        "panorama_tile_paths": [
+          "PanoramaTileImages/MainBedroom_sSiM07Mb_l.jpg",
+          "PanoramaTileImages/MainBedroom_sSiM07Mb_r.jpg",
+          "PanoramaTileImages/MainBedroom_sSiM07Mb_u.jpg",
+          "PanoramaTileImages/MainBedroom_sSiM07Mb_d.jpg",
+          "PanoramaTileImages/MainBedroom_sSiM07Mb_f.jpg",
+          "PanoramaTileImages/MainBedroom_sSiM07Mb_b.jpg"
+        ]
+      },
+      {
+        "id": "Xs5jTf1k",
+        "name": "次卧",
+        "room": "次卧",
+        "position": {
+          "X": -189.4664,
+          "Y": 60.0,
+          "Z": 114.86423
+        },
+        "camera_height": 120.0,
+        "thumbnail_path": "ThumbnailImages/SecondaryBedroom_Xs5jTf1k.jpg",
+        "panorama_tile_paths": [
+          "PanoramaTileImages/SecondaryBedroom_Xs5jTf1k_l.jpg",
+          "PanoramaTileImages/SecondaryBedroom_Xs5jTf1k_r.jpg",
+          "PanoramaTileImages/SecondaryBedroom_Xs5jTf1k_u.jpg",
+          "PanoramaTileImages/SecondaryBedroom_Xs5jTf1k_d.jpg",
+          "PanoramaTileImages/SecondaryBedroom_Xs5jTf1k_f.jpg",
+          "PanoramaTileImages/SecondaryBedroom_Xs5jTf1k_b.jpg"
+        ]
+      },
+      {
+        "id": "dSqrLSMz",
+        "name": "卫生间",
+        "room": "卫生间",
+        "position": {
+          "X": -339.48508,
+          "Y": 60.0,
+          "Z": -51.151264
+        },
+        "camera_height": 120.0,
+        "thumbnail_path": "ThumbnailImages/Toilet_dSqrLSMz.jpg",
+        "panorama_tile_paths": [
+          "PanoramaTileImages/Toilet_dSqrLSMz_l.jpg",
+          "PanoramaTileImages/Toilet_dSqrLSMz_r.jpg",
+          "PanoramaTileImages/Toilet_dSqrLSMz_u.jpg",
+          "PanoramaTileImages/Toilet_dSqrLSMz_d.jpg",
+          "PanoramaTileImages/Toilet_dSqrLSMz_f.jpg",
+          "PanoramaTileImages/Toilet_dSqrLSMz_b.jpg"
+        ]
+      },
+      {
+        "id": "gulXnDFa",
+        "name": "次卧",
+        "room": "次卧",
+        "position": {
+          "X": -201.64365,
+          "Y": 60.0,
+          "Z": -94.28838
+        },
+        "camera_height": 120.0,
+        "thumbnail_path": "ThumbnailImages/SecondaryBedroom_gulXnDFa.jpg",
+        "panorama_tile_paths": [
+          "PanoramaTileImages/SecondaryBedroom_gulXnDFa_l.jpg",
+          "PanoramaTileImages/SecondaryBedroom_gulXnDFa_r.jpg",
+          "PanoramaTileImages/SecondaryBedroom_gulXnDFa_u.jpg",
+          "PanoramaTileImages/SecondaryBedroom_gulXnDFa_d.jpg",
+          "PanoramaTileImages/SecondaryBedroom_gulXnDFa_f.jpg",
+          "PanoramaTileImages/SecondaryBedroom_gulXnDFa_b.jpg"
+        ]
+      },
+      {
+        "id": "hK3hVYiY",
+        "name": "书房",
+        "room": "书房",
+        "position": {
+          "X": -20.431248,
+          "Y": 60.0,
+          "Z": -113.868744
+        },
+        "camera_height": 120.0,
+        "thumbnail_path": "ThumbnailImages/StudyRoom_hK3hVYiY.jpg",
+        "panorama_tile_paths": [
+          "PanoramaTileImages/StudyRoom_hK3hVYiY_l.jpg",
+          "PanoramaTileImages/StudyRoom_hK3hVYiY_r.jpg",
+          "PanoramaTileImages/StudyRoom_hK3hVYiY_u.jpg",
+          "PanoramaTileImages/StudyRoom_hK3hVYiY_d.jpg",
+          "PanoramaTileImages/StudyRoom_hK3hVYiY_f.jpg",
+          "PanoramaTileImages/StudyRoom_hK3hVYiY_b.jpg"
+        ]
+      },
+      {
+        "id": "JflIfcij",
+        "name": "卫生间",
+        "room": "卫生间",
+        "position": {
+          "X": -120.95165,
+          "Y": 60.0,
+          "Z": -123.50122
+        },
+        "camera_height": 120.0,
+        "thumbnail_path": "ThumbnailImages/Toilet_JflIfcij.jpg",
+        "panorama_tile_paths": [
+          "PanoramaTileImages/Toilet_JflIfcij_l.jpg",
+          "PanoramaTileImages/Toilet_JflIfcij_r.jpg",
+          "PanoramaTileImages/Toilet_JflIfcij_u.jpg",
+          "PanoramaTileImages/Toilet_JflIfcij_d.jpg",
+          "PanoramaTileImages/Toilet_JflIfcij_f.jpg",
+          "PanoramaTileImages/Toilet_JflIfcij_b.jpg"
+        ]
+      },
+      {
+        "id": "8unavrZt",
+        "name": "厨房",
+        "room": "厨房",
+        "position": {
+          "X": 109.765884,
+          "Y": 60.0,
+          "Z": -183.16408
+        },
+        "camera_height": 120.0,
+        "thumbnail_path": "ThumbnailImages/Kitchen_8unavrZt.jpg",
+        "panorama_tile_paths": [
+          "PanoramaTileImages/Kitchen_8unavrZt_l.jpg",
+          "PanoramaTileImages/Kitchen_8unavrZt_r.jpg",
+          "PanoramaTileImages/Kitchen_8unavrZt_u.jpg",
+          "PanoramaTileImages/Kitchen_8unavrZt_d.jpg",
+          "PanoramaTileImages/Kitchen_8unavrZt_f.jpg",
+          "PanoramaTileImages/Kitchen_8unavrZt_b.jpg"
+        ]
+      },
+      {
+        "id": "zVchSPxz",
+        "name": "生活阳台",
+        "room": "生活阳台",
+        "position": {
+          "X": 66.08327,
+          "Y": 60.0,
+          "Z": 231.15099
+        },
+        "camera_height": 120.0,
+        "thumbnail_path": "ThumbnailImages/LivingBalcony_zVchSPxz.jpg",
+        "panorama_tile_paths": [
+          "PanoramaTileImages/LivingBalcony_zVchSPxz_l.jpg",
+          "PanoramaTileImages/LivingBalcony_zVchSPxz_r.jpg",
+          "PanoramaTileImages/LivingBalcony_zVchSPxz_u.jpg",
+          "PanoramaTileImages/LivingBalcony_zVchSPxz_d.jpg",
+          "PanoramaTileImages/LivingBalcony_zVchSPxz_f.jpg",
+          "PanoramaTileImages/LivingBalcony_zVchSPxz_b.jpg"
+        ]
+      }
+    ]
+  },
+  "rooms": [
+    {
+      "id_viewdata": "eHaXGv38",
+      "english_id": "living_room",
+      "name_original_plan": "客厅",
+      "name_123kanfang": "客餐厅",
+      "name_needs_confirmation": false,
+      "area_m2": 46.562157,
+      "area_source": "ViewData.json Rooms[].Area",
+      "room_height_units": 140.0,
+      "net_bbox_mm": {
+        "x_min_mm": -4405.0,
+        "x_max_mm": 4997.5,
+        "z_min_mm": -3645.3,
+        "z_max_mm": 5654.7,
+        "width_mm": 9402.5,
+        "depth_mm": 9300.0
+      },
+      "net_bbox_scope": "union of all RoomAreas",
+      "net_polygon_glb_mm": [
+        [
+          4997.5,
+          3319.7
+        ],
+        [
+          3445.0,
+          3319.7
+        ],
+        [
+          837.5,
+          3319.7
+        ],
+        [
+          837.5,
+          529.7
+        ],
+        [
+          -1397.5,
+          529.7
+        ],
+        [
+          -1397.5,
+          -555.3
+        ],
+        [
+          -1397.5,
+          -3645.3
+        ],
+        [
+          4997.5,
+          -3645.3
+        ]
+      ],
+      "world_bbox_mm": {
+        "x_min_mm": -4605.0,
+        "x_max_mm": 5237.51,
+        "y_min_mm": -100.0,
+        "y_max_mm": 2800.0,
+        "z_min_mm": -4141.13,
+        "z_max_mm": 5884.7,
+        "width_mm": 9842.51,
+        "height_mm": 2900.0,
+        "depth_mm": 10025.83
+      },
+      "glb_node": {
+        "index": 1,
+        "name": "Room-客餐厅-eHaXGv38",
+        "child_groups": [
+          "Mesh",
+          "Model"
+        ]
+      },
+      "plan_pixels": {
+        "bbox": {
+          "x_min": 487.0,
+          "x_max": 1427.3,
+          "y_min": 297.5,
+          "y_max": 1227.5
+        },
+        "centroid": [
+          914.5,
+          776.9
+        ],
+        "note": "像素坐标原点在图片左上角, x 向右, y 向下; 与 GLB 的 +Z 同向"
+      },
+      "hotspot_ids": [
+        "LCcQFRkx",
+        "964oGiou",
+        "jCYl1x7J"
+      ],
+      "hotspots": [
+        {
+          "ID": "LCcQFRkx",
+          "Name": "客厅",
+          "ThumbnailPath": "ThumbnailImages/LivingDiningRoom_LCcQFRkx.jpg",
+          "CameraHeight": 120.0,
+          "TileImagesPath": [
+            "PanoramaTileImages/LivingDiningRoom_LCcQFRkx_l.jpg",
+            "PanoramaTileImages/LivingDiningRoom_LCcQFRkx_r.jpg",
+            "PanoramaTileImages/LivingDiningRoom_LCcQFRkx_u.jpg",
+            "PanoramaTileImages/LivingDiningRoom_LCcQFRkx_d.jpg",
+            "PanoramaTileImages/LivingDiningRoom_LCcQFRkx_f.jpg",
+            "PanoramaTileImages/LivingDiningRoom_LCcQFRkx_b.jpg"
+          ],
+          "BlurTileImagesPath": [
+            "PanoramaBlurTileImages/LivingDiningRoom_LCcQFRkx_l.jpg",
+            "PanoramaBlurTileImages/LivingDiningRoom_LCcQFRkx_r.jpg",
+            "PanoramaBlurTileImages/LivingDiningRoom_LCcQFRkx_u.jpg",
+            "PanoramaBlurTileImages/LivingDiningRoom_LCcQFRkx_d.jpg",
+            "PanoramaBlurTileImages/LivingDiningRoom_LCcQFRkx_f.jpg",
+            "PanoramaBlurTileImages/LivingDiningRoom_LCcQFRkx_b.jpg"
+          ],
+          "VisibleHotSpotIds": [
+            "jCYl1x7J",
+            "964oGiou",
+            "hK3hVYiY",
+            "zVchSPxz"
+          ],
+          "Position": {
+            "X": 69.87058,
+            "Y": 60.0,
+            "Z": 93.46906
+          },
+          "Rotation": {
+            "X": 0.0,
+            "Y": 0.0,
+            "Z": 0.0
+          },
+          "BestCameraView": {
+            "X": 0.0,
+            "Y": 90.0
+          }
+        },
+        {
+          "ID": "964oGiou",
+          "Name": "盥洗室",
+          "ThumbnailPath": "ThumbnailImages/LivingDiningRoom_964oGiou.jpg",
+          "CameraHeight": 120.0,
+          "TileImagesPath": [
+            "PanoramaTileImages/LivingDiningRoom_964oGiou_l.jpg",
+            "PanoramaTileImages/LivingDiningRoom_964oGiou_r.jpg",
+            "PanoramaTileImages/LivingDiningRoom_964oGiou_u.jpg",
+            "PanoramaTileImages/LivingDiningRoom_964oGiou_d.jpg",
+            "PanoramaTileImages/LivingDiningRoom_964oGiou_f.jpg",
+            "PanoramaTileImages/LivingDiningRoom_964oGiou_b.jpg"
+          ],
+          "BlurTileImagesPath": [
+            "PanoramaBlurTileImages/LivingDiningRoom_964oGiou_l.jpg",
+            "PanoramaBlurTileImages/LivingDiningRoom_964oGiou_r.jpg",
+            "PanoramaBlurTileImages/LivingDiningRoom_964oGiou_u.jpg",
+            "PanoramaBlurTileImages/LivingDiningRoom_964oGiou_d.jpg",
+            "PanoramaBlurTileImages/LivingDiningRoom_964oGiou_f.jpg",
+            "PanoramaBlurTileImages/LivingDiningRoom_964oGiou_b.jpg"
+          ],
+          "VisibleHotSpotIds": [
+            "LCcQFRkx",
+            "sSiM07Mb",
+            "Xs5jTf1k",
+            "gulXnDFa",
+            "JflIfcij"
+          ],
+          "Position": {
+            "X": -134.07623,
+            "Y": 60.0,
+            "Z": -51.600998
+          },
+          "Rotation": {
+            "X": 0.0,
+            "Y": 0.0,
+            "Z": 0.0
+          },
+          "BestCameraView": {
+            "X": 0.0,
+            "Y": 114.224525
+          }
+        },
+        {
+          "ID": "jCYl1x7J",
+          "Name": "客厅",
+          "ThumbnailPath": "ThumbnailImages/LivingDiningRoom_jCYl1x7J.jpg",
+          "CameraHeight": 120.0,
+          "TileImagesPath": [
+            "PanoramaTileImages/LivingDiningRoom_jCYl1x7J_l.jpg",
+            "PanoramaTileImages/LivingDiningRoom_jCYl1x7J_r.jpg",
+            "PanoramaTileImages/LivingDiningRoom_jCYl1x7J_u.jpg",
+            "PanoramaTileImages/LivingDiningRoom_jCYl1x7J_d.jpg",
+            "PanoramaTileImages/LivingDiningRoom_jCYl1x7J_f.jpg",
+            "PanoramaTileImages/LivingDiningRoom_jCYl1x7J_b.jpg"
+          ],
+          "BlurTileImagesPath": [
+            "PanoramaBlurTileImages/LivingDiningRoom_jCYl1x7J_l.jpg",
+            "PanoramaBlurTileImages/LivingDiningRoom_jCYl1x7J_r.jpg",
+            "PanoramaBlurTileImages/LivingDiningRoom_jCYl1x7J_u.jpg",
+            "PanoramaBlurTileImages/LivingDiningRoom_jCYl1x7J_d.jpg",
+            "PanoramaBlurTileImages/LivingDiningRoom_jCYl1x7J_f.jpg",
+            "PanoramaBlurTileImages/LivingDiningRoom_jCYl1x7J_b.jpg"
+          ],
+          "VisibleHotSpotIds": [
+            "LCcQFRkx",
+            "8unavrZt"
+          ],
+          "Position": {
+            "X": 155.3102,
+            "Y": 60.0,
+            "Z": -107.77424
+          },
+          "Rotation": {
+            "X": 0.0,
+            "Y": 0.0,
+            "Z": 0.0
+          },
+          "BestCameraView": {
+            "X": 0.0,
+            "Y": 131.23105
+          }
+        }
+      ],
+      "notes": "客餐厅一体化 (LDK): 北侧起居 (沙发 M_多人沙发_* / 茶几 / 地毯, GLB Z −331.7…−69) + 南侧餐区 (餐桌 M_餐桌_* + 餐椅×4, GLB X 234…316, Z 72…260)。『客厅·LDK 餐厅区』是按 客厅区 polygon 在 Z=52.97 (储物间北墙线) 处切分出来的派生分区, 不是独立房间; 第一版不另立『餐厅』。玄关柜/酒柜/装饰柜贴东墙 (X≈465…500)。"
+    },
+    {
+      "id_viewdata": "mCOSmg5M",
+      "english_id": "master_bedroom",
+      "name_original_plan": "主卧",
+      "name_123kanfang": "主卧",
+      "name_needs_confirmation": false,
+      "area_m2": 15.93765,
+      "area_source": "ViewData.json Rooms[].Area",
+      "room_height_units": 140.0,
+      "net_bbox_mm": {
+        "x_min_mm": -7915.0,
+        "x_max_mm": -4605.0,
+        "z_min_mm": -4285.3,
+        "z_max_mm": 529.7,
+        "width_mm": 3310.0,
+        "depth_mm": 4815.0
+      },
+      "net_bbox_scope": "the single RoomArea (== room outline)",
+      "net_polygon_glb_mm": [
+        [
+          -7915.0,
+          529.7
+        ],
+        [
+          -7915.0,
+          -4285.3
+        ],
+        [
+          -4605.0,
+          -4285.3
+        ],
+        [
+          -4605.0,
+          529.7
+        ]
+      ],
+      "world_bbox_mm": {
+        "x_min_mm": -8175.0,
+        "x_max_mm": -4403.0,
+        "y_min_mm": -100.0,
+        "y_max_mm": 2800.14,
+        "z_min_mm": -4525.38,
+        "z_max_mm": 659.7,
+        "width_mm": 3772.0,
+        "height_mm": 2900.14,
+        "depth_mm": 5185.08
+      },
+      "glb_node": {
+        "index": 56,
+        "name": "Room-主卧-mCOSmg5M",
+        "child_groups": [
+          "Mesh",
+          "Model"
+        ]
+      },
+      "plan_pixels": {
+        "bbox": {
+          "x_min": 136.0,
+          "x_max": 467.0,
+          "y_min": 233.5,
+          "y_max": 715.0
+        },
+        "centroid": [
+          301.5,
+          474.3
+        ],
+        "note": "像素坐标原点在图片左上角, x 向右, y 向下; 与 GLB 的 +Z 同向"
+      },
+      "hotspot_ids": [
+        "sSiM07Mb"
+      ],
+      "hotspots": [
+        {
+          "ID": "sSiM07Mb",
+          "Name": "主卧",
+          "ThumbnailPath": "ThumbnailImages/MainBedroom_sSiM07Mb.jpg",
+          "CameraHeight": 120.0,
+          "TileImagesPath": [
+            "PanoramaTileImages/MainBedroom_sSiM07Mb_l.jpg",
+            "PanoramaTileImages/MainBedroom_sSiM07Mb_r.jpg",
+            "PanoramaTileImages/MainBedroom_sSiM07Mb_u.jpg",
+            "PanoramaTileImages/MainBedroom_sSiM07Mb_d.jpg",
+            "PanoramaTileImages/MainBedroom_sSiM07Mb_f.jpg",
+            "PanoramaTileImages/MainBedroom_sSiM07Mb_b.jpg"
+          ],
+          "BlurTileImagesPath": [
+            "PanoramaBlurTileImages/MainBedroom_sSiM07Mb_l.jpg",
+            "PanoramaBlurTileImages/MainBedroom_sSiM07Mb_r.jpg",
+            "PanoramaBlurTileImages/MainBedroom_sSiM07Mb_u.jpg",
+            "PanoramaBlurTileImages/MainBedroom_sSiM07Mb_d.jpg",
+            "PanoramaBlurTileImages/MainBedroom_sSiM07Mb_f.jpg",
+            "PanoramaBlurTileImages/MainBedroom_sSiM07Mb_b.jpg"
+          ],
+          "VisibleHotSpotIds": [
+            "964oGiou",
+            "dSqrLSMz"
+          ],
+          "Position": {
+            "X": -343.267,
+            "Y": 60.0,
+            "Z": 108.8165
+          },
+          "Rotation": {
+            "X": 0.0,
+            "Y": 0.0,
+            "Z": 0.0
+          },
+          "BestCameraView": {
+            "X": 0.0,
+            "Y": 90.0
+          }
+        }
+      ],
+      "notes": "主卧: 西侧 X −791.5…−460.5, 北侧 Z −428.5…53.0; 与主卫 EX4vhDXo 共墙 (Z 52.97…65.97)。"
+    },
+    {
+      "id_viewdata": "f1qYqHqH",
+      "english_id": "north_bedroom",
+      "name_original_plan": "北次卧",
+      "name_123kanfang": "次卧",
+      "name_needs_confirmation": true,
+      "area_m2": 10.071001,
+      "area_source": "ViewData.json Rooms[].Area",
+      "room_height_units": 140.0,
+      "net_bbox_mm": {
+        "x_min_mm": -4405.0,
+        "x_max_mm": -1607.5,
+        "z_min_mm": -4285.3,
+        "z_max_mm": -685.3,
+        "width_mm": 2797.5,
+        "depth_mm": 3600.0
+      },
+      "net_bbox_scope": "the single RoomArea (== room outline)",
+      "net_polygon_glb_mm": [
+        [
+          -4405.0,
+          -685.3
+        ],
+        [
+          -4405.0,
+          -4285.3
+        ],
+        [
+          -1607.5,
+          -4285.3
+        ],
+        [
+          -1607.5,
+          -685.3
+        ]
+      ],
+      "world_bbox_mm": {
+        "x_min_mm": -4605.0,
+        "x_max_mm": -1397.5,
+        "y_min_mm": -100.0,
+        "y_max_mm": 2800.02,
+        "z_min_mm": -4525.38,
+        "z_max_mm": -553.3,
+        "width_mm": 3207.5,
+        "height_mm": 2900.02,
+        "depth_mm": 3972.08
+      },
+      "glb_node": {
+        "index": 88,
+        "name": "Room-次卧-f1qYqHqH",
+        "child_groups": [
+          "Mesh",
+          "Model"
+        ]
+      },
+      "plan_pixels": {
+        "bbox": {
+          "x_min": 487.0,
+          "x_max": 766.8,
+          "y_min": 233.5,
+          "y_max": 593.5
+        },
+        "centroid": [
+          626.9,
+          413.5
+        ],
+        "note": "像素坐标原点在图片左上角, x 向右, y 向下; 与 GLB 的 +Z 同向"
+      },
+      "hotspot_ids": [
+        "Xs5jTf1k"
+      ],
+      "hotspots": [
+        {
+          "ID": "Xs5jTf1k",
+          "Name": "次卧",
+          "ThumbnailPath": "ThumbnailImages/SecondaryBedroom_Xs5jTf1k.jpg",
+          "CameraHeight": 120.0,
+          "TileImagesPath": [
+            "PanoramaTileImages/SecondaryBedroom_Xs5jTf1k_l.jpg",
+            "PanoramaTileImages/SecondaryBedroom_Xs5jTf1k_r.jpg",
+            "PanoramaTileImages/SecondaryBedroom_Xs5jTf1k_u.jpg",
+            "PanoramaTileImages/SecondaryBedroom_Xs5jTf1k_d.jpg",
+            "PanoramaTileImages/SecondaryBedroom_Xs5jTf1k_f.jpg",
+            "PanoramaTileImages/SecondaryBedroom_Xs5jTf1k_b.jpg"
+          ],
+          "BlurTileImagesPath": [
+            "PanoramaBlurTileImages/SecondaryBedroom_Xs5jTf1k_l.jpg",
+            "PanoramaBlurTileImages/SecondaryBedroom_Xs5jTf1k_r.jpg",
+            "PanoramaBlurTileImages/SecondaryBedroom_Xs5jTf1k_u.jpg",
+            "PanoramaBlurTileImages/SecondaryBedroom_Xs5jTf1k_d.jpg",
+            "PanoramaBlurTileImages/SecondaryBedroom_Xs5jTf1k_f.jpg",
+            "PanoramaBlurTileImages/SecondaryBedroom_Xs5jTf1k_b.jpg"
+          ],
+          "VisibleHotSpotIds": [
+            "964oGiou"
+          ],
+          "Position": {
+            "X": -189.4664,
+            "Y": 60.0,
+            "Z": 114.86423
+          },
+          "Rotation": {
+            "X": 0.0,
+            "Y": 0.0,
+            "Z": 0.0
+          },
+          "BestCameraView": {
+            "X": 0.0,
+            "Y": 90.0
+          }
+        }
+      ],
+      "notes": "北次卧 (客卧位): 面积 10.07㎡ 为两个次卧中较大者, 与主卧共墙 (X −462.5…−460.5), 内含衣柜/装饰画/地毯而无书桌 ⇒ 判定为客卧位。123kanfang 侧名称同样叫『次卧』, 属推断。"
+    },
+    {
+      "id_viewdata": "EX4vhDXo",
+      "english_id": "master_bathroom",
+      "name_original_plan": "主卫",
+      "name_123kanfang": "卫生间",
+      "name_needs_confirmation": true,
+      "area_m2": 4.0032897,
+      "area_source": "ViewData.json Rooms[].Area",
+      "room_height_units": 140.0,
+      "net_bbox_mm": {
+        "x_min_mm": -7915.0,
+        "x_max_mm": -6305.1,
+        "z_min_mm": 659.7,
+        "z_max_mm": 3259.7,
+        "width_mm": 1609.9,
+        "depth_mm": 2600.0
+      },
+      "net_bbox_scope": "the single RoomArea (== room outline)",
+      "net_polygon_glb_mm": [
+        [
+          -7692.5,
+          3259.7
+        ],
+        [
+          -7692.5,
+          2439.7
+        ],
+        [
+          -7915.0,
+          2439.7
+        ],
+        [
+          -7915.0,
+          659.7
+        ],
+        [
+          -6305.1,
+          659.7
+        ],
+        [
+          -6305.1,
+          3259.7
+        ]
+      ],
+      "world_bbox_mm": {
+        "x_min_mm": -8175.08,
+        "x_max_mm": -6165.1,
+        "y_min_mm": -100.0,
+        "y_max_mm": 2800.0,
+        "z_min_mm": 514.7,
+        "z_max_mm": 3499.7,
+        "width_mm": 2009.98,
+        "height_mm": 2900.0,
+        "depth_mm": 2985.0
+      },
+      "glb_node": {
+        "index": 116,
+        "name": "Room-卫生间-EX4vhDXo",
+        "child_groups": [
+          "Mesh",
+          "Model"
+        ]
+      },
+      "plan_pixels": {
+        "bbox": {
+          "x_min": 136.0,
+          "x_max": 297.0,
+          "y_min": 728.0,
+          "y_max": 988.0
+        },
+        "centroid": [
+          197.1,
+          874.0
+        ],
+        "note": "像素坐标原点在图片左上角, x 向右, y 向下; 与 GLB 的 +Z 同向"
+      },
+      "hotspot_ids": [
+        "dSqrLSMz"
+      ],
+      "hotspots": [
+        {
+          "ID": "dSqrLSMz",
+          "Name": "卫生间",
+          "ThumbnailPath": "ThumbnailImages/Toilet_dSqrLSMz.jpg",
+          "CameraHeight": 120.0,
+          "TileImagesPath": [
+            "PanoramaTileImages/Toilet_dSqrLSMz_l.jpg",
+            "PanoramaTileImages/Toilet_dSqrLSMz_r.jpg",
+            "PanoramaTileImages/Toilet_dSqrLSMz_u.jpg",
+            "PanoramaTileImages/Toilet_dSqrLSMz_d.jpg",
+            "PanoramaTileImages/Toilet_dSqrLSMz_f.jpg",
+            "PanoramaTileImages/Toilet_dSqrLSMz_b.jpg"
+          ],
+          "BlurTileImagesPath": [
+            "PanoramaBlurTileImages/Toilet_dSqrLSMz_l.jpg",
+            "PanoramaBlurTileImages/Toilet_dSqrLSMz_r.jpg",
+            "PanoramaBlurTileImages/Toilet_dSqrLSMz_u.jpg",
+            "PanoramaBlurTileImages/Toilet_dSqrLSMz_d.jpg",
+            "PanoramaBlurTileImages/Toilet_dSqrLSMz_f.jpg",
+            "PanoramaBlurTileImages/Toilet_dSqrLSMz_b.jpg"
+          ],
+          "VisibleHotSpotIds": [
+            "sSiM07Mb"
+          ],
+          "Position": {
+            "X": -339.48508,
+            "Y": 60.0,
+            "Z": -51.151264
+          },
+          "Rotation": {
+            "X": 0.0,
+            "Y": 0.0,
+            "Z": 0.0
+          },
+          "BestCameraView": {
+            "X": 0.0,
+            "Y": 576.69165
+          }
+        }
+      ],
+      "notes": "主卫: 4.00㎡, 直接紧贴主卧南侧 (共墙 Z 52.97…65.97), 内含 8 组浴室柜 + 马桶 + 地漏 + 暖风浴霸 ⇒ 为主卧套卫。"
+    },
+    {
+      "id_viewdata": "g3cnKYnd",
+      "english_id": "south_bedroom",
+      "name_original_plan": "南次卧",
+      "name_123kanfang": "次卧",
+      "name_needs_confirmation": true,
+      "area_m2": 9.402578,
+      "area_source": "ViewData.json Rooms[].Area",
+      "room_height_units": 140.0,
+      "net_bbox_mm": {
+        "x_min_mm": -6165.1,
+        "x_max_mm": -3305.0,
+        "z_min_mm": 659.7,
+        "z_max_mm": 3947.2,
+        "width_mm": 2860.1,
+        "depth_mm": 3287.5
+      },
+      "net_bbox_scope": "the single RoomArea (== room outline)",
+      "net_polygon_glb_mm": [
+        [
+          -6165.1,
+          3947.2
+        ],
+        [
+          -6165.1,
+          659.7
+        ],
+        [
+          -3305.0,
+          659.7
+        ],
+        [
+          -3305.0,
+          3947.2
+        ]
+      ],
+      "world_bbox_mm": {
+        "x_min_mm": -6395.1,
+        "x_max_mm": -3065.0,
+        "y_min_mm": -100.0,
+        "y_max_mm": 2800.0,
+        "z_min_mm": 527.7,
+        "z_max_mm": 4107.28,
+        "width_mm": 3330.1,
+        "height_mm": 2900.0,
+        "depth_mm": 3579.58
+      },
+      "glb_node": {
+        "index": 136,
+        "name": "Room-次卧-g3cnKYnd",
+        "child_groups": [
+          "Mesh",
+          "Model"
+        ]
+      },
+      "plan_pixels": {
+        "bbox": {
+          "x_min": 311.0,
+          "x_max": 597.0,
+          "y_min": 728.0,
+          "y_max": 1056.8
+        },
+        "centroid": [
+          454.0,
+          892.4
+        ],
+        "note": "像素坐标原点在图片左上角, x 向右, y 向下; 与 GLB 的 +Z 同向"
+      },
+      "hotspot_ids": [
+        "gulXnDFa"
+      ],
+      "hotspots": [
+        {
+          "ID": "gulXnDFa",
+          "Name": "次卧",
+          "ThumbnailPath": "ThumbnailImages/SecondaryBedroom_gulXnDFa.jpg",
+          "CameraHeight": 120.0,
+          "TileImagesPath": [
+            "PanoramaTileImages/SecondaryBedroom_gulXnDFa_l.jpg",
+            "PanoramaTileImages/SecondaryBedroom_gulXnDFa_r.jpg",
+            "PanoramaTileImages/SecondaryBedroom_gulXnDFa_u.jpg",
+            "PanoramaTileImages/SecondaryBedroom_gulXnDFa_d.jpg",
+            "PanoramaTileImages/SecondaryBedroom_gulXnDFa_f.jpg",
+            "PanoramaTileImages/SecondaryBedroom_gulXnDFa_b.jpg"
+          ],
+          "BlurTileImagesPath": [
+            "PanoramaBlurTileImages/SecondaryBedroom_gulXnDFa_l.jpg",
+            "PanoramaBlurTileImages/SecondaryBedroom_gulXnDFa_r.jpg",
+            "PanoramaBlurTileImages/SecondaryBedroom_gulXnDFa_u.jpg",
+            "PanoramaBlurTileImages/SecondaryBedroom_gulXnDFa_d.jpg",
+            "PanoramaBlurTileImages/SecondaryBedroom_gulXnDFa_f.jpg",
+            "PanoramaBlurTileImages/SecondaryBedroom_gulXnDFa_b.jpg"
+          ],
+          "VisibleHotSpotIds": [
+            "964oGiou"
+          ],
+          "Position": {
+            "X": -201.64365,
+            "Y": 60.0,
+            "Z": -94.28838
+          },
+          "Rotation": {
+            "X": 0.0,
+            "Y": 0.0,
+            "Z": 0.0
+          },
+          "BestCameraView": {
+            "X": 0.0,
+            "Y": 585.0
+          }
+        }
+      ],
+      "notes": "南次卧 (次卧位): 面积 9.40㎡, 位于主卧南侧; 内含『衣柜带转角书桌』+ 单椅 ⇒ 带书桌功能, 判定为次卧/书房型。123kanfang 侧名称同样叫『次卧』, 属推断。"
+    },
+    {
+      "id_viewdata": "XrCzEEni",
+      "english_id": "utility",
+      "name_original_plan": "储物间/多功能角",
+      "name_123kanfang": "书房",
+      "name_needs_confirmation": true,
+      "area_m2": 6.5702686,
+      "area_source": "ViewData.json Rooms[].Area",
+      "room_height_units": 140.0,
+      "net_bbox_mm": {
+        "x_min_mm": -1395.0,
+        "x_max_mm": 597.5,
+        "z_min_mm": 649.7,
+        "z_max_mm": 3947.2,
+        "width_mm": 1992.5,
+        "depth_mm": 3297.5
+      },
+      "net_bbox_scope": "the single RoomArea (== room outline)",
+      "net_polygon_glb_mm": [
+        [
+          -1395.0,
+          3947.2
+        ],
+        [
+          -1395.0,
+          649.7
+        ],
+        [
+          597.5,
+          649.7
+        ],
+        [
+          597.5,
+          3947.2
+        ]
+      ],
+      "world_bbox_mm": {
+        "x_min_mm": -1726.4,
+        "x_max_mm": 837.5,
+        "y_min_mm": -100.0,
+        "y_max_mm": 2800.0,
+        "z_min_mm": 527.66,
+        "z_max_mm": 4107.28,
+        "width_mm": 2563.9,
+        "height_mm": 2900.0,
+        "depth_mm": 3579.62
+      },
+      "glb_node": {
+        "index": 160,
+        "name": "Room-书房-XrCzEEni",
+        "child_groups": [
+          "Mesh",
+          "Model"
+        ]
+      },
+      "plan_pixels": {
+        "bbox": {
+          "x_min": 788.0,
+          "x_max": 987.3,
+          "y_min": 727.0,
+          "y_max": 1056.8
+        },
+        "centroid": [
+          887.6,
+          891.9
+        ],
+        "note": "像素坐标原点在图片左上角, x 向右, y 向下; 与 GLB 的 +Z 同向"
+      },
+      "hotspot_ids": [
+        "hK3hVYiY"
+      ],
+      "hotspots": [
+        {
+          "ID": "hK3hVYiY",
+          "Name": "书房",
+          "ThumbnailPath": "ThumbnailImages/StudyRoom_hK3hVYiY.jpg",
+          "CameraHeight": 120.0,
+          "TileImagesPath": [
+            "PanoramaTileImages/StudyRoom_hK3hVYiY_l.jpg",
+            "PanoramaTileImages/StudyRoom_hK3hVYiY_r.jpg",
+            "PanoramaTileImages/StudyRoom_hK3hVYiY_u.jpg",
+            "PanoramaTileImages/StudyRoom_hK3hVYiY_d.jpg",
+            "PanoramaTileImages/StudyRoom_hK3hVYiY_f.jpg",
+            "PanoramaTileImages/StudyRoom_hK3hVYiY_b.jpg"
+          ],
+          "BlurTileImagesPath": [
+            "PanoramaBlurTileImages/StudyRoom_hK3hVYiY_l.jpg",
+            "PanoramaBlurTileImages/StudyRoom_hK3hVYiY_r.jpg",
+            "PanoramaBlurTileImages/StudyRoom_hK3hVYiY_u.jpg",
+            "PanoramaBlurTileImages/StudyRoom_hK3hVYiY_d.jpg",
+            "PanoramaBlurTileImages/StudyRoom_hK3hVYiY_f.jpg",
+            "PanoramaBlurTileImages/StudyRoom_hK3hVYiY_b.jpg"
+          ],
+          "VisibleHotSpotIds": [
+            "LCcQFRkx"
+          ],
+          "Position": {
+            "X": -20.431248,
+            "Y": 60.0,
+            "Z": -113.868744
+          },
+          "Rotation": {
+            "X": 0.0,
+            "Y": 0.0,
+            "Z": 0.0
+          },
+          "BestCameraView": {
+            "X": 0.0,
+            "Y": 156.65057
+          }
+        }
+      ],
+      "notes": "原始户型命名『储物间/多功能角』, 尺寸 1.99×3.30 m (19925×32975 mm)。与公卫 qOPrZ97W 共用同一段墙 (X −161.5…−139.5 墙带), 动线上是入户过渡区。原始户型待现场照片确认; 123kanfang 方案将此处改为电竞房 (推拉门 + 电竞椅×2 + 背景墙)。方案内实为电竞房: 西墙贴 M_电竞房背景墙_* 背景墙, 内含 2 组 760×1130×740 mm 桌台 (GLB 节点 173/174)。"
+    },
+    {
+      "id_viewdata": "qOPrZ97W",
+      "english_id": "guest_bathroom",
+      "name_original_plan": "公卫",
+      "name_123kanfang": "卫生间",
+      "name_needs_confirmation": true,
+      "area_m2": 2.1264038,
+      "area_source": "ViewData.json Rooms[].Area",
+      "room_height_units": 140.0,
+      "net_bbox_mm": {
+        "x_min_mm": -3065.0,
+        "x_max_mm": -1615.0,
+        "z_min_mm": 1664.7,
+        "z_max_mm": 3259.7,
+        "width_mm": 1450.0,
+        "depth_mm": 1595.0
+      },
+      "net_bbox_scope": "the single RoomArea (== room outline)",
+      "net_polygon_glb_mm": [
+        [
+          -3065.0,
+          3259.7
+        ],
+        [
+          -3065.0,
+          1664.7
+        ],
+        [
+          -1615.0,
+          1664.7
+        ],
+        [
+          -1615.0,
+          2454.4
+        ],
+        [
+          -1846.4,
+          2454.4
+        ],
+        [
+          -1846.4,
+          3259.7
+        ]
+      ],
+      "world_bbox_mm": {
+        "x_min_mm": -3305.0,
+        "x_max_mm": -1395.0,
+        "y_min_mm": -100.0,
+        "y_max_mm": 2800.0,
+        "z_min_mm": 1519.7,
+        "z_max_mm": 3999.78,
+        "width_mm": 1910.0,
+        "height_mm": 2900.0,
+        "depth_mm": 2480.08
+      },
+      "glb_node": {
+        "index": 183,
+        "name": "Room-卫生间-qOPrZ97W",
+        "child_groups": [
+          "Mesh",
+          "Model"
+        ]
+      },
+      "plan_pixels": {
+        "bbox": {
+          "x_min": 621.0,
+          "x_max": 766.0,
+          "y_min": 828.5,
+          "y_max": 988.0
+        },
+        "centroid": [
+          710.0,
+          908.0
+        ],
+        "note": "像素坐标原点在图片左上角, x 向右, y 向下; 与 GLB 的 +Z 同向"
+      },
+      "hotspot_ids": [
+        "JflIfcij"
+      ],
+      "hotspots": [
+        {
+          "ID": "JflIfcij",
+          "Name": "卫生间",
+          "ThumbnailPath": "ThumbnailImages/Toilet_JflIfcij.jpg",
+          "CameraHeight": 120.0,
+          "TileImagesPath": [
+            "PanoramaTileImages/Toilet_JflIfcij_l.jpg",
+            "PanoramaTileImages/Toilet_JflIfcij_r.jpg",
+            "PanoramaTileImages/Toilet_JflIfcij_u.jpg",
+            "PanoramaTileImages/Toilet_JflIfcij_d.jpg",
+            "PanoramaTileImages/Toilet_JflIfcij_f.jpg",
+            "PanoramaTileImages/Toilet_JflIfcij_b.jpg"
+          ],
+          "BlurTileImagesPath": [
+            "PanoramaBlurTileImages/Toilet_JflIfcij_l.jpg",
+            "PanoramaBlurTileImages/Toilet_JflIfcij_r.jpg",
+            "PanoramaBlurTileImages/Toilet_JflIfcij_u.jpg",
+            "PanoramaBlurTileImages/Toilet_JflIfcij_d.jpg",
+            "PanoramaBlurTileImages/Toilet_JflIfcij_f.jpg",
+            "PanoramaBlurTileImages/Toilet_JflIfcij_b.jpg"
+          ],
+          "VisibleHotSpotIds": [
+            "964oGiou"
+          ],
+          "Position": {
+            "X": -120.95165,
+            "Y": 60.0,
+            "Z": -123.50122
+          },
+          "Rotation": {
+            "X": 0.0,
+            "Y": 0.0,
+            "Z": 0.0
+          },
+          "BestCameraView": {
+            "X": 0.0,
+            "Y": 142.99893
+          }
+        }
+      ],
+      "notes": "公卫: 2.13㎡, 仅马桶 + 地漏, 紧邻盥洗区/过道, 与主卧、主卫均不相邻 ⇒ 为公共卫生间。"
+    },
+    {
+      "id_viewdata": "WFGji10I",
+      "english_id": "kitchen",
+      "name_original_plan": "厨房",
+      "name_123kanfang": "厨房",
+      "name_needs_confirmation": false,
+      "area_m2": 5.332611,
+      "area_source": "ViewData.json Rooms[].Area",
+      "room_height_units": 140.0,
+      "net_bbox_mm": {
+        "x_min_mm": 837.5,
+        "x_max_mm": 3245.0,
+        "z_min_mm": 3439.7,
+        "z_max_mm": 5654.7,
+        "width_mm": 2407.5,
+        "depth_mm": 2215.0
+      },
+      "net_bbox_scope": "the single RoomArea (== room outline)",
+      "net_polygon_glb_mm": [
+        [
+          837.5,
+          5654.7
+        ],
+        [
+          837.5,
+          3439.7
+        ],
+        [
+          3245.0,
+          3439.7
+        ],
+        [
+          3245.0,
+          5654.7
+        ]
+      ],
+      "world_bbox_mm": {
+        "x_min_mm": 597.42,
+        "x_max_mm": 3445.0,
+        "y_min_mm": -100.0,
+        "y_max_mm": 2800.2,
+        "z_min_mm": 3317.63,
+        "z_max_mm": 5884.7,
+        "width_mm": 2847.58,
+        "height_mm": 2900.2,
+        "depth_mm": 2567.07
+      },
+      "glb_node": {
+        "index": 203,
+        "name": "Room-厨房-WFGji10I",
+        "child_groups": [
+          "Mesh",
+          "Model"
+        ]
+      },
+      "plan_pixels": {
+        "bbox": {
+          "x_min": 1011.3,
+          "x_max": 1252.0,
+          "y_min": 1006.0,
+          "y_max": 1227.5
+        },
+        "centroid": [
+          1131.6,
+          1116.8
+        ],
+        "note": "像素坐标原点在图片左上角, x 向右, y 向下; 与 GLB 的 +Z 同向"
+      },
+      "hotspot_ids": [
+        "8unavrZt"
+      ],
+      "hotspots": [
+        {
+          "ID": "8unavrZt",
+          "Name": "厨房",
+          "ThumbnailPath": "ThumbnailImages/Kitchen_8unavrZt.jpg",
+          "CameraHeight": 120.0,
+          "TileImagesPath": [
+            "PanoramaTileImages/Kitchen_8unavrZt_l.jpg",
+            "PanoramaTileImages/Kitchen_8unavrZt_r.jpg",
+            "PanoramaTileImages/Kitchen_8unavrZt_u.jpg",
+            "PanoramaTileImages/Kitchen_8unavrZt_d.jpg",
+            "PanoramaTileImages/Kitchen_8unavrZt_f.jpg",
+            "PanoramaTileImages/Kitchen_8unavrZt_b.jpg"
+          ],
+          "BlurTileImagesPath": [
+            "PanoramaBlurTileImages/Kitchen_8unavrZt_l.jpg",
+            "PanoramaBlurTileImages/Kitchen_8unavrZt_r.jpg",
+            "PanoramaBlurTileImages/Kitchen_8unavrZt_u.jpg",
+            "PanoramaBlurTileImages/Kitchen_8unavrZt_d.jpg",
+            "PanoramaBlurTileImages/Kitchen_8unavrZt_f.jpg",
+            "PanoramaBlurTileImages/Kitchen_8unavrZt_b.jpg"
+          ],
+          "VisibleHotSpotIds": [
+            "jCYl1x7J"
+          ],
+          "Position": {
+            "X": 109.765884,
+            "Y": 60.0,
+            "Z": -183.16408
+          },
+          "Rotation": {
+            "X": 0.0,
+            "Y": 0.0,
+            "Z": 0.0
+          },
+          "BestCameraView": {
+            "X": 0.0,
+            "Y": 177.86993
+          }
+        }
+      ],
+      "notes": "厨房: 5.33㎡, 位于东南角 (GLB X 83.75…324.5, Z 343.97…565.47), 沿东/南两侧布置厨柜。"
+    },
+    {
+      "id_viewdata": "z5u59ReE",
+      "english_id": "living_balcony",
+      "name_original_plan": "生活阳台",
+      "name_123kanfang": "生活阳台",
+      "name_needs_confirmation": false,
+      "area_m2": 8.537326,
+      "area_source": "ViewData.json Rooms[].Area",
+      "room_height_units": 140.0,
+      "net_bbox_mm": {
+        "x_min_mm": -1397.5,
+        "x_max_mm": 4997.5,
+        "z_min_mm": -5260.3,
+        "z_max_mm": -3925.3,
+        "width_mm": 6395.0,
+        "depth_mm": 1335.0
+      },
+      "net_bbox_scope": "the single RoomArea (== room outline)",
+      "net_polygon_glb_mm": [
+        [
+          -1397.5,
+          -3925.3
+        ],
+        [
+          -1397.5,
+          -5260.3
+        ],
+        [
+          4997.5,
+          -5260.3
+        ],
+        [
+          4997.5,
+          -3925.3
+        ]
+      ],
+      "world_bbox_mm": {
+        "x_min_mm": -1607.58,
+        "x_max_mm": 5237.5,
+        "y_min_mm": -100.0,
+        "y_max_mm": 2800.0,
+        "z_min_mm": -5500.38,
+        "z_max_mm": -3625.31,
+        "width_mm": 6845.08,
+        "height_mm": 2900.0,
+        "depth_mm": 1875.07
+      },
+      "glb_node": {
+        "index": 249,
+        "name": "Room-生活阳台-z5u59ReE",
+        "child_groups": [
+          "Mesh",
+          "Model"
+        ]
+      },
+      "plan_pixels": {
+        "bbox": {
+          "x_min": 787.8,
+          "x_max": 1427.3,
+          "y_min": 136.0,
+          "y_max": 269.5
+        },
+        "centroid": [
+          1107.5,
+          202.8
+        ],
+        "note": "像素坐标原点在图片左上角, x 向右, y 向下; 与 GLB 的 +Z 同向"
+      },
+      "hotspot_ids": [
+        "zVchSPxz"
+      ],
+      "hotspots": [
+        {
+          "ID": "zVchSPxz",
+          "Name": "生活阳台",
+          "ThumbnailPath": "ThumbnailImages/LivingBalcony_zVchSPxz.jpg",
+          "CameraHeight": 120.0,
+          "TileImagesPath": [
+            "PanoramaTileImages/LivingBalcony_zVchSPxz_l.jpg",
+            "PanoramaTileImages/LivingBalcony_zVchSPxz_r.jpg",
+            "PanoramaTileImages/LivingBalcony_zVchSPxz_u.jpg",
+            "PanoramaTileImages/LivingBalcony_zVchSPxz_d.jpg",
+            "PanoramaTileImages/LivingBalcony_zVchSPxz_f.jpg",
+            "PanoramaTileImages/LivingBalcony_zVchSPxz_b.jpg"
+          ],
+          "BlurTileImagesPath": [
+            "PanoramaBlurTileImages/LivingBalcony_zVchSPxz_l.jpg",
+            "PanoramaBlurTileImages/LivingBalcony_zVchSPxz_r.jpg",
+            "PanoramaBlurTileImages/LivingBalcony_zVchSPxz_u.jpg",
+            "PanoramaBlurTileImages/LivingBalcony_zVchSPxz_d.jpg",
+            "PanoramaBlurTileImages/LivingBalcony_zVchSPxz_f.jpg",
+            "PanoramaBlurTileImages/LivingBalcony_zVchSPxz_b.jpg"
+          ],
+          "VisibleHotSpotIds": [
+            "LCcQFRkx"
+          ],
+          "Position": {
+            "X": 66.08327,
+            "Y": 60.0,
+            "Z": 231.15099
+          },
+          "Rotation": {
+            "X": 0.0,
+            "Y": 0.0,
+            "Z": 0.0
+          },
+          "BestCameraView": {
+            "X": 0.0,
+            "Y": 99.50366
+          }
+        }
+      ],
+      "notes": "生活阳台: 8.54㎡, 位于北端 (GLB Z −526.03…−392.53), 含阳台洗衣机柜 (X 439.7…499.8)。"
+    }
+  ],
+  "room_sub_areas": [
+    {
+      "id_viewdata": "G5tPo97X",
+      "name_original_plan": "客厅区",
+      "name_123kanfang": "客厅区",
+      "room_id_viewdata": "eHaXGv38",
+      "room_name_123kanfang": "客餐厅",
+      "hotspot_ids": [
+        "LCcQFRkx",
+        "jCYl1x7J"
+      ],
+      "net_bbox_mm": {
+        "x_min_mm": -1397.5,
+        "x_max_mm": 4997.5,
+        "z_min_mm": -3645.3,
+        "z_max_mm": 3319.7,
+        "width_mm": 6395.0,
+        "depth_mm": 6965.0
+      },
+      "area_m2_recomputed_shoelace": 38.3055,
+      "net_polygon_glb_mm": [
+        [
+          4997.5,
+          3319.7
+        ],
+        [
+          3445.0,
+          3319.7
+        ],
+        [
+          837.5,
+          3319.7
+        ],
+        [
+          837.5,
+          529.7
+        ],
+        [
+          -1397.5,
+          529.7
+        ],
+        [
+          -1397.5,
+          -555.3
+        ],
+        [
+          -1397.5,
+          -3645.3
+        ],
+        [
+          4997.5,
+          -3645.3
+        ]
+      ],
+      "plan_pixels": {
+        "bbox": {
+          "x_min": 787.8,
+          "x_max": 1427.3,
+          "y_min": 297.5,
+          "y_max": 994.0
+        },
+        "polygon": [
+          [
+            1427.3,
+            994.0
+          ],
+          [
+            1272.0,
+            994.0
+          ],
+          [
+            1011.3,
+            994.0
+          ],
+          [
+            1011.3,
+            715.0
+          ],
+          [
+            787.8,
+            715.0
+          ],
+          [
+            787.8,
+            606.5
+          ],
+          [
+            787.8,
+            297.5
+          ],
+          [
+            1427.3,
+            297.5
+          ]
+        ],
+        "boundary_wall_ink_match_ratio": 0.906
+      }
+    },
+    {
+      "id_viewdata": "BWEQNlBP",
+      "name_original_plan": "过道区",
+      "name_123kanfang": "过道区",
+      "room_id_viewdata": "eHaXGv38",
+      "room_name_123kanfang": "客餐厅",
+      "hotspot_ids": [],
+      "net_bbox_mm": {
+        "x_min_mm": -4405.0,
+        "x_max_mm": -1397.5,
+        "z_min_mm": -555.3,
+        "z_max_mm": 529.7,
+        "width_mm": 3007.5,
+        "depth_mm": 1085.0
+      },
+      "area_m2_recomputed_shoelace": 3.2631,
+      "net_polygon_glb_mm": [
+        [
+          -1397.5,
+          529.7
+        ],
+        [
+          -2298.4,
+          529.7
+        ],
+        [
+          -3065.0,
+          529.7
+        ],
+        [
+          -4405.0,
+          529.7
+        ],
+        [
+          -4405.0,
+          -555.3
+        ],
+        [
+          -1397.5,
+          -555.3
+        ]
+      ],
+      "plan_pixels": {
+        "bbox": {
+          "x_min": 487.0,
+          "x_max": 787.8,
+          "y_min": 606.5,
+          "y_max": 715.0
+        },
+        "polygon": [
+          [
+            787.8,
+            715.0
+          ],
+          [
+            697.7,
+            715.0
+          ],
+          [
+            621.0,
+            715.0
+          ],
+          [
+            487.0,
+            715.0
+          ],
+          [
+            487.0,
+            606.5
+          ],
+          [
+            787.8,
+            606.5
+          ]
+        ],
+        "boundary_wall_ink_match_ratio": 0.7899
+      }
+    },
+    {
+      "id_viewdata": "FN31QZXk",
+      "name_original_plan": "盥洗区",
+      "name_123kanfang": "盥洗区",
+      "room_id_viewdata": "eHaXGv38",
+      "room_name_123kanfang": "客餐厅",
+      "hotspot_ids": [
+        "964oGiou"
+      ],
+      "net_bbox_mm": {
+        "x_min_mm": -3065.0,
+        "x_max_mm": -1615.0,
+        "z_min_mm": 529.7,
+        "z_max_mm": 1534.7,
+        "width_mm": 1450.0,
+        "depth_mm": 1005.0
+      },
+      "area_m2_recomputed_shoelace": 1.3684,
+      "net_polygon_glb_mm": [
+        [
+          -1615.0,
+          1534.7
+        ],
+        [
+          -3065.0,
+          1534.7
+        ],
+        [
+          -3065.0,
+          529.7
+        ],
+        [
+          -2298.4,
+          529.7
+        ],
+        [
+          -2298.4,
+          659.7
+        ],
+        [
+          -1615.0,
+          659.7
+        ]
+      ],
+      "plan_pixels": {
+        "bbox": {
+          "x_min": 621.0,
+          "x_max": 766.0,
+          "y_min": 715.0,
+          "y_max": 815.5
+        },
+        "polygon": [
+          [
+            766.0,
+            815.5
+          ],
+          [
+            621.0,
+            815.5
+          ],
+          [
+            621.0,
+            715.0
+          ],
+          [
+            697.7,
+            715.0
+          ],
+          [
+            697.7,
+            728.0
+          ],
+          [
+            766.0,
+            728.0
+          ]
+        ],
+        "boundary_wall_ink_match_ratio": 0.8594
+      }
+    },
+    {
+      "id_viewdata": "Mday4YkJ",
+      "name_original_plan": "玄关区",
+      "name_123kanfang": "玄关区",
+      "room_id_viewdata": "eHaXGv38",
+      "room_name_123kanfang": "客餐厅",
+      "hotspot_ids": [],
+      "net_bbox_mm": {
+        "x_min_mm": 3445.0,
+        "x_max_mm": 4997.5,
+        "z_min_mm": 3319.7,
+        "z_max_mm": 5654.7,
+        "width_mm": 1552.5,
+        "depth_mm": 2335.0
+      },
+      "area_m2_recomputed_shoelace": 3.6251,
+      "net_polygon_glb_mm": [
+        [
+          4997.5,
+          5654.7
+        ],
+        [
+          3445.0,
+          5654.7
+        ],
+        [
+          3445.0,
+          3319.7
+        ],
+        [
+          4997.5,
+          3319.7
+        ]
+      ],
+      "plan_pixels": {
+        "bbox": {
+          "x_min": 1272.0,
+          "x_max": 1427.3,
+          "y_min": 994.0,
+          "y_max": 1227.5
+        },
+        "polygon": [
+          [
+            1427.3,
+            1227.5
+          ],
+          [
+            1272.0,
+            1227.5
+          ],
+          [
+            1272.0,
+            994.0
+          ],
+          [
+            1427.3,
+            994.0
+          ]
+        ],
+        "boundary_wall_ink_match_ratio": 0.8103
+      }
+    },
+    {
+      "id_viewdata": "mCOSmg5M",
+      "name_original_plan": "主卧",
+      "name_123kanfang": "主卧",
+      "room_id_viewdata": "mCOSmg5M",
+      "room_name_123kanfang": "主卧",
+      "hotspot_ids": [
+        "sSiM07Mb"
+      ],
+      "net_bbox_mm": {
+        "x_min_mm": -7915.0,
+        "x_max_mm": -4605.0,
+        "z_min_mm": -4285.3,
+        "z_max_mm": 529.7,
+        "width_mm": 3310.0,
+        "depth_mm": 4815.0
+      },
+      "area_m2_recomputed_shoelace": 15.9376,
+      "net_polygon_glb_mm": [
+        [
+          -7915.0,
+          529.7
+        ],
+        [
+          -7915.0,
+          -4285.3
+        ],
+        [
+          -4605.0,
+          -4285.3
+        ],
+        [
+          -4605.0,
+          529.7
+        ]
+      ],
+      "plan_pixels": {
+        "bbox": {
+          "x_min": 136.0,
+          "x_max": 467.0,
+          "y_min": 233.5,
+          "y_max": 715.0
+        },
+        "polygon": [
+          [
+            136.0,
+            715.0
+          ],
+          [
+            136.0,
+            233.5
+          ],
+          [
+            467.0,
+            233.5
+          ],
+          [
+            467.0,
+            715.0
+          ]
+        ],
+        "boundary_wall_ink_match_ratio": 0.957
+      }
+    },
+    {
+      "id_viewdata": "f1qYqHqH",
+      "name_original_plan": "北次卧",
+      "name_123kanfang": "次卧",
+      "room_id_viewdata": "f1qYqHqH",
+      "room_name_123kanfang": "次卧",
+      "hotspot_ids": [
+        "Xs5jTf1k"
+      ],
+      "net_bbox_mm": {
+        "x_min_mm": -4405.0,
+        "x_max_mm": -1607.5,
+        "z_min_mm": -4285.3,
+        "z_max_mm": -685.3,
+        "width_mm": 2797.5,
+        "depth_mm": 3600.0
+      },
+      "area_m2_recomputed_shoelace": 10.071,
+      "net_polygon_glb_mm": [
+        [
+          -4405.0,
+          -685.3
+        ],
+        [
+          -4405.0,
+          -4285.3
+        ],
+        [
+          -1607.5,
+          -4285.3
+        ],
+        [
+          -1607.5,
+          -685.3
+        ]
+      ],
+      "plan_pixels": {
+        "bbox": {
+          "x_min": 487.0,
+          "x_max": 766.8,
+          "y_min": 233.5,
+          "y_max": 593.5
+        },
+        "polygon": [
+          [
+            487.0,
+            593.5
+          ],
+          [
+            487.0,
+            233.5
+          ],
+          [
+            766.8,
+            233.5
+          ],
+          [
+            766.8,
+            593.5
+          ]
+        ],
+        "boundary_wall_ink_match_ratio": 0.9486
+      }
+    },
+    {
+      "id_viewdata": "EX4vhDXo",
+      "name_original_plan": "主卫",
+      "name_123kanfang": "卫生间",
+      "room_id_viewdata": "EX4vhDXo",
+      "room_name_123kanfang": "卫生间",
+      "hotspot_ids": [
+        "dSqrLSMz"
+      ],
+      "net_bbox_mm": {
+        "x_min_mm": -7915.0,
+        "x_max_mm": -6305.1,
+        "z_min_mm": 659.7,
+        "z_max_mm": 3259.7,
+        "width_mm": 1609.9,
+        "depth_mm": 2600.0
+      },
+      "area_m2_recomputed_shoelace": 4.0033,
+      "net_polygon_glb_mm": [
+        [
+          -7692.5,
+          3259.7
+        ],
+        [
+          -7692.5,
+          2439.7
+        ],
+        [
+          -7915.0,
+          2439.7
+        ],
+        [
+          -7915.0,
+          659.7
+        ],
+        [
+          -6305.1,
+          659.7
+        ],
+        [
+          -6305.1,
+          3259.7
+        ]
+      ],
+      "plan_pixels": {
+        "bbox": {
+          "x_min": 136.0,
+          "x_max": 297.0,
+          "y_min": 728.0,
+          "y_max": 988.0
+        },
+        "polygon": [
+          [
+            158.3,
+            988.0
+          ],
+          [
+            158.3,
+            906.0
+          ],
+          [
+            136.0,
+            906.0
+          ],
+          [
+            136.0,
+            728.0
+          ],
+          [
+            297.0,
+            728.0
+          ],
+          [
+            297.0,
+            988.0
+          ]
+        ],
+        "boundary_wall_ink_match_ratio": 0.9294
+      }
+    },
+    {
+      "id_viewdata": "g3cnKYnd",
+      "name_original_plan": "南次卧",
+      "name_123kanfang": "次卧",
+      "room_id_viewdata": "g3cnKYnd",
+      "room_name_123kanfang": "次卧",
+      "hotspot_ids": [
+        "gulXnDFa"
+      ],
+      "net_bbox_mm": {
+        "x_min_mm": -6165.1,
+        "x_max_mm": -3305.0,
+        "z_min_mm": 659.7,
+        "z_max_mm": 3947.2,
+        "width_mm": 2860.1,
+        "depth_mm": 3287.5
+      },
+      "area_m2_recomputed_shoelace": 9.4026,
+      "net_polygon_glb_mm": [
+        [
+          -6165.1,
+          3947.2
+        ],
+        [
+          -6165.1,
+          659.7
+        ],
+        [
+          -3305.0,
+          659.7
+        ],
+        [
+          -3305.0,
+          3947.2
+        ]
+      ],
+      "plan_pixels": {
+        "bbox": {
+          "x_min": 311.0,
+          "x_max": 597.0,
+          "y_min": 728.0,
+          "y_max": 1056.8
+        },
+        "polygon": [
+          [
+            311.0,
+            1056.8
+          ],
+          [
+            311.0,
+            728.0
+          ],
+          [
+            597.0,
+            728.0
+          ],
+          [
+            597.0,
+            1056.8
+          ]
+        ],
+        "boundary_wall_ink_match_ratio": 0.9466
+      }
+    },
+    {
+      "id_viewdata": "XrCzEEni",
+      "name_original_plan": "储物间/多功能角",
+      "name_123kanfang": "书房",
+      "room_id_viewdata": "XrCzEEni",
+      "room_name_123kanfang": "书房",
+      "hotspot_ids": [
+        "hK3hVYiY"
+      ],
+      "net_bbox_mm": {
+        "x_min_mm": -1395.0,
+        "x_max_mm": 597.5,
+        "z_min_mm": 649.7,
+        "z_max_mm": 3947.2,
+        "width_mm": 1992.5,
+        "depth_mm": 3297.5
+      },
+      "area_m2_recomputed_shoelace": 6.5703,
+      "net_polygon_glb_mm": [
+        [
+          -1395.0,
+          3947.2
+        ],
+        [
+          -1395.0,
+          649.7
+        ],
+        [
+          597.5,
+          649.7
+        ],
+        [
+          597.5,
+          3947.2
+        ]
+      ],
+      "plan_pixels": {
+        "bbox": {
+          "x_min": 788.0,
+          "x_max": 987.3,
+          "y_min": 727.0,
+          "y_max": 1056.8
+        },
+        "polygon": [
+          [
+            788.0,
+            1056.8
+          ],
+          [
+            788.0,
+            727.0
+          ],
+          [
+            987.3,
+            727.0
+          ],
+          [
+            987.3,
+            1056.8
+          ]
+        ],
+        "boundary_wall_ink_match_ratio": 1.0
+      }
+    },
+    {
+      "id_viewdata": "qOPrZ97W",
+      "name_original_plan": "公卫",
+      "name_123kanfang": "卫生间",
+      "room_id_viewdata": "qOPrZ97W",
+      "room_name_123kanfang": "卫生间",
+      "hotspot_ids": [
+        "JflIfcij"
+      ],
+      "net_bbox_mm": {
+        "x_min_mm": -3065.0,
+        "x_max_mm": -1615.0,
+        "z_min_mm": 1664.7,
+        "z_max_mm": 3259.7,
+        "width_mm": 1450.0,
+        "depth_mm": 1595.0
+      },
+      "area_m2_recomputed_shoelace": 2.1264,
+      "net_polygon_glb_mm": [
+        [
+          -3065.0,
+          3259.7
+        ],
+        [
+          -3065.0,
+          1664.7
+        ],
+        [
+          -1615.0,
+          1664.7
+        ],
+        [
+          -1615.0,
+          2454.4
+        ],
+        [
+          -1846.4,
+          2454.4
+        ],
+        [
+          -1846.4,
+          3259.7
+        ]
+      ],
+      "plan_pixels": {
+        "bbox": {
+          "x_min": 621.0,
+          "x_max": 766.0,
+          "y_min": 828.5,
+          "y_max": 988.0
+        },
+        "polygon": [
+          [
+            621.0,
+            988.0
+          ],
+          [
+            621.0,
+            828.5
+          ],
+          [
+            766.0,
+            828.5
+          ],
+          [
+            766.0,
+            907.5
+          ],
+          [
+            742.9,
+            907.5
+          ],
+          [
+            742.9,
+            988.0
+          ]
+        ],
+        "boundary_wall_ink_match_ratio": 0.9121
+      }
+    },
+    {
+      "id_viewdata": "WFGji10I",
+      "name_original_plan": "厨房",
+      "name_123kanfang": "厨房",
+      "room_id_viewdata": "WFGji10I",
+      "room_name_123kanfang": "厨房",
+      "hotspot_ids": [
+        "8unavrZt"
+      ],
+      "net_bbox_mm": {
+        "x_min_mm": 837.5,
+        "x_max_mm": 3245.0,
+        "z_min_mm": 3439.7,
+        "z_max_mm": 5654.7,
+        "width_mm": 2407.5,
+        "depth_mm": 2215.0
+      },
+      "area_m2_recomputed_shoelace": 5.3326,
+      "net_polygon_glb_mm": [
+        [
+          837.5,
+          5654.7
+        ],
+        [
+          837.5,
+          3439.7
+        ],
+        [
+          3245.0,
+          3439.7
+        ],
+        [
+          3245.0,
+          5654.7
+        ]
+      ],
+      "plan_pixels": {
+        "bbox": {
+          "x_min": 1011.3,
+          "x_max": 1252.0,
+          "y_min": 1006.0,
+          "y_max": 1227.5
+        },
+        "polygon": [
+          [
+            1011.3,
+            1227.5
+          ],
+          [
+            1011.3,
+            1006.0
+          ],
+          [
+            1252.0,
+            1006.0
+          ],
+          [
+            1252.0,
+            1227.5
+          ]
+        ],
+        "boundary_wall_ink_match_ratio": 1.0
+      }
+    },
+    {
+      "id_viewdata": "z5u59ReE",
+      "name_original_plan": "生活阳台",
+      "name_123kanfang": "生活阳台",
+      "room_id_viewdata": "z5u59ReE",
+      "room_name_123kanfang": "生活阳台",
+      "hotspot_ids": [
+        "zVchSPxz"
+      ],
+      "net_bbox_mm": {
+        "x_min_mm": -1397.5,
+        "x_max_mm": 4997.5,
+        "z_min_mm": -5260.3,
+        "z_max_mm": -3925.3,
+        "width_mm": 6395.0,
+        "depth_mm": 1335.0
+      },
+      "area_m2_recomputed_shoelace": 8.5373,
+      "net_polygon_glb_mm": [
+        [
+          -1397.5,
+          -3925.3
+        ],
+        [
+          -1397.5,
+          -5260.3
+        ],
+        [
+          4997.5,
+          -5260.3
+        ],
+        [
+          4997.5,
+          -3925.3
+        ]
+      ],
+      "plan_pixels": {
+        "bbox": {
+          "x_min": 787.8,
+          "x_max": 1427.3,
+          "y_min": 136.0,
+          "y_max": 269.5
+        },
+        "polygon": [
+          [
+            787.8,
+            269.5
+          ],
+          [
+            787.8,
+            136.0
+          ],
+          [
+            1427.3,
+            136.0
+          ],
+          [
+            1427.3,
+            269.5
+          ]
+        ],
+        "boundary_wall_ink_match_ratio": 1.0
+      }
+    }
+  ],
+  "derived_rooms": [
+    {
+      "id_viewdata": null,
+      "english_id": "living_dining_zone",
+      "name_original_plan": "客厅·LDK 餐厅区",
+      "name_123kanfang": "客厅区 (子分区)",
+      "name_needs_confirmation": true,
+      "derived": true,
+      "derived_from": "客餐厅 eHaXGv38 / 客厅区 G5tPo97X polygon 按 Z=52.97 切分",
+      "parent_room_id_viewdata": "eHaXGv38",
+      "parent_room_name": "客厅",
+      "area_m2": 11.606,
+      "area_source": "切分后多边形 shoelace 复算 (非平台 Area 字段)",
+      "net_bbox_mm": {
+        "x_min_mm": -1397.5,
+        "x_max_mm": 4997.5,
+        "z_min_mm": 529.7,
+        "z_max_mm": 3319.7,
+        "width_mm": 6395.0,
+        "depth_mm": 2790.0
+      },
+      "net_polygon_glb_mm": [
+        [
+          4997.5,
+          3319.7
+        ],
+        [
+          3445.0,
+          3319.7
+        ],
+        [
+          837.5,
+          3319.7
+        ],
+        [
+          837.5,
+          529.7
+        ],
+        [
+          -1397.5,
+          529.7
+        ],
+        [
+          -1397.5,
+          529.7
+        ],
+        [
+          4997.5,
+          529.7
+        ]
+      ],
+      "plan_pixels": {
+        "bbox": {
+          "x_min": 787.8,
+          "x_max": 1427.3,
+          "y_min": 715.0,
+          "y_max": 994.0
+        },
+        "polygon": [
+          [
+            1427.3,
+            994.0
+          ],
+          [
+            1272.0,
+            994.0
+          ],
+          [
+            1011.3,
+            994.0
+          ],
+          [
+            1011.3,
+            715.0
+          ],
+          [
+            787.8,
+            715.0
+          ],
+          [
+            787.8,
+            715.0
+          ],
+          [
+            1427.3,
+            715.0
+          ]
+        ],
+        "boundary_wall_ink_match_ratio": 0.6981
+      },
+      "sibling_area_m2": {
+        "客厅 (北半部分)": 26.699
+      },
+      "furniture_anchor": {
+        "anchor_object": "餐桌 (材质 M_餐桌_*)",
+        "glb_bbox_mm": {
+          "x_min": 2342.9,
+          "x_max": 3162.4,
+          "z_min": 726.7,
+          "z_max": 2605.1
+        }
+      },
+      "notes": "由 客厅区 polygon 在 Z=52.97 (客厅区南侧凹口 = 储物间北墙) 处切分得到的南半部分。该切分线同时落在『沙发组 (Z ≤ −56)』与『餐桌组 (Z ≥ 72)』之间的空档里, 所以切分结果与家具布置自洽。面积由 shoelace 对切分后多边形复算。"
+    }
+  ]
+}

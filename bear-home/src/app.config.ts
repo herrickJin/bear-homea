@@ -8,6 +8,7 @@ export default defineAppConfig({
     "pages/home/index",
     "pages/budget/index",
     "pages/profile/index",
+    "pages/floorplan/index",
   ],
   window: {
     navigationStyle: "custom",

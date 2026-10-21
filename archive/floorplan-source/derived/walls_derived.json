@@ -1,0 +1,1373 @@
+{
+  "schema": {
+    "units": "mm",
+    "scale_note": "1 GLB unit = 10mm; ViewData (X,Y) → GLB (X*10, -Y*10).",
+    "generated_by": "derive_walls_from_rooms.py",
+    "method": "walls = union of room-net outline segments, axis-aligned & merged. Doors/windows placed by rooms_touched + center.",
+    "wall_height_mm_default": 2800,
+    "exterior_wall_thickness_mm": 240,
+    "interior_wall_thickness_mm": 120
+  },
+  "rooms": [
+    {
+      "id_viewdata": "eHaXGv38",
+      "name_zh": "客餐厅",
+      "polygon_mm": [
+        [
+          4997.5,
+          3319.7
+        ],
+        [
+          3445.0,
+          3319.7
+        ],
+        [
+          837.5,
+          3319.7
+        ],
+        [
+          837.5,
+          529.7
+        ],
+        [
+          -1397.5,
+          529.7
+        ],
+        [
+          -1397.5,
+          -555.3
+        ],
+        [
+          -1397.5,
+          -3645.3
+        ],
+        [
+          4997.5,
+          -3645.3
+        ]
+      ],
+      "area_m2_shoelace": 38.3055
+    },
+    {
+      "id_viewdata": "eHaXGv38",
+      "name_zh": "客餐厅",
+      "polygon_mm": [
+        [
+          -1397.5,
+          529.7
+        ],
+        [
+          -2298.4,
+          529.7
+        ],
+        [
+          -3065.0,
+          529.7
+        ],
+        [
+          -4405.0,
+          529.7
+        ],
+        [
+          -4405.0,
+          -555.3
+        ],
+        [
+          -1397.5,
+          -555.3
+        ]
+      ],
+      "area_m2_shoelace": 3.2631
+    },
+    {
+      "id_viewdata": "eHaXGv38",
+      "name_zh": "客餐厅",
+      "polygon_mm": [
+        [
+          -1615.0,
+          1534.7
+        ],
+        [
+          -3065.0,
+          1534.7
+        ],
+        [
+          -3065.0,
+          529.7
+        ],
+        [
+          -2298.4,
+          529.7
+        ],
+        [
+          -2298.4,
+          659.7
+        ],
+        [
+          -1615.0,
+          659.7
+        ]
+      ],
+      "area_m2_shoelace": 1.3684
+    },
+    {
+      "id_viewdata": "eHaXGv38",
+      "name_zh": "客餐厅",
+      "polygon_mm": [
+        [
+          4997.5,
+          5654.7
+        ],
+        [
+          3445.0,
+          5654.7
+        ],
+        [
+          3445.0,
+          3319.7
+        ],
+        [
+          4997.5,
+          3319.7
+        ]
+      ],
+      "area_m2_shoelace": 3.6251
+    },
+    {
+      "id_viewdata": "mCOSmg5M",
+      "name_zh": "主卧",
+      "polygon_mm": [
+        [
+          -7915.0,
+          529.7
+        ],
+        [
+          -7915.0,
+          -4285.3
+        ],
+        [
+          -4605.0,
+          -4285.3
+        ],
+        [
+          -4605.0,
+          529.7
+        ]
+      ],
+      "area_m2_shoelace": 15.9376
+    },
+    {
+      "id_viewdata": "f1qYqHqH",
+      "name_zh": "次卧",
+      "polygon_mm": [
+        [
+          -4405.0,
+          -685.3
+        ],
+        [
+          -4405.0,
+          -4285.3
+        ],
+        [
+          -1607.5,
+          -4285.3
+        ],
+        [
+          -1607.5,
+          -685.3
+        ]
+      ],
+      "area_m2_shoelace": 10.071
+    },
+    {
+      "id_viewdata": "EX4vhDXo",
+      "name_zh": "卫生间",
+      "polygon_mm": [
+        [
+          -7692.5,
+          3259.7
+        ],
+        [
+          -7692.5,
+          2439.7
+        ],
+        [
+          -7915.0,
+          2439.7
+        ],
+        [
+          -7915.0,
+          659.7
+        ],
+        [
+          -6305.1,
+          659.7
+        ],
+        [
+          -6305.1,
+          3259.7
+        ]
+      ],
+      "area_m2_shoelace": 4.0033
+    },
+    {
+      "id_viewdata": "g3cnKYnd",
+      "name_zh": "次卧",
+      "polygon_mm": [
+        [
+          -6165.1,
+          3947.2
+        ],
+        [
+          -6165.1,
+          659.7
+        ],
+        [
+          -3305.0,
+          659.7
+        ],
+        [
+          -3305.0,
+          3947.2
+        ]
+      ],
+      "area_m2_shoelace": 9.4026
+    },
+    {
+      "id_viewdata": "XrCzEEni",
+      "name_zh": "书房",
+      "polygon_mm": [
+        [
+          -1395.0,
+          3947.2
+        ],
+        [
+          -1395.0,
+          649.7
+        ],
+        [
+          597.5,
+          649.7
+        ],
+        [
+          597.5,
+          3947.2
+        ]
+      ],
+      "area_m2_shoelace": 6.5703
+    },
+    {
+      "id_viewdata": "qOPrZ97W",
+      "name_zh": "卫生间",
+      "polygon_mm": [
+        [
+          -3065.0,
+          3259.7
+        ],
+        [
+          -3065.0,
+          1664.7
+        ],
+        [
+          -1615.0,
+          1664.7
+        ],
+        [
+          -1615.0,
+          2454.4
+        ],
+        [
+          -1846.4,
+          2454.4
+        ],
+        [
+          -1846.4,
+          3259.7
+        ]
+      ],
+      "area_m2_shoelace": 2.1264
+    },
+    {
+      "id_viewdata": "WFGji10I",
+      "name_zh": "厨房",
+      "polygon_mm": [
+        [
+          837.5,
+          5654.7
+        ],
+        [
+          837.5,
+          3439.7
+        ],
+        [
+          3245.0,
+          3439.7
+        ],
+        [
+          3245.0,
+          5654.7
+        ]
+      ],
+      "area_m2_shoelace": 5.3326
+    },
+    {
+      "id_viewdata": "z5u59ReE",
+      "name_zh": "生活阳台",
+      "polygon_mm": [
+        [
+          -1397.5,
+          -3925.3
+        ],
+        [
+          -1397.5,
+          -5260.3
+        ],
+        [
+          4997.5,
+          -5260.3
+        ],
+        [
+          4997.5,
+          -3925.3
+        ]
+      ],
+      "area_m2_shoelace": 8.5373
+    }
+  ],
+  "walls": [
+    {
+      "id": "DW001",
+      "kind": "exterior",
+      "axis": "h",
+      "x_mm": [
+        837.5,
+        4997.5
+      ],
+      "z_mm": 3319.7,
+      "length_mm": 4160.0,
+      "rooms_viewdata": [
+        "eHaXGv38"
+      ],
+      "rooms_name": [
+        "客餐厅"
+      ]
+    },
+    {
+      "id": "DW002",
+      "kind": "interior",
+      "axis": "v",
+      "x_mm": 837.5,
+      "z_mm": [
+        529.7,
+        5654.7
+      ],
+      "length_mm": 5125.0,
+      "rooms_viewdata": [
+        "WFGji10I",
+        "eHaXGv38"
+      ],
+      "rooms_name": [
+        "厨房",
+        "客餐厅"
+      ]
+    },
+    {
+      "id": "DW003",
+      "kind": "interior",
+      "axis": "h",
+      "x_mm": [
+        -7915.0,
+        837.5
+      ],
+      "z_mm": 529.7,
+      "length_mm": 8752.5,
+      "rooms_viewdata": [
+        "eHaXGv38",
+        "mCOSmg5M"
+      ],
+      "rooms_name": [
+        "主卧",
+        "客餐厅"
+      ]
+    },
+    {
+      "id": "DW004",
+      "kind": "interior",
+      "axis": "v",
+      "x_mm": -1397.5,
+      "z_mm": [
+        -5260.3,
+        529.7
+      ],
+      "length_mm": 5790.0,
+      "rooms_viewdata": [
+        "eHaXGv38",
+        "z5u59ReE"
+      ],
+      "rooms_name": [
+        "客餐厅",
+        "生活阳台"
+      ]
+    },
+    {
+      "id": "DW005",
+      "kind": "exterior",
+      "axis": "h",
+      "x_mm": [
+        -1397.5,
+        4997.5
+      ],
+      "z_mm": -3645.3,
+      "length_mm": 6395.0,
+      "rooms_viewdata": [
+        "eHaXGv38"
+      ],
+      "rooms_name": [
+        "客餐厅"
+      ]
+    },
+    {
+      "id": "DW006",
+      "kind": "interior",
+      "axis": "v",
+      "x_mm": 4997.5,
+      "z_mm": [
+        -5260.3,
+        5654.7
+      ],
+      "length_mm": 10915.0,
+      "rooms_viewdata": [
+        "eHaXGv38",
+        "z5u59ReE"
+      ],
+      "rooms_name": [
+        "客餐厅",
+        "生活阳台"
+      ]
+    },
+    {
+      "id": "DW007",
+      "kind": "interior",
+      "axis": "v",
+      "x_mm": -4405.0,
+      "z_mm": [
+        -4285.3,
+        529.7
+      ],
+      "length_mm": 4815.0,
+      "rooms_viewdata": [
+        "eHaXGv38",
+        "f1qYqHqH"
+      ],
+      "rooms_name": [
+        "客餐厅",
+        "次卧"
+      ]
+    },
+    {
+      "id": "DW008",
+      "kind": "exterior",
+      "axis": "h",
+      "x_mm": [
+        -4405.0,
+        -1397.5
+      ],
+      "z_mm": -555.3,
+      "length_mm": 3007.5,
+      "rooms_viewdata": [
+        "eHaXGv38"
+      ],
+      "rooms_name": [
+        "客餐厅"
+      ]
+    },
+    {
+      "id": "DW009",
+      "kind": "exterior",
+      "axis": "h",
+      "x_mm": [
+        -3065.0,
+        -1615.0
+      ],
+      "z_mm": 1534.7,
+      "length_mm": 1450.0,
+      "rooms_viewdata": [
+        "eHaXGv38"
+      ],
+      "rooms_name": [
+        "客餐厅"
+      ]
+    },
+    {
+      "id": "DW010",
+      "kind": "interior",
+      "axis": "v",
+      "x_mm": -3065.0,
+      "z_mm": [
+        529.7,
+        3259.7
+      ],
+      "length_mm": 2730.0,
+      "rooms_viewdata": [
+        "eHaXGv38",
+        "qOPrZ97W"
+      ],
+      "rooms_name": [
+        "卫生间",
+        "客餐厅"
+      ]
+    },
+    {
+      "id": "DW011",
+      "kind": "exterior",
+      "axis": "v",
+      "x_mm": -2298.4,
+      "z_mm": [
+        529.7,
+        659.7
+      ],
+      "length_mm": 130.0,
+      "rooms_viewdata": [
+        "eHaXGv38"
+      ],
+      "rooms_name": [
+        "客餐厅"
+      ]
+    },
+    {
+      "id": "DW012",
+      "kind": "interior",
+      "axis": "h",
+      "x_mm": [
+        -7915.0,
+        -1615.0
+      ],
+      "z_mm": 659.7,
+      "length_mm": 6300.0,
+      "rooms_viewdata": [
+        "EX4vhDXo",
+        "eHaXGv38",
+        "g3cnKYnd"
+      ],
+      "rooms_name": [
+        "卫生间",
+        "客餐厅",
+        "次卧"
+      ]
+    },
+    {
+      "id": "DW013",
+      "kind": "interior",
+      "axis": "v",
+      "x_mm": -1615.0,
+      "z_mm": [
+        659.7,
+        2454.4
+      ],
+      "length_mm": 1794.7,
+      "rooms_viewdata": [
+        "eHaXGv38",
+        "qOPrZ97W"
+      ],
+      "rooms_name": [
+        "卫生间",
+        "客餐厅"
+      ]
+    },
+    {
+      "id": "DW014",
+      "kind": "interior",
+      "axis": "h",
+      "x_mm": [
+        837.5,
+        4997.5
+      ],
+      "z_mm": 5654.7,
+      "length_mm": 4160.0,
+      "rooms_viewdata": [
+        "WFGji10I",
+        "eHaXGv38"
+      ],
+      "rooms_name": [
+        "厨房",
+        "客餐厅"
+      ]
+    },
+    {
+      "id": "DW015",
+      "kind": "exterior",
+      "axis": "v",
+      "x_mm": 3445.0,
+      "z_mm": [
+        3319.7,
+        5654.7
+      ],
+      "length_mm": 2335.0,
+      "rooms_viewdata": [
+        "eHaXGv38"
+      ],
+      "rooms_name": [
+        "客餐厅"
+      ]
+    },
+    {
+      "id": "DW016",
+      "kind": "interior",
+      "axis": "v",
+      "x_mm": -7915.0,
+      "z_mm": [
+        -4285.3,
+        2439.7
+      ],
+      "length_mm": 6725.0,
+      "rooms_viewdata": [
+        "EX4vhDXo",
+        "mCOSmg5M"
+      ],
+      "rooms_name": [
+        "主卧",
+        "卫生间"
+      ]
+    },
+    {
+      "id": "DW017",
+      "kind": "interior",
+      "axis": "h",
+      "x_mm": [
+        -7915.0,
+        -1607.5
+      ],
+      "z_mm": -4285.3,
+      "length_mm": 6307.5,
+      "rooms_viewdata": [
+        "f1qYqHqH",
+        "mCOSmg5M"
+      ],
+      "rooms_name": [
+        "主卧",
+        "次卧"
+      ]
+    },
+    {
+      "id": "DW018",
+      "kind": "exterior",
+      "axis": "v",
+      "x_mm": -4605.0,
+      "z_mm": [
+        -4285.3,
+        529.7
+      ],
+      "length_mm": 4815.0,
+      "rooms_viewdata": [
+        "mCOSmg5M"
+      ],
+      "rooms_name": [
+        "主卧"
+      ]
+    },
+    {
+      "id": "DW019",
+      "kind": "exterior",
+      "axis": "v",
+      "x_mm": -1607.5,
+      "z_mm": [
+        -4285.3,
+        -685.3
+      ],
+      "length_mm": 3600.0,
+      "rooms_viewdata": [
+        "f1qYqHqH"
+      ],
+      "rooms_name": [
+        "次卧"
+      ]
+    },
+    {
+      "id": "DW020",
+      "kind": "exterior",
+      "axis": "h",
+      "x_mm": [
+        -4405.0,
+        -1607.5
+      ],
+      "z_mm": -685.3,
+      "length_mm": 2797.5,
+      "rooms_viewdata": [
+        "f1qYqHqH"
+      ],
+      "rooms_name": [
+        "次卧"
+      ]
+    },
+    {
+      "id": "DW021",
+      "kind": "exterior",
+      "axis": "v",
+      "x_mm": -7692.5,
+      "z_mm": [
+        2439.7,
+        3259.7
+      ],
+      "length_mm": 820.0,
+      "rooms_viewdata": [
+        "EX4vhDXo"
+      ],
+      "rooms_name": [
+        "卫生间"
+      ]
+    },
+    {
+      "id": "DW022",
+      "kind": "exterior",
+      "axis": "h",
+      "x_mm": [
+        -7915.0,
+        -7692.5
+      ],
+      "z_mm": 2439.7,
+      "length_mm": 222.5,
+      "rooms_viewdata": [
+        "EX4vhDXo"
+      ],
+      "rooms_name": [
+        "卫生间"
+      ]
+    },
+    {
+      "id": "DW023",
+      "kind": "exterior",
+      "axis": "v",
+      "x_mm": -6305.1,
+      "z_mm": [
+        659.7,
+        3259.7
+      ],
+      "length_mm": 2600.0,
+      "rooms_viewdata": [
+        "EX4vhDXo"
+      ],
+      "rooms_name": [
+        "卫生间"
+      ]
+    },
+    {
+      "id": "DW024",
+      "kind": "interior",
+      "axis": "h",
+      "x_mm": [
+        -7692.5,
+        -1846.4
+      ],
+      "z_mm": 3259.7,
+      "length_mm": 5846.1,
+      "rooms_viewdata": [
+        "EX4vhDXo",
+        "qOPrZ97W"
+      ],
+      "rooms_name": [
+        "卫生间"
+      ]
+    },
+    {
+      "id": "DW025",
+      "kind": "exterior",
+      "axis": "v",
+      "x_mm": -6165.1,
+      "z_mm": [
+        659.7,
+        3947.2
+      ],
+      "length_mm": 3287.5,
+      "rooms_viewdata": [
+        "g3cnKYnd"
+      ],
+      "rooms_name": [
+        "次卧"
+      ]
+    },
+    {
+      "id": "DW026",
+      "kind": "exterior",
+      "axis": "v",
+      "x_mm": -3305.0,
+      "z_mm": [
+        659.7,
+        3947.2
+      ],
+      "length_mm": 3287.5,
+      "rooms_viewdata": [
+        "g3cnKYnd"
+      ],
+      "rooms_name": [
+        "次卧"
+      ]
+    },
+    {
+      "id": "DW027",
+      "kind": "interior",
+      "axis": "h",
+      "x_mm": [
+        -6165.1,
+        597.5
+      ],
+      "z_mm": 3947.2,
+      "length_mm": 6762.6,
+      "rooms_viewdata": [
+        "XrCzEEni",
+        "g3cnKYnd"
+      ],
+      "rooms_name": [
+        "书房",
+        "次卧"
+      ]
+    },
+    {
+      "id": "DW028",
+      "kind": "exterior",
+      "axis": "v",
+      "x_mm": -1395.0,
+      "z_mm": [
+        649.7,
+        3947.2
+      ],
+      "length_mm": 3297.5,
+      "rooms_viewdata": [
+        "XrCzEEni"
+      ],
+      "rooms_name": [
+        "书房"
+      ]
+    },
+    {
+      "id": "DW029",
+      "kind": "exterior",
+      "axis": "h",
+      "x_mm": [
+        -1395.0,
+        597.5
+      ],
+      "z_mm": 649.7,
+      "length_mm": 1992.5,
+      "rooms_viewdata": [
+        "XrCzEEni"
+      ],
+      "rooms_name": [
+        "书房"
+      ]
+    },
+    {
+      "id": "DW030",
+      "kind": "exterior",
+      "axis": "v",
+      "x_mm": 597.5,
+      "z_mm": [
+        649.7,
+        3947.2
+      ],
+      "length_mm": 3297.5,
+      "rooms_viewdata": [
+        "XrCzEEni"
+      ],
+      "rooms_name": [
+        "书房"
+      ]
+    },
+    {
+      "id": "DW031",
+      "kind": "exterior",
+      "axis": "h",
+      "x_mm": [
+        -3065.0,
+        -1615.0
+      ],
+      "z_mm": 1664.7,
+      "length_mm": 1450.0,
+      "rooms_viewdata": [
+        "qOPrZ97W"
+      ],
+      "rooms_name": [
+        "卫生间"
+      ]
+    },
+    {
+      "id": "DW032",
+      "kind": "exterior",
+      "axis": "h",
+      "x_mm": [
+        -1846.4,
+        -1615.0
+      ],
+      "z_mm": 2454.4,
+      "length_mm": 231.4,
+      "rooms_viewdata": [
+        "qOPrZ97W"
+      ],
+      "rooms_name": [
+        "卫生间"
+      ]
+    },
+    {
+      "id": "DW033",
+      "kind": "exterior",
+      "axis": "v",
+      "x_mm": -1846.4,
+      "z_mm": [
+        2454.4,
+        3259.7
+      ],
+      "length_mm": 805.3,
+      "rooms_viewdata": [
+        "qOPrZ97W"
+      ],
+      "rooms_name": [
+        "卫生间"
+      ]
+    },
+    {
+      "id": "DW034",
+      "kind": "exterior",
+      "axis": "h",
+      "x_mm": [
+        837.5,
+        3245.0
+      ],
+      "z_mm": 3439.7,
+      "length_mm": 2407.5,
+      "rooms_viewdata": [
+        "WFGji10I"
+      ],
+      "rooms_name": [
+        "厨房"
+      ]
+    },
+    {
+      "id": "DW035",
+      "kind": "exterior",
+      "axis": "v",
+      "x_mm": 3245.0,
+      "z_mm": [
+        3439.7,
+        5654.7
+      ],
+      "length_mm": 2215.0,
+      "rooms_viewdata": [
+        "WFGji10I"
+      ],
+      "rooms_name": [
+        "厨房"
+      ]
+    },
+    {
+      "id": "DW036",
+      "kind": "exterior",
+      "axis": "h",
+      "x_mm": [
+        -1397.5,
+        4997.5
+      ],
+      "z_mm": -5260.3,
+      "length_mm": 6395.0,
+      "rooms_viewdata": [
+        "z5u59ReE"
+      ],
+      "rooms_name": [
+        "生活阳台"
+      ]
+    },
+    {
+      "id": "DW037",
+      "kind": "exterior",
+      "axis": "h",
+      "x_mm": [
+        -1397.5,
+        4997.5
+      ],
+      "z_mm": -3925.3,
+      "length_mm": 6395.0,
+      "rooms_viewdata": [
+        "z5u59ReE"
+      ],
+      "rooms_name": [
+        "生活阳台"
+      ]
+    }
+  ],
+  "openings": [
+    {
+      "id": "O01",
+      "type": "door",
+      "subtype": "passage",
+      "center": [
+        -6767.8,
+        594.7
+      ],
+      "width": 803.9,
+      "height": 2300.0,
+      "sill": 0.0,
+      "head": 2300.0,
+      "wall_id": "W46",
+      "rotation_deg": 0.0,
+      "room": "主卧",
+      "room_id": "mCOSmg5M",
+      "rooms_touched": [
+        "主卧",
+        "主卫"
+      ],
+      "rooms_touched_id": [
+        "mCOSmg5M",
+        "EX4vhDXo"
+      ],
+      "attached_walls": [
+        "DW003"
+      ],
+      "snap_dist_mm": 65.0
+    },
+    {
+      "id": "O02",
+      "type": "window",
+      "subtype": "window",
+      "center": [
+        -6337.5,
+        -4405.3
+      ],
+      "width": 2050.0,
+      "height": 1400.0,
+      "sill": 900.0,
+      "head": 2300.0,
+      "wall_id": "W45",
+      "rotation_deg": 0.0,
+      "room": "主卧",
+      "room_id": "mCOSmg5M",
+      "rooms_touched": [
+        "主卧"
+      ],
+      "rooms_touched_id": [
+        "mCOSmg5M"
+      ],
+      "attached_walls": [
+        "DW017"
+      ],
+      "snap_dist_mm": 120.0
+    },
+    {
+      "id": "O03",
+      "type": "window",
+      "subtype": "window",
+      "center": [
+        -4760.0,
+        4027.2
+      ],
+      "width": 1755.0,
+      "height": 1400.0,
+      "sill": 900.0,
+      "head": 2300.0,
+      "wall_id": "W49",
+      "rotation_deg": 0.0,
+      "room": "北次卧",
+      "room_id": "g3cnKYnd",
+      "rooms_touched": [
+        "北次卧"
+      ],
+      "rooms_touched_id": [
+        "g3cnKYnd"
+      ],
+      "attached_walls": [
+        "DW027"
+      ],
+      "snap_dist_mm": 80.0
+    },
+    {
+      "id": "O04",
+      "type": "door",
+      "subtype": "passage",
+      "center": [
+        -4505.0,
+        37.9
+      ],
+      "width": 909.2,
+      "height": 2300.0,
+      "sill": 0.0,
+      "head": 2300.0,
+      "wall_id": "W08",
+      "rotation_deg": 90.0,
+      "room": "客厅",
+      "room_id": "eHaXGv38",
+      "rooms_touched": [
+        "主卧",
+        "客厅"
+      ],
+      "rooms_touched_id": [
+        "mCOSmg5M",
+        "eHaXGv38"
+      ],
+      "attached_walls": [
+        "DW007"
+      ],
+      "snap_dist_mm": 100.0
+    },
+    {
+      "id": "O05",
+      "type": "door",
+      "subtype": "passage",
+      "center": [
+        -3928.5,
+        -620.3
+      ],
+      "width": 878.2,
+      "height": 2300.0,
+      "sill": 0.0,
+      "head": 2300.0,
+      "wall_id": "W53",
+      "rotation_deg": 0.0,
+      "room": "客厅",
+      "room_id": "eHaXGv38",
+      "rooms_touched": [
+        "南次卧",
+        "客厅"
+      ],
+      "rooms_touched_id": [
+        "f1qYqHqH",
+        "eHaXGv38"
+      ],
+      "attached_walls": [
+        "DW008"
+      ],
+      "snap_dist_mm": 65.0
+    },
+    {
+      "id": "O06",
+      "type": "door",
+      "subtype": "passage",
+      "center": [
+        -3815.1,
+        594.7
+      ],
+      "width": 878.3,
+      "height": 2300.0,
+      "sill": 0.0,
+      "head": 2300.0,
+      "wall_id": "W54",
+      "rotation_deg": 0.0,
+      "room": "客厅",
+      "room_id": "eHaXGv38",
+      "rooms_touched": [
+        "客厅",
+        "北次卧"
+      ],
+      "rooms_touched_id": [
+        "eHaXGv38",
+        "g3cnKYnd"
+      ],
+      "attached_walls": [
+        "DW003"
+      ],
+      "snap_dist_mm": 65.0
+    },
+    {
+      "id": "O07",
+      "type": "window",
+      "subtype": "window",
+      "center": [
+        -3002.5,
+        -4405.3
+      ],
+      "width": 1750.0,
+      "height": 1400.0,
+      "sill": 900.0,
+      "head": 2300.0,
+      "wall_id": "W52",
+      "rotation_deg": 0.0,
+      "room": "南次卧",
+      "room_id": "f1qYqHqH",
+      "rooms_touched": [
+        "南次卧"
+      ],
+      "rooms_touched_id": [
+        "f1qYqHqH"
+      ],
+      "attached_walls": [
+        "DW017"
+      ],
+      "snap_dist_mm": 120.0
+    },
+    {
+      "id": "O08",
+      "type": "door",
+      "subtype": "passage",
+      "center": [
+        -2698.5,
+        1632.0
+      ],
+      "width": 732.5,
+      "height": 2299.8,
+      "sill": 0.0,
+      "head": 2299.8,
+      "wall_id": "W55",
+      "rotation_deg": 0.0,
+      "room": "客厅",
+      "room_id": "eHaXGv38",
+      "rooms_touched": [
+        "客厅",
+        "公卫"
+      ],
+      "rooms_touched_id": [
+        "eHaXGv38",
+        "qOPrZ97W"
+      ],
+      "attached_walls": [
+        "DW031"
+      ],
+      "snap_dist_mm": 32.7
+    },
+    {
+      "id": "O09",
+      "type": "window",
+      "subtype": "window",
+      "center": [
+        -645.0,
+        4027.2
+      ],
+      "width": 1255.0,
+      "height": 1400.0,
+      "sill": 900.0,
+      "head": 2300.0,
+      "wall_id": "W64",
+      "rotation_deg": 0.0,
+      "room": "餐厅",
+      "room_id": "XrCzEEni",
+      "rooms_touched": [
+        "餐厅"
+      ],
+      "rooms_touched_id": [
+        "XrCzEEni"
+      ],
+      "attached_walls": [
+        "DW027"
+      ],
+      "snap_dist_mm": 80.0
+    },
+    {
+      "id": "O10",
+      "type": "door",
+      "subtype": "passage",
+      "center": [
+        -390.0,
+        589.7
+      ],
+      "width": 1855.0,
+      "height": 2300.0,
+      "sill": 0.0,
+      "head": 2300.0,
+      "wall_id": "W60",
+      "rotation_deg": 0.0,
+      "room": "客厅",
+      "room_id": "eHaXGv38",
+      "rooms_touched": [
+        "客厅",
+        "餐厅"
+      ],
+      "rooms_touched_id": [
+        "eHaXGv38",
+        "XrCzEEni"
+      ],
+      "attached_walls": [
+        "DW003"
+      ],
+      "snap_dist_mm": 60.0
+    },
+    {
+      "id": "O11",
+      "type": "window",
+      "subtype": "window",
+      "center": [
+        717.5,
+        1489.7
+      ],
+      "width": 1660.0,
+      "height": 1400.0,
+      "sill": 900.0,
+      "head": 2300.0,
+      "wall_id": "W15",
+      "rotation_deg": 90.0,
+      "room": "餐厅",
+      "room_id": "XrCzEEni",
+      "rooms_touched": [
+        "餐厅",
+        "客厅"
+      ],
+      "rooms_touched_id": [
+        "XrCzEEni",
+        "eHaXGv38"
+      ],
+      "attached_walls": [
+        "DW002"
+      ],
+      "snap_dist_mm": 120.0
+    },
+    {
+      "id": "O12",
+      "type": "door",
+      "subtype": "passage",
+      "center": [
+        2290.0,
+        3379.7
+      ],
+      "width": 1745.0,
+      "height": 2300.0,
+      "sill": 0.0,
+      "head": 2300.0,
+      "wall_id": "W68",
+      "rotation_deg": 0.0,
+      "room": "客厅",
+      "room_id": "eHaXGv38",
+      "rooms_touched": [
+        "客厅",
+        "厨房"
+      ],
+      "rooms_touched_id": [
+        "eHaXGv38",
+        "WFGji10I"
+      ],
+      "attached_walls": [
+        "DW001"
+      ],
+      "snap_dist_mm": 60.0
+    },
+    {
+      "id": "O13",
+      "type": "door",
+      "subtype": "door",
+      "center": [
+        4100.0,
+        5769.7
+      ],
+      "width": 1076.0,
+      "height": 2100.0,
+      "sill": 0.0,
+      "head": 2100.0,
+      "wall_id": "W72",
+      "rotation_deg": 0.0,
+      "room": "客厅",
+      "room_id": "eHaXGv38",
+      "rooms_touched": [
+        "客厅"
+      ],
+      "rooms_touched_id": [
+        "eHaXGv38"
+      ],
+      "attached_walls": [
+        "DW014"
+      ],
+      "snap_dist_mm": 115.0
+    }
+  ],
+  "summary": {
+    "n_room_polygons": 12,
+    "n_walls": 37,
+    "n_openings": 13,
+    "openings_by_type": {
+      "door": 8,
+      "window": 5
+    }
+  }
+}

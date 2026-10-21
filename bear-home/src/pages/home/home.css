@@ -1,0 +1,75 @@
+/* 小家首页 · 工具卡片 */
+
+.home-panel {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-3);
+}
+
+.home-tool-card {
+  display: block;
+  padding: var(--sp-4) var(--sp-5) !important;
+  background: var(--c-surface) !important;
+  border: 1px solid var(--c-line-strong) !important;
+  border-radius: var(--r-lg) !important;
+  transition: all 140ms ease;
+  margin: 0;
+}
+
+.home-tool-card:active {
+  background: var(--c-bg-deep) !important;
+  border-color: var(--c-primary-mid) !important;
+}
+
+.home-tool-card-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--sp-4);
+}
+
+.home-tool-card-text {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  flex: 1;
+}
+
+.home-tool-card-sub {
+  font-size: var(--fs-sm);
+  color: var(--c-mute);
+  line-height: 1.7;
+  margin: 0;
+}
+
+.home-tool-card-arrow {
+  font-size: 24px;
+  color: var(--c-primary);
+  font-weight: var(--fw-medium);
+  flex-shrink: 0;
+}
+
+.home-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--sp-2);
+  padding: var(--sp-7) var(--sp-5);
+  text-align: center;
+  border-top: 1px dashed var(--c-line);
+  color: var(--c-mute);
+}
+
+.home-empty .ui-h3 {
+  color: var(--c-ink);
+  font-family: var(--font-serif);
+  font-weight: var(--fw-medium);
+  font-size: var(--fs-lg);
+}
+
+.home-empty .ui-p {
+  max-width: 36ch;
+  color: var(--c-mute);
+  font-size: var(--fs-sm);
+  line-height: 1.7;
+}

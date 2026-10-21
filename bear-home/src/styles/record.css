@@ -1,349 +1,1152 @@
-/*
- * 选购台账（记录页）· 功能样式
- * 全部消费 tokens.css，禁止裸色值。
- * 关键词：品类分节的线性台账（桌面限宽 760）、mono 价格、状态点四色、
- * 一级切换 = 分段轨、品类 chips 复用笔记库 cat-tab。
- */
+/* A simple shopping notebook. No need/candidate hierarchy. */
+.page-record {
+  --rec-dim: rgba(38, 38, 38, 0.4);
+}
+.page-record .heading-dot,
+.page-record .footnote {
+  display: none;
+}
 
-/* 一级切换（家电/材料）：分段轨。静默 = 轨底灰字，选中 = 苔绿实底白字 */
-.kind-switch {
-  display: flex;
-  gap: 3px;
-  background: var(--c-bg-deep);
+.ui-button.rec-action {
+  min-height: 38px;
+  padding: 0 var(--sp-3);
+  gap: var(--sp-2);
+  border: 1px solid var(--c-line-strong);
   border-radius: var(--r-sm);
-  padding: 3px;
+  background: var(--c-surface);
+  color: var(--c-ink-2);
+  font-size: var(--fs-sm);
+  flex-shrink: 0;
+}
+.ui-button.rec-action.primary-action {
+  background: var(--c-primary);
+  border-color: transparent;
+  color: var(--c-on-primary);
+}
+.ui-button.rec-action.is-disabled {
+  opacity: 0.4;
+  cursor: default;
+}
+.ui-button.rec-action.is-disabled:active {
+  transform: none;
+}
+.ui-button.rec-action.rec-text-action {
+  background: none;
+  border: 0;
+  padding: 0;
+  color: var(--c-mute);
+}
+.rec-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: var(--sp-3);
+  margin-bottom: var(--sp-4);
+}
+.rec-main-tabs {
+  display: flex;
+  gap: var(--sp-6);
+}
+.rec-main-tabs .rec-action {
+  border: 0;
+  border-radius: 0;
+  padding: 0 0 var(--sp-2);
+  font-size: var(--fs-lg);
+  color: var(--c-mute);
+}
+.rec-main-tabs .rec-action.active {
+  color: var(--c-ink);
+  box-shadow: inset 0 -2px var(--c-ink);
+}
+.rec-room-tabs {
+  display: flex;
+  gap: 6px;
+  overflow-x: auto;
+  margin-bottom: var(--sp-5);
+}
+.rec-room-tabs .rec-action {
+  border: 0;
+  background: var(--c-bg-deep);
+  min-height: 36px;
+}
+.rec-room-tabs .rec-action.active {
+  background: var(--c-ink);
+  color: var(--c-surface);
+}
+.rec-tools {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-4);
   margin-bottom: var(--sp-3);
 }
-
-.ui-button.kind-seg {
+.rec-search {
   flex: 1;
-  min-height: 34px;
-  border-radius: var(--r-xs);
+}
+.rec-search .search-bar {
+  margin: 0;
+  min-height: 40px;
+}
+.rec-count {
+  font-size: var(--fs-xs);
   color: var(--c-mute);
-  font-size: var(--fs-sm);
+  margin-bottom: var(--sp-3);
 }
-
-.ui-button.kind-seg.active {
-  background: var(--c-primary);
-  color: var(--c-on-primary);
-  font-weight: var(--fw-medium);
+.record-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--sp-3);
 }
-
-@media (hover: hover) {
-  .ui-button.kind-seg:hover {
-    color: var(--c-ink);
-  }
-  .ui-button.kind-seg.active:hover {
-    background: var(--c-primary-deep);
-    color: var(--c-on-primary);
-  }
+.ui-button.record-entry {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  justify-content: flex-start;
+  width: 100%;
+  min-width: 0;
+  text-align: left;
+  padding: var(--sp-5);
+  border: 1px solid var(--c-line-strong);
+  border-radius: var(--r-md);
+  white-space: normal;
+  background: var(--c-surface);
 }
-
-/* 桌面：切换不必通栏 */
-@media (min-width: 701px) {
-  .kind-switch {
-    width: 280px;
-  }
+.ui-button.record-entry.selected {
+  border-color: var(--c-primary);
+  background: var(--c-primary-soft);
 }
-
-/* 台账主体：线性文档，桌面限宽居中 */
-.rec-list {
-  max-width: 760px;
-  margin: 0 auto;
-}
-
-@media (min-width: 900px) {
-  .rec-toolbar {
-    margin-bottom: var(--sp-6);
-  }
-}
-
-/* 汇总行：条数 / 已买（mono）+ 排序切换 */
-.rec-summary {
+.record-entry-head {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: var(--sp-3);
-  margin-bottom: var(--sp-3);
+  gap: var(--sp-2);
 }
-
-.rec-summary .ui-time {
-  font: var(--fs-xs) var(--font-mono);
-  color: var(--c-faint);
+.record-name {
+  font-size: var(--fs-base);
+  font-weight: var(--fw-medium);
+  line-height: 1.5;
+  overflow-wrap: anywhere;
 }
-
-.ui-button.rec-sort {
-  flex-shrink: 0;
+.record-status {
+  font-size: var(--fs-2xs);
   color: var(--c-primary);
-  font-size: var(--fs-xs);
-  min-height: 28px;
-  padding: 0 var(--sp-2);
-  border-radius: var(--r-xs);
-}
-
-@media (hover: hover) {
-  .ui-button.rec-sort:hover {
-    color: var(--c-primary-deep);
-  }
-}
-
-/* 品类分节：组头 = 品类名 + mono 小结，hairline 压底 */
-.rec-section {
-  margin-bottom: var(--sp-6);
-}
-
-.rec-section-head {
-  display: flex;
-  align-items: baseline;
-  justify-content: space-between;
-  gap: var(--sp-3);
-  padding-bottom: var(--sp-2);
-  border-bottom: 1px solid var(--c-line);
-  margin-bottom: var(--sp-3);
-}
-
-.rec-section-name {
-  font-size: var(--fs-sm);
-  color: var(--c-ink);
-}
-
-.rec-section-meta {
-  font: var(--fs-xs) var(--font-mono);
-  color: var(--c-faint);
   white-space: nowrap;
 }
-
-/* ===== 台账卡片：白面 + hairline，零阴影 ===== */
-
-.ledger-card {
+.status-bought {
+  color: var(--c-mute);
+}
+.record-price {
   display: block;
-  background: var(--c-surface);
-  border: 1px solid var(--c-line);
-  border-radius: var(--r-md);
-  padding: var(--sp-3) var(--sp-4);
-  margin-bottom: var(--sp-2);
+  font: var(--fs-md) var(--font-mono);
+  color: var(--c-ink);
+  margin-top: var(--sp-2);
 }
-
-.ledger-card:active {
-  opacity: 0.85;
+.record-note {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  font-size: var(--fs-sm);
+  line-height: 1.8;
+  color: var(--c-mute);
+  margin-top: var(--sp-2);
+  min-height: 43px;
 }
-
-.rec-card-main {
+.record-entry-bottom {
   display: flex;
-  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--sp-2);
+  margin-top: var(--sp-4);
+  font-size: var(--fs-2xs);
+  color: var(--c-mute);
+}
+.record-checkbox {
+  width: 20px;
+  height: 20px;
+  border: 1px solid var(--c-line-strong);
+  border-radius: 5px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+.record-checkbox.checked {
+  background: var(--c-primary);
+  border-color: var(--c-primary);
+}
+.rec-demo {
+  display: block;
+  margin-top: var(--sp-5);
+  font-size: var(--fs-2xs);
+  color: var(--c-mute);
+}
+.rec-compare-bottom {
+  position: fixed;
+  bottom: var(--sp-5);
+  left: calc(var(--layout-sidebar) + 50% - 240px);
+  z-index: var(--z-nav);
+  display: flex;
+  align-items: center;
+  gap: var(--sp-6);
+  padding: var(--sp-3) var(--sp-4);
+  border: 1px solid var(--c-line-strong);
+  border-radius: var(--r-md);
+  background: var(--c-surface);
+  font-size: var(--fs-sm);
+}
+.rec-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: var(--z-modal);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--sp-6);
+}
+.rec-dim {
+  position: absolute;
+  inset: 0;
+  background: var(--rec-dim);
+  opacity: 0;
+  transition: opacity var(--dur-base) var(--ease-out);
+}
+.rec-sheet {
+  position: relative;
+  width: 480px;
+  max-width: 100%;
+  max-height: 90dvh;
+  display: flex;
+  flex-direction: column;
+  background: var(--c-surface);
+  border-radius: var(--r-xl);
+  box-shadow: var(--shadow-sheet);
+  overflow: hidden;
+  opacity: 0;
+  transform: translateY(8px);
+  transition:
+    opacity var(--dur-base) var(--ease-out),
+    transform var(--dur-base) var(--ease-out);
+}
+.rec-sheet.wide {
+  width: 900px;
+}
+.rec-overlay.is-entered .rec-dim {
+  opacity: 1;
+}
+.rec-overlay.is-entered .rec-sheet {
+  opacity: 1;
+  transform: none;
+}
+.rec-overlay:not(.is-entered) {
+  pointer-events: none;
+}
+.rec-sheet-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--sp-3) var(--sp-5);
+  border-bottom: 1px solid var(--c-line);
+  font-size: var(--fs-base);
+  flex-shrink: 0;
+}
+.ui-button.rec-close {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: var(--c-bg-deep);
+}
+.rec-sheet-body {
+  padding: var(--sp-5);
+  overflow-y: auto;
+  overscroll-behavior: contain;
+}
+.rec-field-label {
+  display: block;
+  font-size: var(--fs-sm);
+  margin-bottom: var(--sp-2);
+  color: var(--c-ink-2);
+}
+.rec-input {
+  width: 100%;
+  box-sizing: border-box;
+  padding: var(--sp-3);
+  min-height: 44px;
+  background: var(--c-bg-deep);
+  border: 1px solid var(--c-line);
+  border-radius: var(--r-sm);
+  margin-bottom: var(--sp-4);
+  font-size: var(--fs-md);
+}
+.rec-input input,
+.rec-input textarea {
+  width: 100%;
+  border: 0;
+  outline: none;
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  resize: none;
+}
+.rec-input:focus-within {
+  border-color: var(--c-primary-mid);
+}
+.rec-textarea {
+  height: 88px;
+  line-height: 1.6;
+}
+.rec-form-inline {
+  display: flex;
   gap: var(--sp-3);
 }
-
-.rec-card-name {
+.rec-form-inline > :first-child {
   flex: 1;
   min-width: 0;
-  font-size: var(--fs-base);
-  line-height: var(--lh-tight);
-  color: var(--c-ink);
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  overflow-wrap: anywhere;
-  transition: color var(--dur-fast) var(--ease-out);
 }
-
-@media (hover: hover) {
-  .ledger-card:hover .rec-card-name {
-    color: var(--c-primary);
+.rec-form-inline .unit-field {
+  width: 90px;
+}
+.rec-choice-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-bottom: var(--sp-4);
+}
+.rec-choice-row .rec-action {
+  border: 0;
+  background: var(--c-bg-deep);
+  min-height: 34px;
+}
+.rec-choice-row .rec-action.active {
+  color: var(--c-primary);
+  background: var(--c-primary-soft);
+}
+.rec-form-footer {
+  display: flex;
+  justify-content: flex-end;
+  gap: var(--sp-2);
+  margin-top: var(--sp-4);
+}
+.rec-detail-title {
+  display: block;
+  font-size: var(--fs-lg);
+  font-weight: var(--fw-medium);
+  margin-bottom: var(--sp-2);
+}
+.rec-muted {
+  display: block;
+  font-size: var(--fs-sm);
+  color: var(--c-mute);
+  line-height: 1.7;
+}
+.rec-detail-money {
+  display: block;
+  font: var(--fs-xl) var(--font-mono);
+  margin: var(--sp-5) 0;
+}
+.rec-detail-line {
+  display: grid;
+  grid-template-columns: 45px 1fr;
+  gap: var(--sp-3);
+  padding: var(--sp-4) 0;
+  border-top: 1px solid var(--c-line);
+  font-size: var(--fs-base);
+  line-height: 1.8;
+  white-space: pre-wrap;
+}
+.rec-table-scroll {
+  overflow-x: auto;
+  border: 1px solid var(--c-line);
+  border-radius: var(--r-sm);
+}
+.rec-table-row {
+  display: flex;
+  border-bottom: 1px solid var(--c-line);
+}
+.rec-table-row:last-child {
+  border-bottom: 0;
+}
+.rec-table-label {
+  width: 70px;
+  padding: var(--sp-3);
+  flex-shrink: 0;
+  background: var(--c-bg-deep);
+  position: sticky;
+  left: 0;
+  z-index: 1;
+  font-size: var(--fs-xs);
+  color: var(--c-mute);
+}
+.rec-table-cell {
+  flex: 1;
+  min-width: 0;
+  padding: var(--sp-4);
+  border-left: 1px solid var(--c-line);
+  font-size: var(--fs-sm);
+  line-height: 1.8;
+  white-space: pre-wrap;
+}
+.rec-compare-hint {
+  margin-bottom: var(--sp-3);
+}
+.rec-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--sp-3);
+  padding: var(--sp-12) var(--sp-4);
+}
+@media (hover: hover) and (pointer: fine) {
+  .record-entry:hover {
+    border-color: var(--c-primary-mid);
+  }
+  .rec-action.primary-action:hover {
+    background: var(--c-primary-deep);
+  }
+}
+@media (max-width: 700px) {
+  .record-grid {
+    grid-template-columns: 1fr;
+  }
+  .ui-button.record-entry {
+    padding: var(--sp-4);
+  }
+  .record-note {
+    min-height: 0;
+  }
+  .record-entry-bottom {
+    margin-top: var(--sp-3);
+  }
+  .rec-compare-bottom {
+    left: var(--sp-4);
+    right: var(--sp-4);
+    justify-content: space-between;
+    bottom: calc(68px + env(safe-area-inset-bottom));
+  }
+  .rec-overlay {
+    padding: 0;
+    align-items: stretch;
+  }
+  .rec-sheet,
+  .rec-sheet.wide {
+    width: 100%;
+    max-height: 100dvh;
+    border-radius: 0;
+  }
+  .rec-sheet-head {
+    padding-top: calc(var(--sp-3) + env(safe-area-inset-top));
+  }
+  .rec-sheet-body {
+    padding-bottom: calc(var(--sp-6) + env(safe-area-inset-bottom));
+  }
+  .rec-table-label {
+    width: 45px;
+  }
+  .rec-main-tabs .rec-action {
+    font-size: var(--fs-md);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .rec-dim,
+  .rec-sheet {
+    transition: none;
+    transform: none;
   }
 }
 
-/* 价格：mono 大字右对齐——台账的图纸记忆点 */
-.rec-card-price {
-  flex-shrink: 0;
-  font: var(--fw-medium) var(--fs-md) var(--font-mono);
-  color: var(--c-ink);
+/* Rooms are the entry point; records stay a flat list inside each room. */
+.rec-home-top {
+  margin-bottom: 1.5rem;
 }
-
-.rec-card-meta {
+.rec-home-caption {
+  color: var(--c-mute);
+  font-size: 0.875rem;
+}
+.rec-rooms {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  overflow: hidden;
+  border-radius: 1.5rem;
+  background: var(--c-surface);
+  border: 1px solid var(--c-line);
+}
+.ui-button.rec-room {
   display: flex;
   align-items: center;
-  gap: var(--sp-2);
-  margin-top: var(--sp-2);
+  justify-content: flex-start;
+  text-align: left;
+  min-height: 7.25rem;
+  padding: 1.5rem;
+  gap: 1rem;
+  border-bottom: 1px solid var(--c-line);
+  background: var(--c-surface);
+  transition:
+    background-color 160ms ease,
+    transform 180ms ease;
 }
-
-.rec-card-meta .ui-time {
-  font: var(--fs-xs) var(--font-mono);
+.ui-button.rec-room:nth-child(odd):not(.rec-room-shared) {
+  border-right: 1px solid var(--c-line);
+}
+.rec-room-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 3rem;
+  height: 3rem;
+  border-radius: 1rem;
+  background: var(--c-primary-soft);
+  flex-shrink: 0;
+}
+.rec-room-icon image,
+.rec-room-icon img,
+.rec-room-icon taro-image-core {
+  width: 1.75rem;
+  height: 1.75rem;
+}
+.rec-room-body {
+  display: flex;
+  flex-direction: column;
+  gap: 0.375rem;
+  min-width: 0;
+  flex: 1;
+}
+.rec-room-name {
+  color: var(--c-ink);
+  font-size: 1.125rem;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  line-height: 1.4;
+}
+.rec-room-preview {
   color: var(--c-mute);
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
+  font-size: 0.8125rem;
+  line-height: 1.6;
 }
-
-/* 状态点：只上点与状态字，不铺卡面（点用背景色，字用文字色） */
-.rec-status-dot {
+.rec-room-trailing {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
   flex-shrink: 0;
-  width: 6px;
-  height: 6px;
-  border-radius: 50%;
 }
-
-.rec-status-text {
-  flex-shrink: 0;
-  font-size: var(--fs-2xs);
+.rec-room-count {
+  color: var(--c-mute);
+  font-variant-numeric: tabular-nums;
+  font-size: 0.875rem;
+  min-width: 1.5rem;
+  text-align: center;
 }
-
-.rec-status-dot.st-looking {
-  background: var(--c-faint);
-}
-
-.rec-status-text.st-looking {
-  color: var(--c-faint);
-}
-
-.rec-status-dot.st-shortlist {
-  background: var(--c-primary);
-}
-
-.rec-status-text.st-shortlist {
+.rec-room-count.is-empty {
   color: var(--c-primary);
+  font-size: 1.125rem;
 }
-
-.rec-status-dot.st-bought {
-  background: var(--c-success);
+.rec-room-trailing .ui-icon {
+  opacity: 0.65;
 }
-
-.rec-status-text.st-bought {
-  color: var(--c-success);
+.ui-button.rec-room-shared {
+  grid-column: 1 / -1;
+  border-bottom: none;
+  background: var(--c-bg-deep);
 }
-
-.rec-status-dot.st-dropped {
-  background: var(--c-danger);
+.ui-button.rec-room:focus-visible {
+  outline: 2px solid var(--c-primary);
+  outline-offset: -3px;
+  z-index: 1;
 }
-
-.rec-status-text.st-dropped {
-  color: var(--c-danger);
+@media (hover: hover) {
+  .ui-button.rec-room:hover {
+    background: var(--c-bg-deep);
+  }
 }
-
-/* 放弃：名称划掉（台账里「排除项」的阅读直觉） */
-.ledger-card.st-dropped .rec-card-name {
-  color: var(--c-faint);
-  text-decoration: line-through;
-  text-decoration-color: var(--c-line-strong);
+.rec-room-list {
+  border-top: 1px solid var(--c-line-strong);
 }
-
-.rec-card-note {
-  margin-top: var(--sp-1);
-  font-size: var(--fs-sm);
-  line-height: var(--lh-base);
-  color: var(--c-mute);
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  overflow-wrap: anywhere;
-}
-
-/* ===== 记一笔弹层补量 ===== */
-
-/* 价格输入的 ¥ 记号：mono 弱标注 */
-.rec-price-mark {
-  flex-shrink: 0;
-  font: var(--fs-md) var(--font-mono);
-  color: var(--c-faint);
-  margin-right: var(--sp-1);
-}
-
-/* ===== 详情弹层 ===== */
-
-.rec-detail-top .rec-detail-kind {
-  font-size: var(--fs-xs);
-  color: var(--c-mute);
-  letter-spacing: 1px;
-}
-
-/* 名称：serif 展签（详情标题语言同笔记库） */
-.rec-detail-name {
-  font-family: var(--font-serif);
-  font-size: var(--fs-lg);
-  font-weight: var(--fw-display);
-  letter-spacing: var(--ls-title);
-  line-height: var(--lh-tight);
-  color: var(--c-ink);
-  margin-top: var(--sp-1);
-  overflow-wrap: anywhere;
-}
-
-.rec-detail-price {
-  margin-top: var(--sp-1);
-  font: var(--fw-medium) var(--fs-xl) var(--font-mono);
-  color: var(--c-ink);
-}
-
-.rec-detail-noprice {
-  display: block;
-  margin-top: var(--sp-2);
-  font-size: var(--fs-sm);
-  color: var(--c-faint);
-}
-
-.rec-status-row {
-  margin-top: var(--sp-4);
-}
-
-.rec-info {
-  margin-top: var(--sp-4);
-  border-top: 1px solid var(--c-line);
-}
-
-.rec-info-row {
+.ui-button.rec-item {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: var(--sp-3);
-  padding: var(--sp-2) 0;
+  gap: 18px;
+  width: 100%;
+  padding: 22px 4px;
   border-bottom: 1px solid var(--c-line);
+  border-radius: 0;
+  background: transparent;
+  text-align: left;
 }
-
-.rec-info-label {
-  flex-shrink: 0;
-  font-size: var(--fs-sm);
+.rec-item-main {
+  min-width: 0;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.rec-item-heading {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+.rec-item-meta {
+  color: var(--c-mute);
+  font-size: 12px;
+}
+.rec-item-note {
+  color: var(--c-ink-2);
+  font-size: 12px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.rec-item-arrow {
+  font-size: 25px;
   color: var(--c-faint);
 }
-
-.rec-info-value {
-  font-size: var(--fs-sm);
-  color: var(--c-ink-2);
-  text-align: right;
-  overflow-wrap: anywhere;
+.ui-button.rec-item.selected {
+  background: #f2f5f0;
+}
+.ui-button.rec-action.rec-add-line {
+  width: 100%;
+  margin-top: 16px;
+  border-style: dashed;
+  background: transparent;
+  color: var(--c-mute);
 }
 
-.rec-detail-note {
-  margin-top: var(--sp-4);
+/* Calm grouped surfaces, immediate press feedback and readable system type. */
+
+.page-record .rec-action {
+  min-height: 44px;
+  border-radius: 0.875rem;
+}
+.page-record .rec-text-action {
+  color: var(--c-primary);
+}
+.rec-room-tabs {
+  display: flex;
+  background: #e8ece7;
+  padding: 4px;
+  border-radius: 0.875rem;
+  gap: 4px;
+  margin-bottom: 1.125rem;
+}
+.rec-room-tabs .rec-action {
+  flex: 1;
+  min-height: 36px;
+  border-radius: 0.65rem;
+  background: transparent;
+  color: var(--c-mute);
+  font-weight: 500;
+}
+.rec-room-tabs .rec-action.active {
+  background: white;
+  color: var(--c-ink);
+  box-shadow: 0 2px 5px rgba(36, 51, 42, 0.07);
+}
+.rec-tools {
+  gap: 1rem;
+  margin-bottom: 1.25rem;
+}
+.rec-room-list {
+  border: 1px solid var(--c-line);
+  border-radius: 1.25rem;
+  overflow: hidden;
+  background: white;
+}
+.ui-button.rec-item {
+  padding: 1.25rem;
+  gap: 1rem;
+  min-height: 100px;
+}
+.ui-button.rec-item:last-child {
+  border-bottom: 0;
+}
+.rec-item-heading .record-name {
+  font-size: 0.9375rem;
+  line-height: 1.5;
+  font-weight: 600;
+}
+.rec-item-main {
+  gap: 0.375rem;
+}
+.rec-item-meta,
+.rec-item-note {
+  color: var(--c-mute);
+  font-size: 0.8125rem;
+  line-height: 1.6;
+}
+.rec-item-price {
+  margin-top: 0.25rem;
+  font-size: 0.875rem;
+  color: var(--c-ink);
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+}
+.record-status {
+  border-radius: 0.375rem;
+  padding: 0.125rem 0.375rem;
+  font-size: 0.6875rem;
+  background: var(--c-primary-soft);
+}
+.rec-sheet {
+  border-radius: 1.5rem;
+  box-shadow: 0 24px 90px rgba(21, 35, 27, 0.2);
+}
+.rec-sheet-head {
+  background: rgba(255, 255, 255, 0.92);
+  backdrop-filter: blur(18px);
+  font-weight: 600;
+  min-height: 70px;
+}
+.rec-sheet-body {
+  background: var(--c-surface);
+  padding: 1.5rem;
+}
+.rec-input {
+  background: white;
+  border-radius: 0.875rem;
+  min-height: 48px;
+}
+.rec-field-label {
+  font-size: 0.8125rem;
+  font-weight: 500;
+}
+.rec-choice-row .rec-action {
+  background: white;
+  border-color: var(--c-line);
+}
+.rec-choice-row .rec-action.active {
+  background: var(--c-primary-soft);
+  border-color: #b8ccbc;
+  color: var(--c-primary);
+}
+.rec-form-footer {
+  position: sticky;
+  bottom: -1.5rem;
+  padding: 1rem 0;
+  background: var(--c-surface);
+  margin-top: 1rem;
+  z-index: 2;
+}
+.rec-form-footer .rec-action {
+  flex: 1;
+}
+.rec-detail-title {
+  font-family: inherit;
+  font-weight: 600;
+  font-size: 1.375rem;
+  letter-spacing: -0.025em;
+}
+.rec-detail-line {
+  background: white;
+  border: 0;
+  border-radius: 0.875rem;
+  padding: 1rem;
+  margin-top: 0.75rem;
+}
+.rec-compare-bottom {
+  border-radius: 1.25rem;
+  background: rgba(255, 255, 255, 0.94);
+  backdrop-filter: blur(20px);
+  box-shadow: 0 8px 35px rgba(21, 35, 27, 0.12);
+}
+.rec-overlay:not(.is-entered) {
+  pointer-events: auto;
+}
+.page-record .rec-room:active,
+.page-record .rec-item:active {
+  background: var(--c-bg-deep);
+  transform: scale(0.99);
+  transition: none;
+}
+.page-record .rec-action:active {
+  transition: none;
+}
+@media (max-width: 700px) {
+  .rec-home-caption {
+    font-size: 0.8125rem;
+  }
+  .rec-rooms {
+    grid-template-columns: 1fr;
+    border-radius: 1.25rem;
+  }
+  .ui-button.rec-room {
+    min-height: 86px;
+    padding: 1rem;
+    gap: 0.875rem;
+  }
+  .ui-button.rec-room:nth-child(odd):not(.rec-room-shared) {
+    border-right: 0;
+  }
+  .rec-room-name {
+    font-size: 1rem;
+  }
+  .rec-room-preview {
+    font-size: 0.75rem;
+  }
+  .rec-room-icon {
+    width: 2.75rem;
+    height: 2.75rem;
+    border-radius: 0.875rem;
+  }
+  .rec-overlay {
+    align-items: flex-end;
+    padding: 0;
+  }
+  .rec-sheet,
+  .rec-sheet.wide {
+    max-height: 90dvh;
+    border-radius: 1.5rem 1.5rem 0 0;
+    transform: translateY(24px);
+  }
+  .rec-sheet-head {
+    padding-top: 0.75rem;
+  }
+  .rec-sheet-body {
+    padding: 1.25rem;
+    padding-bottom: calc(1.25rem + env(safe-area-inset-bottom));
+  }
+  .rec-form-footer {
+    bottom: -1.25rem;
+    padding-bottom: calc(1rem + env(safe-area-inset-bottom));
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .ui-button.rec-room,
+  .ui-button.rec-item,
+  .rec-sheet {
+    transition: opacity 120ms ease;
+    transform: none !important;
+  }
+}
+@media (prefers-reduced-transparency: reduce) {
+  .rec-sheet-head,
+  .rec-compare-bottom {
+    background: white;
+    backdrop-filter: none;
+  }
+}
+@media (prefers-contrast: more) {
+  .rec-rooms,
+  .rec-room-list,
+  .rec-sheet,
+  .rec-input {
+    border: 1px solid var(--c-ink);
+  }
+  .rec-room-preview,
+  .rec-room-count,
+  .rec-item-note {
+    color: var(--c-ink);
+  }
+}
+
+/* Share the notes page floating add button geometry. */
+.page-record .ui-button.fab.rec-fab {
+  background: var(--c-primary);
+}
+.page-record .ui-button.fab.rec-fab:active {
+  background: var(--c-primary-deep);
+  transition: none;
+}
+@media (hover: hover) and (pointer: fine) {
+  .page-record .ui-button.fab.rec-fab:hover {
+    background: var(--c-primary-deep);
+  }
+}
+
+/* Match the notes page vocabulary while retaining room-first grouping. */
+.page-record .rec-rooms,
+.page-record .rec-room-list {
+  border-radius: var(--r-md);
+}
+.page-record .rec-room-icon {
+  border-radius: var(--r-md);
+  background: var(--c-bg-deep);
+}
+.page-record .rec-room-name {
+  font-size: var(--fs-md);
+  font-weight: var(--fw-medium);
+  letter-spacing: 0;
+}
+.page-record .rec-home-caption,
+.page-record .rec-room-preview {
+  font-size: var(--fs-sm);
+}
+.page-record .rec-action {
+  border-radius: var(--r-sm);
+  font-size: var(--fs-base);
+}
+.page-record .rec-text-action {
+  color: var(--c-mute);
+}
+.page-record .rec-room-tabs {
+  background: transparent;
+  padding: 0;
+  gap: var(--sp-2);
+  border-radius: 0;
+}
+.page-record .rec-room-tabs .rec-action,
+.page-record .rec-choice-row .rec-action {
+  flex: 0 0 auto;
+  padding: var(--sp-2) var(--sp-4);
+  min-height: 36px;
+  border: 0;
+  border-radius: var(--r-sm);
+  background: var(--c-bg-deep);
+  color: var(--c-mute);
+  box-shadow: none;
+}
+.page-record .rec-room-tabs .rec-action.active,
+.page-record .rec-choice-row .rec-action.active {
+  background: var(--c-ink);
+  color: var(--c-on-primary);
+}
+.page-record .rec-item-heading .record-name {
+  font-size: var(--fs-base);
+  font-weight: var(--fw-medium);
+}
+.page-record .rec-item-meta,
+.page-record .rec-item-note {
+  font-size: var(--fs-sm);
+}
+.page-record .rec-item-price {
+  font-size: var(--fs-base);
+  font-weight: var(--fw-medium);
+}
+.page-record .record-status {
+  background: var(--c-bg-deep);
+  color: var(--c-ink-2);
+  border-radius: var(--r-xs);
+}
+.page-record .status-shortlist {
+  color: var(--c-primary);
+  background: var(--c-primary-soft);
+}
+.page-record .rec-sheet {
+  border-radius: var(--r-xl);
+  box-shadow: var(--shadow-sheet);
+}
+.page-record .rec-sheet-head {
+  background: var(--c-surface);
+  backdrop-filter: none;
+  min-height: 60px;
+  font-size: var(--fs-base);
+}
+.page-record .rec-input {
   background: var(--c-bg-deep);
   border-radius: var(--r-sm);
-  padding: var(--sp-3);
-  font-size: var(--fs-sm);
-  line-height: var(--lh-base);
-  color: var(--c-ink-2);
-  overflow-wrap: anywhere;
 }
-
-.rec-detail-actions {
-  display: flex;
-  justify-content: flex-end;
-  margin-top: var(--sp-5);
+.page-record .rec-detail-title {
+  font-family: var(--font-serif);
+  font-weight: var(--fw-display);
+  letter-spacing: var(--ls-title);
 }
-
-/* ===== 手机：切换/搜索/品类整体吸顶（同笔记 insp-toolbar 模式）===== */
-
+.page-record .rec-detail-line {
+  padding: var(--sp-3) 0;
+  border-bottom: 1px solid var(--c-line);
+  border-radius: 0;
+}
+.page-record .rec-compare-bottom {
+  background: var(--c-surface);
+  backdrop-filter: none;
+  box-shadow: none;
+  border-radius: var(--r-md);
+}
+@media (hover: hover) and (pointer: fine) {
+  .page-record .rec-room-tabs .rec-action.active:hover,
+  .page-record .rec-choice-row .rec-action.active:hover {
+    background: var(--c-ink-2);
+  }
+}
 @media (max-width: 700px) {
-  .rec-toolbar {
-    position: sticky;
-    top: calc(56px + env(safe-area-inset-top));
-    z-index: 5;
-    background: var(--c-bg);
-    padding: var(--sp-2) 0;
-    box-shadow: 0 1px 0 var(--c-line);
+  .page-record .rec-sheet,
+  .page-record .rec-sheet.wide {
+    border-radius: var(--r-xl) var(--r-xl) 0 0;
   }
 }
 
-@media (prefers-reduced-motion: reduce) {
-  .rec-card-name {
-    transition: none;
+/* Record editor: compact fields with a separate, always-visible action bar. */
+.page-record .rec-sheet.rec-editor {
+  width: 520px;
+  max-height: min(90dvh, 820px);
+}
+.page-record .rec-editor .rec-sheet-head {
+  min-height: 0;
+  padding: 18px 24px;
+  font-size: 18px;
+}
+.page-record .rec-editor .rec-close {
+  width: 32px;
+  height: 32px;
+}
+.page-record .rec-editor .rec-sheet-body {
+  min-height: 0;
+  padding: 20px 24px 24px;
+}
+.rec-form-hint {
+  display: block;
+  margin-bottom: 22px;
+  color: var(--c-mute);
+  font-size: 13px;
+  line-height: 1.5;
+}
+.page-record .rec-editor .rec-field-label {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  margin-bottom: 8px;
+  font-size: 13px;
+  color: var(--c-ink);
+}
+.rec-optional,
+.rec-required {
+  font-size: 11px;
+  font-weight: 400;
+  color: var(--c-mute);
+}
+.page-record .rec-editor .rec-input {
+  display: block;
+  min-height: 0;
+  height: 44px;
+  padding: 10px 12px;
+  margin-bottom: 20px;
+  font-size: 14px;
+  line-height: 22px;
+}
+.page-record .rec-editor .rec-input .taro-input {
+  height: 22px;
+  line-height: 22px;
+}
+.page-record .rec-editor .rec-textarea {
+  height: 100px;
+  overflow: hidden;
+}
+.page-record .rec-editor .rec-textarea .taro-textarea {
+  display: block;
+  box-sizing: border-box;
+  width: 100%;
+  height: 100%;
+  min-height: 0;
+  padding: 0;
+  margin: 0;
+  background: transparent;
+  border: 0;
+  resize: none;
+  font: inherit;
+  line-height: 1.6;
+}
+.page-record .rec-editor .rec-choice-row {
+  gap: 8px;
+  margin-bottom: 20px;
+}
+.page-record .rec-editor .rec-choice-row .rec-action {
+  min-height: 38px;
+  padding: 0 12px;
+  font-size: 13px;
+}
+.page-record .rec-editor .rec-type-choice {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  padding: 4px;
+  background: var(--c-bg-deep);
+  border-radius: var(--r-sm);
+  gap: 4px;
+}
+.page-record .rec-editor .rec-room-choice {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+.page-record .rec-editor .rec-room-choice .rec-action {
+  width: 100%;
+}
+.page-record .rec-editor .rec-text-action {
+  justify-content: flex-start;
+  min-height: 36px;
+  padding: 0;
+  margin-top: -8px;
+  margin-bottom: 12px;
+  color: var(--c-primary);
+  font-size: 13px;
+}
+.page-record .rec-editor > .rec-form-footer {
+  position: relative;
+  bottom: auto;
+  flex-shrink: 0;
+  margin: 0;
+  padding: 16px 24px;
+  border-top: 1px solid var(--c-line);
+  gap: 12px;
+}
+.page-record .rec-editor > .rec-form-footer .rec-action {
+  min-height: 44px;
+  font-size: 14px;
+}
+/* 次要按钮固定 100px，主按钮占据剩余宽度；只有主按钮时通栏。 */
+.page-record .rec-editor > .rec-form-footer .rec-action:first-child:not(.primary-action) {
+  flex: 0 0 100px;
+}
+@media (max-width: 700px) {
+  .page-record .rec-sheet.rec-editor {
+    width: 100%;
+    max-height: 92dvh;
   }
+  .page-record .rec-editor .rec-sheet-head {
+    padding: 16px 20px;
+  }
+  .page-record .rec-editor .rec-sheet-body {
+    padding: 18px 20px;
+  }
+  .page-record .rec-editor > .rec-form-footer {
+    padding: 14px 20px calc(14px + env(safe-area-inset-bottom));
+  }
+}
+
+/* A note first, structured fields only when the user chooses to edit. */
+.page-record .rec-editor .rec-ai-input {
+  height: 180px;
+  margin-bottom: 12px;
+  padding: 14px;
+  font-size: 15px;
+}
+.rec-ai-context {
+  display: block;
+  color: var(--c-mute);
+  font-size: 12px;
+  line-height: 1.6;
+}
+.rec-ai-error {
+  display: block;
+  margin-top: 16px;
+  padding: 12px;
+  background: var(--c-bg-deep);
+  border-radius: var(--r-sm);
+  color: var(--c-ink-2);
+  font-size: 13px;
+  line-height: 1.6;
+}
+.rec-ai-options {
+  display: flex;
+  gap: 20px;
+  margin-top: 20px;
+}
+.page-record .rec-editor .rec-ai-options .rec-text-action {
+  margin: 0;
+}
+.rec-ai-name {
+  display: block;
+  margin: 14px 0 8px;
+  font-size: 22px;
+  font-weight: 600;
+  line-height: 1.4;
+}
+.rec-ai-price {
+  display: block;
+  margin-bottom: 20px;
+  color: var(--c-ink-2);
+  font-size: 16px;
+}
+.rec-ai-note {
+  display: block;
+  margin-top: 10px;
+  color: var(--c-ink-2);
+  font-size: 14px;
+  line-height: 1.7;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
 }

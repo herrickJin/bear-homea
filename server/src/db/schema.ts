@@ -22,6 +22,10 @@ export const LINKS_DDL = `CREATE TABLE IF NOT EXISTS links (
   )`;
 
 export const statements = [
+  `CREATE TABLE IF NOT EXISTS preparation_state (
+    id INTEGER PRIMARY KEY CHECK(id = 1),
+    revision INTEGER NOT NULL, body TEXT NOT NULL, updated_at TEXT NOT NULL
+  )`,
   `CREATE TABLE IF NOT EXISTS entries (
     id TEXT PRIMARY KEY,
     title TEXT NOT NULL,

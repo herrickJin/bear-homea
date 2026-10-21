@@ -84,7 +84,7 @@ chat.post("/stream", (c) => {
       sessionId = result.sessionId;
       await sse.writeSSE({
         event: "done",
-        data: JSON.stringify({ sessionId: result.sessionId, reply: result.reply }),
+        data: JSON.stringify({ sessionId: result.sessionId, reply: result.reply, changed: result.changed }),
       });
     } catch (err) {
       if (!(err instanceof AiUnavailableError) && !(err instanceof ProviderError)) {

@@ -8,6 +8,9 @@ import { entries } from "./routes/entries.js";
 import { links } from "./routes/links.js";
 import { categories } from "./routes/categories.js";
 import { files, uploads } from "./routes/uploads.js";
+import { recordDraft } from "./routes/record-draft.js";
+import { analyze } from "./routes/analyze.js";
+import { preparation, roomDirectory } from "./routes/preparation.js";
 import { chat } from "./routes/chat.js";
 
 // CORS 白名单：环境变量里的精确来源（默认含 vite 5173），
@@ -45,11 +48,15 @@ app.get("/api/health", (c) => c.json({ ok: true }));
 // 以下全部需要 Bearer Token
 app.use("/api/*", auth());
 app.use("/mcp", auth());
+app.route("/api/preparation", preparation);
+app.route("/api/rooms", roomDirectory);
 app.route("/api/entries", entries);
 app.route("/api/links", links);
 app.route("/api/categories", categories);
 app.route("/api/uploads", uploads);
 app.route("/api/chat", chat);
+app.route("/api/record-draft", recordDraft);
+app.route("/api/analyze", analyze);
 app.route("/mcp", mcpApp);
 
 // 文件读取免鉴权：UUID 不可枚举即为凭证（capability URL）

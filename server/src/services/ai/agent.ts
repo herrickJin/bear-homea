@@ -4,14 +4,20 @@
 
 import { randomUUID } from "node:crypto";
 import { db, now, today } from "../../db/index.js";
-import type { ChatMessageRow, ChatSessionRow, EntryRow, LinkRow } from "../../db/schema.js";
+import type { ChatMessageRow, ChatSessionRow, LinkRow } from "../../db/schema.js";
 import { config } from "../../config.js";
+import {
+  emptyPreparationState,
+  readPreparationState,
+  rooms,
+  type PreparationState,
+} from "../preparation-state.js";
 import {
   streamChatCompletion,
   type ProviderMessage,
   type ProviderToolCall,
 } from "./provider.js";
-import { aiToolSchemas, runAiTool } from "./tools.js";
+import { aiToolSchemas, runAiTool, toolFailed, WRITE_TOOLS } from "./tools.js";
 
 export class AiUnavailableError extends Error {}
 
@@ -29,7 +35,7 @@ const HISTORY_LIMIT = 20;
 const TOOL_RESULT_MAX_CHARS = 30000;
 const CONTEXT_MAX_CHARS = 4000;
 
-const countBy = (rows: { stage?: string; status?: string }[], key: "stage" | "status") => {
+const countBy = (rows: { status?: string }[], key: "status") => {
   const counts: Record<string, number> = {};
   for (const row of rows) {
     const value = row[key];
@@ -38,16 +44,42 @@ const countBy = (rows: { stage?: string; status?: string }[], key: "stage" | "st
   return counts;
 };
 
-/** 项目快照：让模型不查表也知道家现在到哪一步了 */
-function buildSnapshot(): string {
-  const entries = db
-    .prepare(
-      `SELECT stage, title, date FROM entries ORDER BY date DESC, created_at DESC LIMIT 8`,
-    )
-    .all() as Pick<EntryRow, "stage" | "title" | "date">[];
-  const entryTotal = (
-    db.prepare(`SELECT COUNT(*) AS n FROM entries`).get() as { n: number }
-  ).n;
+/**
+ * 项目快照：让模型不查表也知道家现在到哪一步了。
+ * 数据源必须与应用侧可见的数据一致：装修准备（preparation_state）+ 笔记库（links）。
+ * 旧的 entries 表应用侧从不写入也不展示，不进快照，免得快照说「没有记录」而其实有候选。
+ */
+export function buildSnapshot(): string {
+  const state: PreparationState = readPreparationState().data ?? emptyPreparationState();
+  const itemName = new Map(state.items.map(i => [i.id, i.name]));
+
+  const lines: string[] = [];
+  const unassigned = state.records.filter(r => !r.itemId).length;
+  lines.push(
+    `- 装修准备：${state.items.length} 个准备项、${state.records.length} 条候选（含 ${unassigned} 条待归类），status：saved 已记录 / shortlist 已选定 / bought 已买`,
+  );
+  for (const room of rooms) {
+    const items = state.items.filter(i => i.room === room);
+    const records = state.records.filter(r => r.room === room);
+    if (!items.length && !records.length) continue;
+    const skipped = state.skipped.filter(id => items.some(i => i.id === id)).length;
+    const picked = records.filter(r => r.status === "shortlist").map(r => r.name.slice(0, 24));
+    lines.push(
+      `  · ${room}：准备项 ${items.length} 个（暂不需要 ${skipped} 个）、候选 ${records.length} 条` +
+        (picked.length ? `，已选定：${picked.join("、")}` : ""),
+    );
+  }
+  const featured = [
+    ...state.records.filter(r => r.status === "shortlist"),
+    ...state.records.filter(r => r.status !== "shortlist"),
+  ].slice(0, 12);
+  for (const r of featured) {
+    const price = r.price === null ? "价格未知" : `¥${r.price}/${r.unit}`;
+    lines.push(
+      `  · [${r.status}] ${r.room} · ${itemName.get(r.itemId ?? "") ?? "待归类"} · ${r.name.slice(0, 40)} · ${price}`,
+    );
+  }
+
   const links = db
     .prepare(
       `SELECT status, title, summary FROM links ORDER BY created_at DESC LIMIT 8`,
@@ -57,11 +89,6 @@ function buildSnapshot(): string {
     db.prepare(`SELECT COUNT(*) AS n FROM links`).get() as { n: number }
   ).n;
 
-  const lines: string[] = [];
-  lines.push("- 装修记录：共 " + entryTotal + " 条，按阶段 " + JSON.stringify(countBy(entries, "stage")));
-  for (const e of entries) {
-    lines.push("  · " + e.date + " 【" + e.stage + "】" + e.title.slice(0, 40));
-  }
   lines.push(
     "- 笔记库（收藏的第三方内容）：共 " +
       linkTotal +
@@ -82,8 +109,11 @@ function buildSystemPrompt(context: ChatContext | undefined): string {
     [
       "你是「小熊」，熊熊之家 App 里的装修助手。屋主是第一次装修的小两口，正处在装修周期里。",
       "说话简洁、口语化、说人话，别堆术语；给出建议时给理由，有分歧时摆事实让屋主自己定。",
-      "回答里涉及他家的事实（进度、记录、收藏的笔记）时，优先用工具查证，不要凭空编。",
-      "屋主说「记下来 / 帮我记着」时，把确认过的内容用 create_entry 落成装修记录。",
+      "回答里涉及他家的事实（准备项、候选商品、报价、收藏的笔记）时，优先用工具查证，不要凭空编。",
+      "报价是屋主自己记下的数字，不是市场价；价格未知就直说未知，不要替商家估价或编型号。",
+      "屋主说「记下来 / 帮我记着」时，把确认过的内容用 add_candidate 落成候选（room 和 name 必填，price 只填他明确说过的数字）。",
+      "归不进准备项的候选会进「待归类」，这是正常的，让屋主之后自己认领，不要硬塞。",
+      "屋主让你分析某款商品时，用 save_candidate_analysis 把结论写进那条候选：第一段先给 2~3 句结论，后面分段说依据和还要向商家核实什么；你没有联网能力，不要编造来源链接或参数。",
       "涉及金额与施工的判断，提醒这只是参考，重要决定找工长/设计师确认。",
     ].join("\n"),
   );
@@ -191,12 +221,14 @@ export async function runChat(options: {
   context?: ChatContext;
   signal?: AbortSignal;
   onEvent?: (event: AgentEvent) => void;
-}): Promise<{ sessionId: string; reply: string }> {
+}): Promise<{ sessionId: string; reply: string; changed: string[] }> {
   const { apiKey, apiBase, model, maxToolRounds } = config.ai;
   if (!apiKey) throw new AiUnavailableError("未配置 AI_API_KEY");
 
   const session = ensureSession(options.sessionId);
   const emit = (event: AgentEvent) => options.onEvent?.(event);
+  // AI 改过应用侧数据就记下来：前端据此刷新，否则本地 revision 会过期撞 409
+  const changed = new Set<string>();
 
   if (!session.title) {
     db.prepare(`UPDATE chat_sessions SET title = ?, updated_at = ? WHERE id = ?`).run(
@@ -296,6 +328,7 @@ export async function runChat(options: {
     for (const tc of toolCalls) {
       emit({ type: "tool_start", name: tc.name });
       const result = runAiTool(tc.name, tc.arguments);
+      if (WRITE_TOOLS.has(tc.name) && !toolFailed(result)) changed.add("preparation");
       const resultText = JSON.stringify(result).slice(0, TOOL_RESULT_MAX_CHARS);
       insertMessage({
         session_id: session.id,
@@ -315,5 +348,5 @@ export async function runChat(options: {
     now(),
     session.id,
   );
-  return { sessionId: session.id, reply };
+  return { sessionId: session.id, reply, changed: [...changed] };
 }

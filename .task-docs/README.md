@@ -13,9 +13,11 @@
 | 05 | 前端功能剥离与骨架重置 | ✅ 完成（2026-10-10） | [05-skeleton-reset.md](./05-skeleton-reset.md) |
 | 06 | 整体风格与设计 Token | ✅ 完成（2026-10-10） | [06-style-tokens.md](./06-style-tokens.md) |
 | 07 | 记录页（选购台账） | 🚧 S1 页面完成（2026-10-12）· S2 服务端待立项 | [07-record-page.md](./07-record-page.md) |
-| 08 | AI 助手（装修记录探讨） | ✅ 后端上线（2026-10-12）· UI 待开工 | [08-ai-assistant.md](./08-ai-assistant.md) |
+| 08 | AI 助手（装修记录探讨） | ✅ 后端上线（2026-10-12）· 数据面对齐 + 选购分析上线（2026-10-15）· 对话 UI 待开工 | [08-ai-assistant.md](./08-ai-assistant.md) |
 | 09 | 笔记 × Web 联动（Hermes 技能层） | ✅ 完成（2026-10-12）· C/D 方向待做 | [09-note-web-linkage.md](./09-note-web-linkage.md) |
 | 10 | 开发-部署链路（coder 容器直发生产） | ✅ 完成并验证（2026-10-12）· push 待凭据 | [10-dev-deploy-channel.md](./10-dev-deploy-channel.md) |
+| 17 | 小家装修规划与Agent助理 | 📋 两人自用简化设计（2026-10-21）· 未实施 | [17-global-renovation-plan.md](./17-global-renovation-plan.md) |
+| 18 | 户型工具 · 数据源 + bear-home SVG 模块 | 🚧 第一版 SVG 已上线（2026-10-21）· 尺寸标注/3D 待做 | [18-floorplan-source-data.md](./18-floorplan-source-data.md) |
 
 状态标记：✅ 完成 · 🚧 进行中 · 📋 待开始 / 规划中 · ⛔ 受阻
 
@@ -44,6 +46,10 @@ bear-home (Taro 小程序/H5)  ──HTTP + Bearer Token──▶  server/ (Hono
 - **Agent 接开源 Hermes**而非裸调 LLM：用 MCP 标准接口对接，后端只暴露工具，不绑定任何 Agent 框架
 - **数据源唯一化**：服务器是记录的唯一数据源，前端本地存储仅作离线缓存兜底
 - **前端功能剥离（05）**：原前端功能多为 demo 写死数据，2026-10-10 全部移除只留跨端骨架；02 的前端接入层随之删除，待正式 PRD 后重建（后端与 02 的服务端部分仍然有效）
+- **AI 数据面与应用侧对齐（2026-10-15）**：聊天工具只读应用侧真正在用的数据
+  （`preparation_state` 候选/准备项 + `links` 笔记）；`entries`（装修记录）应用侧从不写入
+  也不展示，退出聊天工具面只留 MCP。AI 写候选递增 revision，聊天响应回传 `changed`
+  让前端刷新——先保证 AI 看得见真数据，再谈接 UI
 - **无备案域名过渡方案**：先走 `http://IP:80` 纯 HTTP + Token；有备案域名后改一行配置自动升级 HTTPS
 - **开发-部署一体化（10）**：coder 本就驻留在生产服务器的 Hermes 容器里，用 SSH forced
   command 通道让容器内改完一条命令直发（密钥仅能触发固定部署脚本，不能开 shell），
